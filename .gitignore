@@ -1,0 +1,14 @@
+# Environnements virtuels
+venv/
+.env/
+
+# Fichiers Python inutiles
+__pycache__/
+*.pyc
+
+# Fichiers système
+.DS_Store
+Thumbs.db
+
+# Configs perso
+*.vscode/
