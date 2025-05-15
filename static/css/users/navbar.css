@@ -1,0 +1,28 @@
+.login-btn {
+    background-color: #6c5ce7 !important;
+    transition: 0.3s ease;
+}
+
+.login-btn:hover {
+    background-color: #341f97 !important;
+}
+
+.register-btn {
+    background-color: transparent !important;
+    color: #6c5ce7;
+    border-color: #6c5ce7;
+    transition: 0.3s ease;
+}
+
+.register-btn:hover {
+    background-color: white !important;
+    color: #6c5ce7 !important;
+}
+
+.btn-link {
+    color: #6c5ce7 !important;
+}
+
+.icon-danger {
+    color: #554aad !important;
+}

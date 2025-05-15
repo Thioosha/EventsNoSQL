@@ -1,3 +1,272 @@
-<h1 style="text-align: center;">Hello the initial setup workssss</h1>
+{% extends "base.html" %}
+{% load static %}
+<!--
+=========================================================
+Paper Kit 2 - v2.2.0
+=========================================================
 
-<h1 style="text-align: center; margin-top: 2rem;">ACCUEIL</h1>
+Product Page: https://www.creative-tim.com/product/paper-kit-2
+Copyright 2019 Creative Tim (https://www.creative-tim.com)
+Licensed under MIT (https://github.com/creativetimofficial/paper-kit-2/blob/master/LICENSE.md)
+
+Coded by Creative Tim
+
+=========================================================
+
+The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software. -->
+
+
+
+{% block extra_head %}
+    <link rel="stylesheet" href="{% static 'css/users/home.css' %}">
+{% endblock %}
+
+{% block content %}
+<section class="landing-page sidebar-collapse">
+    <div class="page-header" data-parallax="true" style="background-image: url('{% static "img/users/kit/daniel-olahh1.jpg" %}');">
+        <div class="filter"></div>
+        <div class="container">
+            <div class="motto text-center">
+                <h1>Evénements autour de vous!</h1>
+                <h3>Construisez des instants inoubliables.</h3>
+                <br />
+                <a href="#" class="btn btn-outline-neutral btn-round"><i class="fa fa-play"></i>Voir les events</a>
+                <button type="button" class="btn btn-outline-neutral btn-round">À propos de nous</button>
+            </div>
+        </div>
+    </div>
+    <div class="main">
+        <div class="section text-center">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-8 mx-auto">
+                        <h2 class="title">Découvrons le Sénégal en événements</h2>
+                        <h5 class="description">
+                            Ici, tu trouveras tous les événements qui font vibrer le Sénégal ! Concerts, expos, conférences ou soirées privées –
+                            tout est là. Découvre ce qui se passe autour de toi et ne rate plus aucune occasion.
+                        </h5>
+                        <br>
+                        <a href="#paper-kit" class="btn login-btn btn-round">Voir les événements</a>
+                        </div>
+                        </div>
+                        <br />
+                        <br />
+                        <div class="row">
+                            <div class="col-md-3">
+                                <div class="info">
+                                    <div class="icon icon-danger">
+                                        <i class="nc-icon nc-album-2"></i>
+                                    </div>
+                                    <div class="description">
+                                        <h4 class="info-title">Galerie vivante</h4>
+                                        <p class="description">Plonge dans l’ambiance des meilleurs événements en images – du vrai vibe local
+                                        </p>
+                                        <a href="javascript:;" class="btn btn-link btn-danger">Voir plus</a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="info">
+                                    <div class="icon icon-danger">
+                                        <i class="nc-icon nc-bulb-63"></i>
+                                    </div>
+                                    <div class="description">
+                                        <h4 class="info-title">Idées fraîches</h4>
+                                        <p>Des concepts inédits, des festivals culturels aux startups locales. Inspire-toi, vis le changement
+                                        </p>
+                                        <a href="javascript:;" class="btn btn-link btn-danger">Découvrir</a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="info">
+                                    <div class="icon icon-danger">
+                                        <i class="nc-icon nc-chart-bar-32"></i>
+                                    </div>
+                                    <div class="description">
+                                        <h4 class="info-title">Tendances</h4>
+                                        <p>Explore les événements les plus populaires et reste toujours à la page. C’est toi la hype maintenant</p>
+                                        <a href="javascript:;" class="btn btn-link btn-danger">Explorer</a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="info">
+                                    <div class="icon icon-danger">
+                                        <i class="nc-icon nc-sun-fog-29"></i>
+                                    </div>
+                                    <div class="description">
+                                        <h4 class="info-title">Ambiance unique</h4>
+                                        <p>Des lieux magiques, des couleurs locales, une vibe sénégalaise inégalée. Prépare-toi à t'amuser </p>
+                                        <a href="javascript:;" class="btn btn-link btn-danger">Voir plus</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+            </div>
+        </div>
+        <div class="section section-dark text-center">
+            <div class="container">
+                <h2 class="title">Témoignages</h2>
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="card card-profile card-plain">
+                            <div class="card-avatar">
+                                <a href="#avatar">
+                                    <img src="{% static 'img/users/kit/faces/mhd.jpg' %}" alt="...">
+                                </a>
+                            </div>
+                            <div class="card-body">
+                                <a href="#paper-kit">
+                                    <div class="author">
+                                        <h4 class="card-title">Mohamed Ndiaye</h4>
+                                        <h6 class="card-category">Cryptologue</h6>
+                                    </div>
+                                </a>
+                                <p class="card-description text-center">
+                                    Étant un Ingénieur en cryptographie et blockchain, le métier peut parfois être assez stressant. Je remercie l'équipe de XewMi pour cette plateforme qui me permet facilement de trouver des événements pour décompresser.
+                                </p>
+                            </div>
+                            <div class="card-footer text-center">
+                                <a href="#pablo" class="btn btn-link btn-just-icon btn-neutral"><i
+                                        class="fa fa-twitter"></i></a>
+                                <a href="#pablo" class="btn btn-link btn-just-icon btn-neutral"><i
+                                        class="fa fa-google-plus"></i></a>
+                                <a href="#pablo" class="btn btn-link btn-just-icon btn-neutral"><i
+                                        class="fa fa-linkedin"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="card card-profile card-plain">
+                            <div class="card-avatar">
+                                <a href="#avatar">
+                                    <img src="{% static 'img/users/kit/faces/cod.jpg' %}" alt="...">
+                                </a>
+                            </div>
+                            <div class="card-body">
+                                <a href="#paper-kit">
+                                    <div class="author">
+                                        <h4 class="card-title">Cheikh Oumar Diallo</h4>
+                                        <h6 class="card-category">DevSecOps</h6>
+                                    </div>
+                                </a>
+                                <p class="card-description text-center">
+                                    Moi j'utilise XewMi pour organiser des événements de coding Hub et des Hackathons puisque j'adore les challenges et je suis toujours à la recherche de défis pour m'améliorer. Je recommande vivement XewMi. 
+                                </p>
+                            </div>
+                            <div class="card-footer text-center">
+                                <a href="#pablo" class="btn btn-link btn-just-icon btn-neutral"><i
+                                        class="fa fa-twitter"></i></a>
+                                <a href="#pablo" class="btn btn-link btn-just-icon btn-neutral"><i
+                                        class="fa fa-google-plus"></i></a>
+                                <a href="#pablo" class="btn btn-link btn-just-icon btn-neutral"><i
+                                        class="fa fa-linkedin"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="card card-profile card-plain">
+                            <div class="card-avatar">
+                                <a href="#avatar">
+                                    <img src="{% static 'img/users/kit/faces/absa.jpg' %}" alt="...">
+                                </a>
+                            </div>
+                            <div class="card-body">
+                                <a href="#paper-kit">
+                                    <div class="author">
+                                        <h4 class="card-title">Ndeye Absa Der</h4>
+                                        <h6 class="card-category">Ingénieur Réseau</h6>
+                                    </div>
+                                </a>
+                                <p class="card-description text-center">
+                                    Bon, d'habitude la Télécommunication me permet de faire pas mal de découvertes sur le territoire mais c'est toujours bien d'avoir une plateforme comme XewMi qui nous facilite la vie. Je recommande également!
+                                </p>
+                            </div>
+                            <div class="card-footer text-center">
+                                <a href="#pablo" class="btn btn-link btn-just-icon btn-neutral"><i
+                                        class="fa fa-twitter"></i></a>
+                                <a href="#pablo" class="btn btn-link btn-just-icon btn-neutral"><i
+                                        class="fa fa-google-plus"></i></a>
+                                <a href="#pablo" class="btn btn-link btn-just-icon btn-neutral"><i
+                                        class="fa fa-linkedin"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="section landing-section">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-8 mx-auto">
+                        <h2 class="text-center">Contactez-nous ?</h2>
+                        <form class="contact-form">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <label>Nom</label>
+                                    <div class="input-group">
+                                        <div class="input-gr">
+                                            <span class="input-group-text">
+                                                <i class="nc-icon nc-single-02"></i>
+                                            </span>
+                                        </div>
+                                        <input type="text" class="form-control" placeholder="Nom">
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <label>Email</label>
+                                    <div class="input-group">
+                                        <div class="input-gr">
+                                            <span class="input-group-text">
+                                                <i class="nc-icon nc-email-85"></i>
+                                            </span>
+                                        </div>
+                                        <input type="text" class="form-control" placeholder="Email">
+                                    </div>
+                                </div>
+                            </div>
+                            <label>Message</label>
+                            <textarea class="form-control" rows="4"
+                                placeholder="Dites nous ce que vous pensez..."></textarea>
+                            <div class="row">
+                                <div class="col-md-4 mx-auto">
+                                    <button class="btn login-btn btn-lg btn-fill">Envoyer un message</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <footer class="footer footer-white mx-auto">
+        <div class="container">
+            <div class="row">
+                <nav class="footer-nav mx-auto">
+                    <ul>
+                        <li>
+                            <a href="#" target="_blank">Creative Tim</a>
+                        </li>
+                        <li>
+                            <a href="#" target="_blank">Blog</a>
+                        </li>
+                        <li>
+                            <a href="#" target="_blank">Licenses</a>
+                        </li>
+                    </ul>
+                </nav>
+                <div class="credits mx-auto">
+                    <span class="copyright">
+                        ©
+                        <script>
+                            document.write(new Date().getFullYear())
+                        </script>, made with <i class="fa fa-heart heart"></i> by Creative Tim
+                    </span>
+                </div>
+            </div>
+        </div>
+    </footer>
+</section>
+{% endblock %}

@@ -3,13 +3,26 @@
 
 {% block extra_head %}
 <!-- Juste un exple. Il faudra changer le css/exple au nom de votre file css -->
-<link rel="stylesheet" href="{% static 'css/exple.css' %}">
+<link rel="stylesheet" href="{% static 'css/users/settings.css' %}">
 {% endblock %}
+
 
 
 {% block content %}
-<!-- Contenu page ici -->
+<h1 class="top-title">⚙️ Paramètres de l'utilisateur</h1>
+
+<div class="container mt-5">
+    <div class="card p-4 shadow-lg">
+        <h5 class="text-dark">Nom d'utilisateur: <span class="text-primary fw-bold">{{ user.username }}</span></h5>
+        <h5 class="text-dark">Nom complet: <span class="text-info fw-bold">{{ user.full_name }}</span></h5>
+        <h5 class="text-dark">Email: <span class="text-danger fw-bold">{{ user.email }}</span></h5>
+        <h5 class="text-dark">Type de compte: <span class="text-success fw-bold">{{ user.account_type }}</span></h5>
+    </div>
+</div>
 {% endblock %}
+
+
+
 
 
 <!-- si vous avez un script.js file. Vous pouvez aussi mettre le script pur dans block content si vous préférez -->

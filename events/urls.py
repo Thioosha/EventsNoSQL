@@ -1,9 +1,9 @@
 from django.urls import path
 from . import views
 
-app_name = 'events'
-
 urlpatterns = [
     # Mettez vos urls ici daal
+    path('events/creer/', views.create_event, name='creer_event'),
+    path('events/', views.user_events, name='user_events'),
     
 ]

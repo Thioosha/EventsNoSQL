@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% load static %}
+
+
+{% block extra_head %}
+<!-- Juste un exple. Il faudra changer le css/exple au nom de votre file css -->
+<link rel="stylesheet" href="{% static 'css/events/creer_event.css' %}">
+{% endblock %}
+
+
+{% block content %}
+<h1 class="top-title"><i class="nc-icon nc-single-02"></i>Créer un événement</h1>
+<!-- Contenu ici.  -->
+{% endblock %}
+
+
+<!-- si vous avez un script.js file. Vous pouvez aussi mettre le script pur dans block content si vous préférez -->
+{% block extra_js %}
+<script src="{%static 'js/exple.js'%}"></script>
+{% endblock %}
