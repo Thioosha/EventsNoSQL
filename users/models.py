@@ -1,5 +1,3 @@
-from django.db import models
-
 from mongoengine import Document, StringField, EmailField, ListField
 
 class MongoUser(Document):
@@ -10,4 +8,4 @@ class MongoUser(Document):
     reservations = ListField()
     created_events = ListField()
     notifications = ListField()
-    account_type = StringField(choices=['organizer', 'participant'], required=True)
+    account_type = StringField(choices=['organizer', 'participant'],required=True)
