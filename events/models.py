@@ -18,6 +18,8 @@ class MongoEvent(Document):
     available_slots = IntField(required=True)
     total_slots = IntField(required=True)
 
+    image_url = StringField(default="https://dummyimage.com/900x400/dee2e6/6c757d.jpg") 
+
     created_by = ReferenceField(MongoUser, required=True)
     participants = ListField(ReferenceField(MongoUser), default=list)
     price = FloatField(default=0.0)

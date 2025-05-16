@@ -19,8 +19,9 @@
     {% if main_event %}
     <div class="row gx-4 gx-lg-5 align-items-center my-5">
         <div class="col-lg-7">
-            <img class="img-fluid rounded mb-4 mb-lg-0" src="https://dummyimage.com/900x400/dee2e6/6c757d.jpg"
+            <img class="img-fluid rounded mb-4 mb-lg-0" src="{{ main_event.image_url|default:'https://dummyimage.com/900x400/dee2e6/6c757d.jpg' }}"
                 alt="Main Event Image" />
+                
         </div>
         <div class="col-lg-5">
             <h1 class="font-weight-light">{{ main_event.title }}</h1>
@@ -43,6 +44,8 @@
         {% for event in other_events %}
         <div class="col-md-4 mb-5">
             <div class="card h-100">
+                <img src="{{ event.image_url|default:'https://dummyimage.com/900x400/dee2e6/6c757d.jpg' }}" class="card-img-top"
+                    alt="Image de l'événement">
                 <div class="card-body">
                     <h2 class="card-title">{{ event.title }}</h2>
                     <p class="card-text">
@@ -64,15 +67,6 @@
         {% endfor %}
     </div>
 </div>
-
-
-
-<!-- Footer-->
-<footer class="py-5 bg-dark">
-    <div class="container px-4 px-lg-5">
-        <p class="m-0 text-center text-white">Copyright &copy;XewMi 2025</p>
-    </div>
-</footer>
 {% endblock %}
     
     

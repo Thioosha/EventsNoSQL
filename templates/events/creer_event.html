@@ -29,7 +29,7 @@
     </form> -->
 
     {% load static %}
-    <form method="post">
+    <form method="post" enctype="multipart/form-data">
         {% csrf_token %}
     
         <div class="formbold-main-wrapper">
@@ -71,6 +71,18 @@
                         {% for error in form.category.errors %}
                         <div class="text-danger small">{{ error }}</div>
                         {% endfor %}
+                    </div>
+                </div>
+                
+                <div class="formbold-input-flex">
+                    <div style="flex: 1 1 100%;">
+                        <input type="file" name="image" id="id_image" accept="image/*" class="formbold-form-input" />
+                        <label for="id_image" class="formbold-form-label mt-3">Image de l'événement</label>
+                        {% if form.image.errors %}
+                        {% for error in form.image.errors %}
+                        <div class="text-danger small">{{ error }}</div>
+                        {% endfor %}
+                        {% endif %}
                     </div>
                 </div>
                 
@@ -125,7 +137,7 @@
                 </div>
     
                 <div class="formbold-input-flex">
-                    <div>
+                    <div style="flex: 1 1 100%;">
                         <input type="number" step="0.01" name="price" id="id_price" class="formbold-form-input"
                         value="{{ form.price.value|default_if_none:'' }}">
                         <label for="id_price" class="formbold-form-label">Prix</label>

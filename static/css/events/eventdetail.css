@@ -4,4 +4,170 @@
     color: white;
     font-weight: bold;
     margin-top: -1rem;
+
+}
+
+.top-title a{
+    text-decoration: none;
+    color: rgb(207, 215, 222);
+    transition: ease-in 0.2s;
+}
+
+.top-title a:hover {
+    color: rgb(135, 146, 156);
+}
+
+.detailbox{
+    margin-top: 6rem;
+}
+
+.detailbox {
+    width: 600px;
+    max-width: 100%;
+    padding: 24px;
+    background-color: #fff;
+    border-radius: 12px;
+    overflow-y: auto;
+}
+
+.formbold-btn {
+    transition: all 0.3s;
+}
+.formbold-btn:hover{
+    background-color: #41359d;
+}
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Inter', sans-serif;
+}
+
+.formbold-main-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 48px;
+}
+
+.formbold-form-wrapper {
+    margin: 0 auto;
+    width: 100%;
+    background: white;
+}
+
+.formbold-event-wrapper span {
+    font-weight: 500;
+    font-size: 16px;
+    line-height: 24px;
+    letter-spacing: 2.5px;
+    color: #6a64f1;
+    display: inline-block;
+    margin-bottom: 12px;
+}
+
+.formbold-event-wrapper h3 {
+    font-weight: 700;
+    font-size: 28px;
+    line-height: 34px;
+    color: #07074d;
+    width: 100%;
+    margin-bottom: 15px;
+}
+
+.formbold-event-wrapper h4 {
+    font-weight: 600;
+    font-size: 20px;
+    line-height: 24px;
+    color: #07074d;
+    width: 100%;
+    margin: 25px 0 15px;
+}
+
+.formbold-event-wrapper p {
+    font-size: 16px;
+    line-height: 24px;
+    color: #536387;
+}
+
+.formbold-event-details {
+    background: #fafafa;
+    border: 1px solid #dde3ec;
+    border-radius: 5px;
+    margin: 25px 0 30px;
+}
+
+.formbold-event-details h5 {
+    color: #07074d;
+    font-weight: 600;
+    font-size: 18px;
+    line-height: 24px;
+    padding: 15px 25px;
+}
+
+.formbold-event-details ul {
+    border-top: 1px solid #edeef2;
+    padding: 25px;
+    margin: 0;
+    list-style: none;
+    display: flex;
+    flex-wrap: wrap;
+    row-gap: 14px;
+}
+
+.formbold-event-details ul li {
+    color: #536387;
+    font-size: 16px;
+    line-height: 24px;
+    width: 50%;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.formbold-policy {
+    font-size: 14px;
+    line-height: 24px;
+    color: #536387;
+    width: 70%;
+    margin-top: 22px;
+}
+
+.formbold-policy a {
+    color: #6a64f1;
+}
+
+.formbold-btn {
+    text-align: center;
+    width: 100%;
+    font-size: 16px;
+    border-radius: 5px;
+    padding: 14px 25px;
+    border: none;
+    font-weight: 500;
+    background-color: #6a64f1;
+    color: white;
+    cursor: pointer;
+    margin-top: 25px;
+}
+
+.formbold-btn:hover {
+    box-shadow: 0px 3px 8px rgba(0, 0, 0, 0.05);
+}
+
+.formbold-form-wrapper {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    /* soft elegant shadow */
+    border-radius: 12px;
+    /* just a lil curve, mmhmm */
+    padding: 24px;
+    /* so it breathes, like damn */
+    background-color: white;
+    /* so it stands out */
 }

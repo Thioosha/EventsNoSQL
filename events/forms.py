@@ -35,6 +35,10 @@ class MongoEventForm(forms.Form):
         label="Date et heure de fin",
         widget=forms.DateTimeInput(attrs={'type': 'datetime-local'})
     )
+
+    image = forms.ImageField(label="Image de l'événement", required=False)
+
+
     total_slots = forms.IntegerField(label="Nombre total de places")
     available_slots = forms.IntegerField(label="Places disponibles")
     price = forms.FloatField(label="Prix", initial=0.0)
