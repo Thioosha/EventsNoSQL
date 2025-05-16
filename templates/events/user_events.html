@@ -12,10 +12,72 @@
 <h1 class="top-title"><i class="nc-icon nc-single-02"></i>Tous les événements</h1>
 
 <!-- Contenu page ici -->
+<!-- Page Content-->
+<div class="container px-4 px-lg-5">
+
+    <!-- Heading Row: MAIN EVENT -->
+    {% if main_event %}
+    <div class="row gx-4 gx-lg-5 align-items-center my-5">
+        <div class="col-lg-7">
+            <img class="img-fluid rounded mb-4 mb-lg-0" src="https://dummyimage.com/900x400/dee2e6/6c757d.jpg"
+                alt="Main Event Image" />
+        </div>
+        <div class="col-lg-5">
+            <h1 class="font-weight-light">{{ main_event.title }}</h1>
+            <p>{{ main_event.description|truncatewords:50 }}</p>
+            <a class="btn btn-primary" href="{% url 'user_event_detail' main_event.id %}">Voir l'événement</a>
+
+        </div>
+    </div>
+    {% endif %}
+
+    <!-- Call to Action (Optional) -->
+    <div class="card text-white bg-secondary my-5 py-4 text-center">
+        <div class="card-body">
+            <p class="text-white m-0">Ne ratez pas nos événements exclusifs 🤍</p>
+        </div>
+    </div>
+
+    <!-- Content Row: OTHER EVENTS -->
+    <div class="row gx-4 gx-lg-5">
+        {% for event in other_events %}
+        <div class="col-md-4 mb-5">
+            <div class="card h-100">
+                <div class="card-body">
+                    <h2 class="card-title">{{ event.title }}</h2>
+                    <p class="card-text">
+                        <strong>Host:</strong> {{ event.created_by.full_name }}<br>
+                        <strong>Date:</strong> {{ event.start_datetime|date:"d M Y H:i" }}<br>
+                        <strong>Lieu:</strong> {{ event.location }}<br>
+                        <strong>Places:</strong> {{ event.available_slots }} dispo / {{ event.total_slots }}
+                    </p>
+                </div>
+                <div class="card-footer">
+                    <a class="btn btn-primary btn-sm" href="{% url 'user_event_detail' event.id %}">Détails</a>
+                </div>
+            </div>
+        </div>
+        {% empty %}
+        <div class="col-12 text-center">
+            <p class="text-muted">Aucun événement actif pour le moment</p>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+
+
+<!-- Footer-->
+<footer class="py-5 bg-dark">
+    <div class="container px-4 px-lg-5">
+        <p class="m-0 text-center text-white">Copyright &copy;XewMi 2025</p>
+    </div>
+</footer>
 {% endblock %}
-
-
+    
+    
+    
 <!-- si vous avez un script.js file. Vous pouvez aussi mettre le script pur dans block content si vous préférez -->
 {% block extra_js %}
-<script src="{%static 'js/exple.js'%}"></script>
+<script src="js/events/scripts.js"></script>
 {% endblock %}

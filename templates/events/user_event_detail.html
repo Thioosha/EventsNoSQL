@@ -3,12 +3,23 @@
 
 {% block extra_head %}
 <!-- Juste un exple. Il faudra changer le css/exple au nom de votre file css -->
-<link rel="stylesheet" href="{% static 'css/exple.css' %}">
+<link rel="stylesheet" href="{% static 'css/events/eventdetail.css' %}">
 {% endblock %}
 
 
 {% block content %}
+
+<h1 class="top-title"><a href="{% url 'user_events'%}" style="text-decoration: none;"><i class="fa-solid fa-arrow-left fa-2xl" style="font-size: 3rem;"></i> Retour</a></h1>
 <!-- Contenu page ici -->
+ <div class="container">
+     <h1>{{ event.title }}</h1>
+     <p><strong>Host:</strong> {{ event.created_by.full_name }}</p>
+     <p><strong>Date:</strong> {{ event.start_datetime }}</p>
+     <p><strong>Location:</strong> {{ event.location }}</p>
+     <p><strong>Description:</strong> {{ event.description }}</p>
+     <p><strong>Available Slots:</strong> {{ event.available_slots }}</p>
+ </div>
+
 {% endblock %}
 
 

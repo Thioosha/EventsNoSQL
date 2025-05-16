@@ -11,6 +11,141 @@
 {% block content %}
 <h1 class="top-title"><i class="nc-icon nc-single-02"></i>Créer un événement</h1>
 <!-- Contenu ici.  -->
+
+<div class="container">
+
+    <!-- <form method="post">
+        {% csrf_token %}
+        {% for field in form %}
+        <div class="mb-3">
+            <label for="{{ field.id_for_label }}" class="form-label">{{ field.label }}</label>
+            {{ field }}
+            {% if field.errors %}
+            <div class="text-danger small">{{ field.errors|join:" " }}</div>
+            {% endif %}
+        </div>
+        {% endfor %}
+        <button type="submit" class="btn btn-dark w-100">Créer</button>
+    </form> -->
+
+    {% load static %}
+    <form method="post">
+        {% csrf_token %}
+    
+        <div class="formbold-main-wrapper">
+            <!-- Author: FormBold Team -->
+            <!-- Learn More: https://formbold.com -->
+            <div class="formbold-form-wrapper">
+    
+                <div class="formbold-input-flex">
+                    <div>
+                        <input type="text" name="title" id="id_title" placeholder="Titre de l’événement"
+                            class="formbold-form-input" value="{{ form.title.value|default_if_none:'' }}">
+                        <label for="id_title" class="formbold-form-label">Titre</label>
+                        {% for error in form.title.errors %}
+                        <div class="text-danger small">{{ error }}</div>
+                        {% endfor %}
+                    </div>
+                    <div>
+                        <input type="text" name="location" id="id_location" placeholder="Lieu" class="formbold-form-input"
+                            value="{{ form.location.value|default_if_none:'' }}">
+                        <label for="id_location" class="formbold-form-label">Lieu</label>
+                        {% for error in form.location.errors %}
+                        <div class="text-danger small">{{ error }}</div>
+                        {% endfor %}
+                    </div>
+                </div>
+
+                <div class="formbold-input-flex">
+                    <div style="flex: 1 1 100%;">
+                        <select name="category" id="id_category" class="formbold-form-input">
+                            {% for choice in form.category.field.choices %}
+                            {% if choice.0 == form.category.value %}
+                            <option value="{{ choice.0 }}" selected>{{ choice.1 }}</option>
+                            {% else %}
+                            <option value="{{ choice.0 }}">{{ choice.1 }}</option>
+                            {% endif %}
+                            {% endfor %}
+                        </select>
+                        <label for="id_category" class="formbold-form-label">Catégorie</label>
+                        {% for error in form.category.errors %}
+                        <div class="text-danger small">{{ error }}</div>
+                        {% endfor %}
+                    </div>
+                </div>
+                
+    
+                <div class="formbold-input-flex">
+                    <div style="flex: 1 1 100%;">
+                        <textarea rows="4" name="description" id="id_description" placeholder="Description"
+                        class="formbold-form-input">{{ form.description.value|default_if_none:'' }}</textarea>
+                        <label for="id_description" class="formbold-form-label mt-3">Description</label>
+                        {% for error in form.description.errors %}
+                        <div class="text-danger small">{{ error }}</div>
+                        {% endfor %}
+                    </div>
+                </div>
+    
+                <div class="formbold-input-flex">
+                    <div>
+                        <input type="datetime-local" name="start_datetime" id="id_start_datetime"
+                            class="formbold-form-input" value="{{ form.start_datetime.value|default_if_none:'' }}">
+                        <label for="id_start_datetime" class="formbold-form-label">Début</label>
+                        {% for error in form.start_datetime.errors %}
+                        <div class="text-danger small">{{ error }}</div>
+                        {% endfor %}
+                    </div>
+                    <div>
+                        <input type="datetime-local" name="end_datetime" id="id_end_datetime" class="formbold-form-input"
+                            value="{{ form.end_datetime.value|default_if_none:'' }}">
+                        <label for="id_end_datetime" class="formbold-form-label">Fin</label>
+                        {% for error in form.end_datetime.errors %}
+                        <div class="text-danger small">{{ error }}</div>
+                        {% endfor %}
+                    </div>
+                </div>
+    
+                <div class="formbold-input-flex">
+                    <div>
+                        <input type="number" name="total_slots" id="id_total_slots" class="formbold-form-input"
+                            value="{{ form.total_slots.value|default_if_none:'' }}">
+                        <label for="id_total_slots" class="formbold-form-label">Places Totales</label>
+                        {% for error in form.total_slots.errors %}
+                        <div class="text-danger small">{{ error }}</div>
+                        {% endfor %}
+                    </div>
+                    <div>
+                        <input type="number" name="available_slots" id="id_available_slots" class="formbold-form-input"
+                            value="{{ form.available_slots.value|default_if_none:'' }}">
+                        <label for="id_available_slots" class="formbold-form-label">Places Disponibles</label>
+                        {% for error in form.available_slots.errors %}
+                        <div class="text-danger small">{{ error }}</div>
+                        {% endfor %}
+                    </div>
+                </div>
+    
+                <div class="formbold-input-flex">
+                    <div>
+                        <input type="number" step="0.01" name="price" id="id_price" class="formbold-form-input"
+                        value="{{ form.price.value|default_if_none:'' }}">
+                        <label for="id_price" class="formbold-form-label">Prix</label>
+                        {% for error in form.price.errors %}
+                        <div class="text-danger small">{{ error }}</div>
+                        {% endfor %}
+
+                    </div>
+                </div>
+    
+                
+    
+                <button type="submit" class="formbold-btn">Créer l’événement</button>
+    
+            </div>
+        </div>
+    </form>
+
+</div>
+
 {% endblock %}
 
 
