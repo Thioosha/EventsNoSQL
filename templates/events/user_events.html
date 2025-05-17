@@ -9,64 +9,127 @@
 
 {% block content %}
 
-<h1 class="top-title"><i class="nc-icon nc-single-02"></i>Tous les événements</h1>
+<h1 class="top-title">Tous les événements</h1>
 
 <!-- Contenu page ici -->
 <!-- Page Content-->
-<div class="container px-4 px-lg-5">
-
-    <!-- Heading Row: MAIN EVENT -->
-    {% if main_event %}
-    <div class="row gx-4 gx-lg-5 align-items-center my-5">
-        <div class="col-lg-7">
-            <img class="img-fluid rounded mb-4 mb-lg-0" src="{{ main_event.image_url|default:'https://dummyimage.com/900x400/dee2e6/6c757d.jpg' }}"
-                alt="Main Event Image" />
-                
-        </div>
-        <div class="col-lg-5">
-            <h1 class="font-weight-light">{{ main_event.title }}</h1>
-            <p>{{ main_event.description|truncatewords:50 }}</p>
-            <a class="btn btn-primary" href="{% url 'user_event_detail' main_event.id %}">Voir l'événement</a>
-
-        </div>
-    </div>
-    {% endif %}
-
-    <!-- Call to Action (Optional) -->
-    <div class="card text-white bg-secondary my-5 py-4 text-center">
-        <div class="card-body">
-            <p class="text-white m-0">Ne ratez pas nos événements exclusifs 🤍</p>
-        </div>
-    </div>
-
-    <!-- Content Row: OTHER EVENTS -->
-    <div class="row gx-4 gx-lg-5">
-        {% for event in other_events %}
-        <div class="col-md-4 mb-5">
-            <div class="card h-100">
-                <img src="{{ event.image_url|default:'https://dummyimage.com/900x400/dee2e6/6c757d.jpg' }}" class="card-img-top"
-                    alt="Image de l'événement">
-                <div class="card-body">
-                    <h2 class="card-title">{{ event.title }}</h2>
-                    <p class="card-text">
-                        <strong>Host:</strong> {{ event.created_by.full_name }}<br>
-                        <strong>Date:</strong> {{ event.start_datetime|date:"d M Y H:i" }}<br>
-                        <strong>Lieu:</strong> {{ event.location }}<br>
-                        <strong>Places:</strong> {{ event.available_slots }} dispo / {{ event.total_slots }}
-                    </p>
-                </div>
-                <div class="card-footer">
-                    <a class="btn btn-primary btn-sm" href="{% url 'user_event_detail' event.id %}">Détails</a>
-                </div>
+ <div class="firstblock py-2">
+    <div class="container-fluid px-4 px-lg-5">
+    
+        <!-- Heading Row: MAIN EVENT -->
+        {% if main_event %}
+        <div class="row gx-4 gx-lg-5 align-items-center my-5">
+            <div class="col-lg-7">
+                <img class="img-fluid rounded mb-4 mb-lg-0" src="{{ main_event.image_url|default:'https://dummyimage.com/900x400/dee2e6/6c757d.jpg' }}"
+                    alt="Main Event Image" />
+                    
+            </div>
+            <div class="col-lg-5">
+                <h1 class="font-weight-light mb-3">{{ main_event.title }}</h1>
+                <p>{{ main_event.description|truncatewords:50 }}</p>
+                <a class="btn btn-lg seeEvent" href="{% url 'user_event_detail' main_event.id %}">Voir l'événement</a>
+    
             </div>
         </div>
-        {% empty %}
-        <div class="col-12 text-center">
-            <p class="text-muted">Aucun événement actif pour le moment</p>
+        {% endif %}
+    </div>
+
+</div>
+
+<!-- Call to Action (Optional) -->
+<div class="my-5 text-center">
+    <div class="titleCatch">
+        Ne ratez pas nos événements exclusifs !
+    </div>
+</div> 
+
+<div class="carousel mx-auto mb-5" style="color: black;" mask>
+    <article>
+        <img src="https://images.pexels.com/photos/635699/pexels-photo-635699.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
+            alt="">
+        <h2 class="topcardtitle">The Cross</h2>
+        <div>
+            <a href="#">Read more</a>
         </div>
-        {% endfor %}
+    </article>
+
+    <article>
+        <img src="https://images.pexels.com/photos/7168798/pexels-photo-7168798.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
+            alt="easter eggs">
+        <h2 class="topcardtitle">Easter Eggs</h2>
+        <div>
+            <a href="#">Read more</a>
+        </div>
+    </article>
+
+    <article>
+        <img src="https://images.pexels.com/photos/4099179/pexels-photo-4099179.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
+            alt="hot cross buns">
+        <h2 class="topcardtitle">Hot Cross Buns</h2>
+        <div>
+            <a href="#">Read more</a>
+        </div>
+    </article>
+
+    <article>
+        <img src="https://images.pexels.com/photos/5145/animal-easter-chick-chicken.jpg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
+            alt="easter chick">
+        <h2 class="topcardtitle">Easter Chick</h2>
+        <div>
+            <a href="#">Read more</a>
+        </div>
+    </article>
+
+    <article>
+        <img src="https://images.pexels.com/photos/2072158/pexels-photo-2072158.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
+            alt="easter bunny">
+        <h2>Easter Bunnies</h2>
+        <div>
+            <a href="#">Read more</a>
+        </div>
+    </article>
+</div>
+
+<!-- Call to Action (Optional) -->
+<div class="my-5 py-4  text-center">
+    <div class="titleCatch">
+        Une sélection spécialement pour vous !
     </div>
 </div>
+<div class="lastBlock pt-5 mx-2 mb-5">
+    <div class="container px-4 px-lg-5">
+    
+        <!-- Content Row: OTHER EVENTS -->
+        <div class="row gx-4 gx-lg-5">
+            {% for event in other_events %}
+            <div class="col-md-4 mb-5">
+                <div class="card h-100">
+                    <img src="{{ event.image_url|default:'https://dummyimage.com/900x400/dee2e6/6c757d.jpg' }}" class="card-img-top"
+                        alt="Image de l'événement">
+                    <div class="card-body">
+                        <div style="font-size: 1rem; font-weight: bold;">{{ event.category }}</div>
+                        <h2 class="card-title">{{ event.title }}</h2>
+                        <p class="card-text">
+                            <strong>Host:</strong> {{ event.created_by.full_name }}<br>
+                            <strong>Date:</strong> {{ event.start_datetime|date:"d M Y H:i" }}<br>
+                            <strong>Lieu:</strong> {{ event.location }}<br>
+                            <strong>Places:</strong> {{ event.available_slots }} dispo / {{ event.total_slots }}
+                        </p>
+                    </div>
+                    <div class="card-footer">
+                        <a class="btn seeEvent btn-lg" href="{% url 'user_event_detail' event.id %}">Détails</a>
+                    </div>
+                </div>
+            </div>
+            {% empty %}
+            <div class="col-12 text-center">
+                <p class="text-muted">Aucun événement actif pour le moment</p>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+
 {% endblock %}
     
     
