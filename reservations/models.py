@@ -1,4 +1,5 @@
 from mongoengine import Document, StringField, ReferenceField, DateTimeField
+from datetime import datetime, timedelta
 from users.models import MongoUser
 from events.models import MongoEvent # Changement ici
 from datetime import datetime
@@ -13,6 +14,7 @@ class MongoReservation(Document):
         default="pending"
     )
     created_at = DateTimeField(default=lambda: datetime.now())
+    expires_at = DateTimeField(default=lambda: datetime.now() + timedelta(minutes=30), null=True)
     confirmed_at = DateTimeField(null=True)
     payment_status = StringField(
         choices=["paid", "unpaid", "failed"],
@@ -24,18 +26,18 @@ class MongoReservation(Document):
         'indexes': [
             'user',
             'event',
-            {'fields': ['-created_at'], 'name': 'created_at_desc'}
+            {'fields': ['-created_at'], 'name': 'created_at_desc'},
+            {
+                'fields': ['expires_at'],
+                'expireAfterSeconds': 0  # TTL kicks in right when expires_at is reached
+            }
         ]
     }
-
     def save(self, *args, **kwargs):
         # On create only
         if not self.pk:
             # Check available slots
             if self.event.available_slots <= 0:
-                raise ValidationError("Aucun slot dispo pour cet event 😤")
-            # Decrease slot
-            self.event.available_slots -= 1
-            self.event.save()
+                raise ValidationError("Aucun slot dispo pour cet event 🚫")
         
         super().save(*args, **kwargs)

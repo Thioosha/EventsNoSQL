@@ -21,8 +21,8 @@
                 <h3>{{ event.title }}</h3>
                 <div style="width: 700px; height: 450px; overflow: hidden; border-radius: 12px;">
                     <img src="{{ event.image_url|default:'https://dummyimage.com/900x400/dee2e6/6c757d.jpg' }}"
-                         alt="Image de l'événement"
-                         style="width: 100%; height: 100%; object-fit: cover;">
+                        alt="Image de l'événement"
+                        style="width: 100%; height: 100%; object-fit: cover;">
                 </div>
             </div>
 
@@ -93,15 +93,34 @@
                 </div>
             </div>      
         </div>
+
+        <!-- MESSAGES BLOCK (add this at top!) -->
+        {% if messages %}
+        <div class="alert-container" style="margin: 20px;">
+            {% for message in messages %}
+            <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert"
+                style="padding: 15px; border-radius: 5px; background-color: {% if message.tags == 'error' %}#f8d7da{% elif message.tags == 'warning' %}#fff3cd{% else %}#d1e7dd{% endif %}; color: #000;">
+                {{ message }}
+                <button type="button" onclick="this.parentElement.style.display='none';"
+                    style="background:none; border:none; float:right; font-size: 1.1rem;">×</button>
+            </div>
+            {% endfor %}
+        </div>
+        {% endif %}
+        
+        <!-- SUBMIT RESERVATION FORM -->
         <div class="mx-5">
-            <form method="POST">
+            <form method="POST" action="{% url 'creer_reservation' event.id %}">
+
+                {% csrf_token %}
                 <p class="formbold-policy">
                     En validant votre réservation, vous acceptez notre
                     <a href="#">Politique de confidentialité.</a>
                 </p>
-                <button class="formbold-btn">Submit Registration</button>
+                <button type="submit" class="formbold-btn">Submit Reservation</button>
             </form>
         </div>
+
 
     </div>
 </div>
