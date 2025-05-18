@@ -13,7 +13,7 @@
 
 <!-- Contenu page ici -->
 <!-- Page Content-->
- <div class="firstblock py-2">
+<div class="firstblock py-2">
     <div class="container-fluid px-4 px-lg-5">
     
         <!-- Heading Row: MAIN EVENT -->
@@ -25,8 +25,8 @@
                     
             </div>
             <div class="col-lg-5">
-                <h1 class="font-weight-light mb-3">{{ main_event.title }}</h1>
-                <p>{{ main_event.description|truncatewords:50 }}</p>
+                <h1 class="font-weight-light maintitle mb-3 ">{{ main_event.title }}</h1>
+                <p class="descriptionmain">{{ main_event.description|truncatewords:50 }}</p>
                 <a class="btn btn-lg seeEvent" href="{% url 'user_event_detail' main_event.id %}">Voir l'événement</a>
     
             </div>
@@ -37,98 +37,86 @@
 </div>
 
 <!-- Call to Action (Optional) -->
-<div class="my-5 text-center">
-    <div class="titleCatch">
-        Ne ratez pas nos événements exclusifs !
-    </div>
-</div> 
-
-<div class="carousel mx-auto mb-5" style="color: black;" mask>
-    <article>
-        <img src="https://images.pexels.com/photos/635699/pexels-photo-635699.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
-            alt="">
-        <h2 class="topcardtitle">The Cross</h2>
-        <div>
-            <a href="#">Read more</a>
-        </div>
-    </article>
-
-    <article>
-        <img src="https://images.pexels.com/photos/7168798/pexels-photo-7168798.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
-            alt="easter eggs">
-        <h2 class="topcardtitle">Easter Eggs</h2>
-        <div>
-            <a href="#">Read more</a>
-        </div>
-    </article>
-
-    <article>
-        <img src="https://images.pexels.com/photos/4099179/pexels-photo-4099179.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
-            alt="hot cross buns">
-        <h2 class="topcardtitle">Hot Cross Buns</h2>
-        <div>
-            <a href="#">Read more</a>
-        </div>
-    </article>
-
-    <article>
-        <img src="https://images.pexels.com/photos/5145/animal-easter-chick-chicken.jpg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
-            alt="easter chick">
-        <h2 class="topcardtitle">Easter Chick</h2>
-        <div>
-            <a href="#">Read more</a>
-        </div>
-    </article>
-
-    <article>
-        <img src="https://images.pexels.com/photos/2072158/pexels-photo-2072158.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
-            alt="easter bunny">
-        <h2>Easter Bunnies</h2>
-        <div>
-            <a href="#">Read more</a>
-        </div>
-    </article>
-</div>
-
-<!-- Call to Action (Optional) -->
-<div class="my-5 py-4  text-center">
+<div class="mt-5 text-center px-4">
     <div class="titleCatch">
         Une sélection spécialement pour vous !
     </div>
 </div>
+
+<div class="carousel-wrapper mb-5" style="background-image: url('{% static "img/events/bg2.png" %}');">
+    <div class="carousel ml-auto mt-5" mask>
+        {% for event in carousel_events %}
+        <article>
+            <img src="{{ event.image_url|default:'https://images.pexels.com/photos/2072158/pexels-photo-2072158.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1' }}"
+                alt="{{ event.title }}">
+
+            <p class="category mt-3">{{ event.category }}</p>
+            <h2 class="topcardtitle fs-2">{{ event.title }}</h2>
+            <p class="d-flex">
+                <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <g clip-path="url(#clip0_1675_1735)">
+                        <path
+                            d="M9 16.5C4.85775 16.5 1.5 13.1422 1.5 9C1.5 4.85775 4.85775 1.5 9 1.5C13.1422 1.5 16.5 4.85775 16.5 9C16.5 13.1422 13.1422 16.5 9 16.5ZM9 15C10.5913 15 12.1174 14.3679 13.2426 13.2426C14.3679 12.1174 15 10.5913 15 9C15 7.4087 14.3679 5.88258 13.2426 4.75736C12.1174 3.63214 10.5913 3 9 3C7.4087 3 5.88258 3.63214 4.75736 4.75736C3.63214 5.88258 3 7.4087 3 9C3 10.5913 3.63214 12.1174 4.75736 13.2426C5.88258 14.3679 7.4087 15 9 15ZM9.75 9H12.75V10.5H8.25V5.25H9.75V9Z"
+                            fill="#536387" />
+                    </g>
+                    <defs>
+                        <clipPath id="clip0_1675_1735">
+                            <rect width="18" height="18" fill="white" />
+                        </clipPath>
+                    </defs>
+                </svg>
+                {{ event.start_datetime }}
+            </p>
+            <div>
+                <a href="{% url 'user_event_detail' event.id %}">Voir plus</a>
+            </div>
+        </article>
+        {% endfor %}
+    </div>
+</div>
+
+
+<!-- Call to Action (Optional) -->
+<div class="my-4 py-4  text-center">
+    <div class="titleCatch">
+        Découvrez plus encore !
+    </div>
+</div>
 <div class="lastBlock pt-5 mx-2 mb-5">
     <div class="container px-4 px-lg-5">
-    
+
         <!-- Content Row: OTHER EVENTS -->
         <div class="row gx-4 gx-lg-5">
-            {% for event in other_events %}
+            {% for event in remaining_events %}
             <div class="col-md-4 mb-5">
                 <div class="card h-100">
-                    <img src="{{ event.image_url|default:'https://dummyimage.com/900x400/dee2e6/6c757d.jpg' }}" class="card-img-top"
-                        alt="Image de l'événement">
+                    <img src="{{ event.image_url|default:'https://dummyimage.com/900x400/dee2e6/6c757d.jpg' }}"
+                        class="card-img-top" alt="{{ event.title }}">
                     <div class="card-body">
-                        <div style="font-size: 1rem; font-weight: bold;">{{ event.category }}</div>
-                        <h2 class="card-title">{{ event.title }}</h2>
-                        <p class="card-text">
+                        <div class="category mb-2">{{ event.category }}</div>
+                        <h2 class="card-title fs-5">{{ event.title }}</h2>
+                        <p class="card-text small">
                             <strong>Host:</strong> {{ event.created_by.full_name }}<br>
                             <strong>Date:</strong> {{ event.start_datetime|date:"d M Y H:i" }}<br>
                             <strong>Lieu:</strong> {{ event.location }}<br>
                             <strong>Places:</strong> {{ event.available_slots }} dispo / {{ event.total_slots }}
                         </p>
                     </div>
-                    <div class="card-footer">
-                        <a class="btn seeEvent btn-lg" href="{% url 'user_event_detail' event.id %}">Détails</a>
+                    <div class="card-footer bg-transparent border-top-0">
+                        <a class="btn seeEvent btn-sm w-100" href="{% url 'user_event_detail' event.id %}">Voir
+                            Détails</a>
                     </div>
                 </div>
             </div>
             {% empty %}
             <div class="col-12 text-center">
-                <p class="text-muted">Aucun événement actif pour le moment</p>
+                <p class="text-muted">Aucun événement restant 🥺</p>
             </div>
             {% endfor %}
         </div>
     </div>
 </div>
+
 
 {% endblock %}
     

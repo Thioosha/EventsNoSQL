@@ -3,6 +3,10 @@
     transition: 0.3s ease;
 }
 
+/* .page-header {
+    background-image: url('{% static "img/users/kit/daniel-olahh1.jpg" %}');
+}  */
+
 .login-btn:hover {
     background-color: #341f97 !important;
 }

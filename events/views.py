@@ -42,21 +42,26 @@ def user_events(request):
     user_id = request.session.get('user_id')
     if not user_id:
         return redirect('register')
-    
+
     user = MongoUser.objects.get(id=user_id)
 
     if user.account_type != 'participant':
-        return redirect('creer_event') 
+        return redirect('creer_event')
 
     events = MongoEvent.objects(status__nin=["cancelled", "archived"]).order_by('start_datetime')
+
     main_event = events.first()
-    other_events = events[1:] if events.count() > 1 else []
+    carousel_events = events[1:6] if events.count() > 1 else []
+    remaining_events = events[6:] if events.count() > 6 else []
+    
 
     return render(request, 'events/user_events.html', {
         'main_event': main_event,
-        'other_events': other_events,
+        'carousel_events': carousel_events,
+        'remaining_events': remaining_events,
         'color_on_scroll': 30
     })
+
 
 # def user_event_detail(request, event_id):
 #     user_id = request.session.get('user_id')
