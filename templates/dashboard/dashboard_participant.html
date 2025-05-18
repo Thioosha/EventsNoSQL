@@ -1,0 +1,85 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block extra_head %}
+<link rel="stylesheet" href="{% static 'css/dashboard/dashboard_participant.css' %}">
+<link href="https://fonts.googleapis.com/css?family=Inter:300,400,500,600,700,900" rel="stylesheet">
+{% endblock %}
+
+{% block content %}
+<h1 class="top-title">Mes Réservations</h1>
+
+<div class="dashboard-container">
+    <h3>À venir</h3>
+    <div class="reservations-grid">
+        {% for reservation in upcoming_reservations %}
+            <div class="reservation-card">
+                <h4>{{ reservation.event_data.title }}</h4>
+                <p><strong>Description:</strong> {{ reservation.event_data.description }}</p>
+                <p><strong>Lieu:</strong> {{ reservation.event_data.location }}</p>
+                <p><strong>Date:</strong> {{ reservation.event_data.start_datetime|date:"d/m/Y H:i" }}</p>
+                <p><strong>Durée:</strong> {{ reservation.event_data.end_datetime|date:"H:i" }}</p>
+                <div class="card-footer">
+                    <span class="reservation-status">
+                        {% if reservation.status == 'confirmed' %}
+                            Confirmé
+                        {% else %}
+                            En attente
+                        {% endif %}
+                    </span>
+                    <span class="payment-status">
+                        {% if reservation.payment_status == 'paid' %}
+                            Payé
+                        {% else %}
+                            Non payé
+                        {% endif %}
+                    </span>
+                </div>
+                {% if reservation.payment_method %}
+                    <p><strong>Méthode de paiement: </strong> {{ reservation.payment_method }}</p>
+                {% endif %}
+            </div>
+        {% empty %}
+            <p>Aucune réservation à venir.</p>
+        {% endfor %}
+    </div>
+
+    <h3>Passées</h3>
+    <div class="reservations-grid mb-4">
+        {% for reservation in past_reservations %}
+            <div class="reservation-card past">
+                <h4>{{ reservation.event_data.title }}</h4>
+                <p><strong>Description:</strong> {{ reservation.event_data.description }}</p>
+                <p><strong>Lieu:</strong> {{ reservation.event_data.location }}</p>
+                <p><strong>Date:</strong> {{ reservation.event_data.start_datetime|date:"d/m/Y H:i" }}</p>
+                <p><strong>Durée:</strong> {{ reservation.event_data.end_datetime|date:"H:i" }}</p>
+                <div class="card-footer">
+                    <span class="reservation-status">
+                        {% if reservation.status == 'confirmed' %}
+                            Confirmé
+                        {% else %}
+                            En attente
+                        {% endif %}
+                    </span>
+                    <span class="payment-status">
+                        {% if reservation.payment_status == 'paid' %}
+                            Payé
+                        {% else %}
+                            Non payé
+                        {% endif %}
+                    </span>
+                </div>
+                {% if reservation.payment_method %}
+                    <p><strong>Méthode de paiement:</strong> {{ reservation.payment_method }}</p>
+                {% endif %}
+            </div>
+        {% empty %}
+            <p>Aucune réservation passée.</p>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'js/exple.js' %}"></script>
+{% endblock %}

@@ -1,7 +1,9 @@
 from django.urls import path
 from . import views
 
+
 urlpatterns = [
-    # Mettez vos urls ici daal
-    path('dashboard/', views.dashboard, name='dashboard'),
+    path('', views.dashboard_view, name='dashboard'),
+    path('notifications/', views.notifications_view, name='notifications'),
+    path('notifications/read/<notification_id>/', views.mark_notification_read, name='mark_notification_read'),
 ]
