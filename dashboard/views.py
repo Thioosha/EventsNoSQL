@@ -292,7 +292,7 @@ def dashboard_view(request):
         print(f"Réservations à venir: {len(context['upcoming_reservations'])}")
         print(f"Réservations passées: {len(context['past_reservations'])}")
         
-        return render(request, "dashboard/dashboard.html", context)
+        return render(request, "dashboard/dashboard.html", {**context, 'color_on_scroll': 30})
 
     elif account_type == "participant":
         # Filtrer les réservations de l'utilisateur
@@ -329,7 +329,7 @@ def dashboard_view(request):
         print(f"Réservations à venir: {len(context['upcoming_reservations'])}")
         print(f"Réservations passées: {len(context['past_reservations'])}")
         
-        return render(request, "dashboard/dashboard_participant.html", context)
+        return render(request, "dashboard/dashboard_participant.html", {**context, 'color_on_scroll': 30})
 
     return redirect("login")
 

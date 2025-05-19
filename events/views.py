@@ -4,49 +4,12 @@ from users.models import MongoUser
 
 # Create your views here
 
-# def user_events(request):
-#     user_id = request.session.get('user_id')
-#     if not user_id:
-#         return redirect('register')
-    
-#     user = MongoUser.objects.get(id=user_id)
-    
-#     if user.account_type != 'participant':
-#         return redirect('creer_event') 
-    
-#     return render(request, 'events/user_events.html', {
-#         'color_on_scroll': 30
-#     })
-
-# def user_events(request):
-#     user_id = request.session.get('user_id')
-#     if not user_id:
-#         return redirect('register')
-    
-#     user = MongoUser.objects.get(id=user_id)
-    
-#     if user.account_type != 'participant':
-#         return redirect('creer_event')
-    
-#     events = MongoEvent.objects(status__nin=["cancelled", "archived"]).order_by('start_datetime')
-#     main_event = events.first()
-#     other_events = events[1:] if events.count() > 1 else []
-    
-#     return render(request, 'events/user_events.html', {
-#         'color_on_scroll': 30,
-#         'main_event': main_event,
-#         'other_events': other_events
-#     })
-
 def user_events(request):
     user_id = request.session.get('user_id')
     if not user_id:
         return redirect('register')
 
     user = MongoUser.objects.get(id=user_id)
-
-    if user.account_type != 'participant':
-        return redirect('creer_event')
 
     events = MongoEvent.objects(status__nin=["cancelled", "archived"]).order_by('start_datetime')
 
@@ -62,25 +25,6 @@ def user_events(request):
         'color_on_scroll': 30
     })
 
-
-# def user_event_detail(request, event_id):
-#     user_id = request.session.get('user_id')
-#     if not user_id:
-#         return redirect('register')
-
-#     user = MongoUser.objects.get(id=user_id)
-
-#     try:
-#         event = MongoEvent.objects.get(id=event_id)
-#     except MongoEvent.DoesNotExist:
-#         return render(request,  'events/user_events.html')
-    
-#     return render(request, 'events/user_event_detail.html', {
-#         'event': event,
-#         'user': user,
-#         'color_on_scroll': 30
-#     })
-
 from django.shortcuts import render, get_object_or_404
 from .models import MongoEvent
 
@@ -88,11 +32,30 @@ from django.shortcuts import render
 from django.http import Http404
 from .models import MongoEvent
 
+from datetime import datetime, timedelta
+from django.shortcuts import render, redirect, get_object_or_404
+from django.http import Http404
+from mongoengine import ValidationError
+from events.models import MongoEvent
+from reservations.models import MongoReservation
+from users.models import MongoUser
+
+from django.contrib import messages
+
 def user_event_detail(request, event_id):
     try:
         event = MongoEvent.objects.get(id=event_id)
     except MongoEvent.DoesNotExist:
-        raise Http404("Event not found...")
+        raise Http404("Event not found 🚫")
+
+    # Check for reservation errors sent via GET
+    error = request.GET.get('error')
+    if error == 'expired':
+        messages.error(request, "La réservation a expiré. Veuillez réessayer.")
+    elif error == 'already_reserved':
+        messages.warning(request, "Vous avez déjà une réservation pour cet événement ⚠️")
+    elif error == 'not_enough_slots':
+        messages.error(request, "Nombre de places insuffisant pour cette réservation ⚠️")
 
     return render(request, 'events/user_event_detail.html', {
         'event': event,

@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block extra_head %}
+<link rel="stylesheet" href="{% static 'css/reservations/confirm.css' %}">
+{% endblock %}
+
+
+{% block content %}
+<h2 class="top-title">Confirmation de réservation</h2>
+
+<div class="container text-center box">
+    <img class="img" src="{% static 'img/reservations/pay.png' %}" alt="confirm-payment">
+
+    <p>Un lien de paiement PayDunia vous a été envoyé à <span style="color: #6a64f1;"><strong>{{ user.email }}</strong></span>.</p>
+    <p>Il vous reste <strong id="countdown" style="color: #dc3545;">25</strong> secondes pour valider cette réservation ⚠️</p>
+
+    <p>Veuillez régler le paiement avant de cliquer sur <strong>Confirmer</strong>. Nous nous chargerons par la suite de vérifier le paiement avant de valider votre réservation.</p>
+    
+    <form method="POST" action="{% url 'confirm_reservation' reservation.id %}">
+        {% csrf_token %}
+        <button type="submit" class="formbold-btn btn-confirm">Confirmer le paiement</button>
+    </form>
+
+</div>
+
+
+{% endblock %}
+
+
+{% block extra_js %}
+<script>
+    setTimeout(function () {
+        window.location.href = "{% url 'user_event_detail' reservation.event.id %}?error=expired";
+    }, 25000);  // 25 seconds
+</script>
+
+<script>
+    let countdown = 25;
+    const countdownElement = document.getElementById("countdown");
+
+    const timer = setInterval(() => {
+        countdown--;
+        countdownElement.textContent = countdown;
+
+        if (countdown <= 0) {
+            clearInterval(timer);
+            window.location.href = "{% url 'user_event_detail' reservation.event.id %}?error=expired";
+        }
+    }, 1000); // tick every 1s
+</script>
+
+{% endblock %}

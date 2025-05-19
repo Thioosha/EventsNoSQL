@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block extra_head %}
+<link rel="stylesheet" href="{% static 'css/reservations/validated.css' %}">
+{% endblock %}
+
+
+{% block content %}
+<h2 class="top-title">Confirmation de réservation</h2>
+
+<div class="container text-center box mb-4">
+    <img class="img" src="{% static 'img/reservations/card-confirm.gif' %}" alt="validation-reservation">
+
+    <h3 style="margin-top: -2rem;"><strong>Réservation validée ! ✅</strong></h3>
+    <p>Merci d’avoir confirmé votre réservation. On se voit à l’événement 💜🖤</p>
+    
+    
+    <button class="formbold-btn btn-confirm">
+        <a href="{% url 'user_events' %}">Voir tous les événements</a>
+    </button>
+
+</div>
+
+
+{% endblock %}
+
+
+{% block extra_js %}
+{% endblock %}
