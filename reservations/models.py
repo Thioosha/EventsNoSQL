@@ -73,7 +73,6 @@ class MongoReservation(Document):
             }
         ]
     }
-
     def save(self, *args, **kwargs):
         if not self.pk:
             total_requested = self.adults + self.children

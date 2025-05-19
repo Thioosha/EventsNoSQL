@@ -126,6 +126,7 @@
             </div>      
         </div>
 
+<<<<<<< HEAD
         
         <!-- SUBMIT RESERVATION FORM -->
         <div class="mx-4">
@@ -136,6 +137,33 @@
                 </p>
             </div>
             
+=======
+        <!-- MESSAGES BLOCK (add this at top!) -->
+        {% if messages %}
+        <div class="alert-container" style="margin: 20px;">
+            {% for message in messages %}
+            <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert"
+                style="padding: 15px; border-radius: 5px; background-color: {% if message.tags == 'error' %}#f8d7da{% elif message.tags == 'warning' %}#fff3cd{% else %}#d1e7dd{% endif %}; color: #000;">
+                {{ message }}
+                <button type="button" onclick="this.parentElement.style.display='none';"
+                    style="background:none; border:none; float:right; font-size: 1.1rem;">×</button>
+            </div>
+            {% endfor %}
+        </div>
+        {% endif %}
+        
+        <!-- SUBMIT RESERVATION FORM -->
+        <div class="mx-5">
+            <form method="POST" action="{% url 'creer_reservation' event.id %}">
+
+                {% csrf_token %}
+                <p class="formbold-policy">
+                    En validant votre réservation, vous acceptez notre
+                    <a href="#">Politique de confidentialité.</a>
+                </p>
+                <button type="submit" class="formbold-btn">Submit Reservation</button>
+            </form>
+>>>>>>> 4bd86e829c06fb5cac532f92e68d9a03db59b4a5
         </div>
 
 
