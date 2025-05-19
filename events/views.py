@@ -4,6 +4,12 @@ from users.models import MongoUser
 
 # Create your views here
 
+CATEGORY_CHOICES = [
+    "Musique", "Art", "Conférence", "Sport", "Atelier", "Formation", "Technologie",
+    "Rencontre", "Mode", "Santé", "Voyage", "Cinéma", "Théâtre", "Danse", "Gaming",
+    "Littérature", "Religion", "Cuisine", "Networking", "Autre"
+]
+
 def user_events(request):
     user_id = request.session.get('user_id')
     if not user_id:
@@ -11,19 +17,76 @@ def user_events(request):
 
     user = MongoUser.objects.get(id=user_id)
 
-    events = MongoEvent.objects(status__nin=["cancelled", "archived"]).order_by('start_datetime')
+    events = MongoEvent.objects(status__nin=["cancelled", "archived"])
+
+    # --- Filtrage ---
+    category = request.GET.get('category')
+    price_min = request.GET.get('price_min')
+    price_max = request.GET.get('price_max')
+    start_date = request.GET.get('start_date')
+    end_date = request.GET.get('end_date')
+
+    if category:
+        events = events.filter(category=category)
+    if price_min:
+        events = events.filter(price__gte=float(price_min))
+    if price_max:
+        events = events.filter(price__lte=float(price_max))
+    if start_date:
+        try:
+            start = datetime.strptime(start_date, '%Y-%m-%d')
+            events = events.filter(start_datetime__gte=start)
+        except:
+            pass
+    if end_date:
+        try:
+            end = datetime.strptime(end_date, '%Y-%m-%d')
+            events = events.filter(end_datetime__lte=end)
+        except:
+            pass
+
+    events = events.order_by('start_datetime')
 
     main_event = events.first()
     carousel_events = events[1:6] if events.count() > 1 else []
     remaining_events = events[6:] if events.count() > 6 else []
-    
 
     return render(request, 'events/user_events.html', {
         'main_event': main_event,
         'carousel_events': carousel_events,
         'remaining_events': remaining_events,
-        'color_on_scroll': 30
+        'color_on_scroll': 30,
+        'categories': CATEGORY_CHOICES,  # pour la liste déroulante
+        'filters': {
+            'category': category,
+            'price_min': price_min,
+            'price_max': price_max,
+            'start_date': start_date,
+            'end_date': end_date,
+        }
     })
+
+
+# def user_events(request):
+#     user_id = request.session.get('user_id')
+#     if not user_id:
+#         return redirect('register')
+
+#     user = MongoUser.objects.get(id=user_id)
+
+#     events = MongoEvent.objects(status__nin=["cancelled", "archived"]).order_by('start_datetime')
+
+#     main_event = events.first()
+#     carousel_events = events[1:6] if events.count() > 1 else []
+#     remaining_events = events[6:] if events.count() > 6 else []
+    
+
+#     return render(request, 'events/user_events.html', {
+#         'main_event': main_event,
+#         'carousel_events': carousel_events,
+#         'remaining_events': remaining_events,
+#         'color_on_scroll': 30
+#     })
 
 from django.shortcuts import render, get_object_or_404
 from .models import MongoEvent
