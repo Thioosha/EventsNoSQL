@@ -3,6 +3,8 @@ from django.shortcuts import render, redirect
 from .forms import AccountTypeForm, RegisterForm
 from mongoengine.errors import NotUniqueError
 from .models import MongoUser
+from django.contrib.auth.hashers import make_password
+
 
 def home(request):
     user_id = request.session.get('user_id')
@@ -39,7 +41,7 @@ def register_view(request):
                 user = MongoUser(
                     username=form.cleaned_data['username'],
                     email=form.cleaned_data['email'],
-                    password=form.cleaned_data['password'],
+                    password=make_password(form.cleaned_data['password']),
                     full_name=form.cleaned_data['full_name'],
                     account_type=account_type,
                     reservations=[],
@@ -61,6 +63,8 @@ def register_view(request):
         form = RegisterForm()
     return render(request, 'users/inscription2.html', {'form': form})
 
+from django.contrib.auth.hashers import check_password
+
 def login_view(request):
     context = {}
 
@@ -70,13 +74,23 @@ def login_view(request):
         context['email'] = email
 
         try:
-            user = MongoUser.objects.get(email=email, password=password)
-            request.session['user_id'] = str(user.id)
-            return redirect('home')
+            # Just get user by email
+            user = MongoUser.objects.get(email=email)
+
+            # Now check the password hash
+            if check_password(password, user.password):
+                request.session['user_id'] = str(user.id)
+                request.session['username'] = user.username
+                request.session['account_type'] = user.account_type
+                return redirect('home')
+            else:
+                context['error'] = "Email ou mot de passe incorrect"
+
         except MongoUser.DoesNotExist:
             context['error'] = "Email ou mot de passe incorrect"
 
     return render(request, 'users/login.html', context)
+
 
 
 def logout_view(request):

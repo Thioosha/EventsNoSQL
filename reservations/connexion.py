@@ -25,7 +25,6 @@ try:
         user=user,
         event=event,
         status='pending',
-       
     )
     
     reservation.save()

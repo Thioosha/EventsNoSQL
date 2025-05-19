@@ -150,18 +150,26 @@
                                 {% endfor %}
                             
                                 <!-- Password -->
-                                <div class="input-group input-group-outline my-3 {% if form.password.errors %}is-invalid{% endif %}">
+                                <!-- Password -->
+                                <div class="input-group input-group-outline my-3 {% if form.password.errors %}is-invalid{% endif %}"
+                                    style="position: relative;">
                                     <label class="form-label" for="id_password">Mot de passe</label>
-                                    <input type="password" name="password" id="id_password" class="form-control">
+                                    <input type="password" name="password" id="id_password" class="form-control" style="padding-right: 40px;">
+                                    <img id="togglePassword" src="{% static 'img/users/eye2.png' %}" style="position: absolute; right: 12px; top: 50%; transform: translateY(-50%);
+                                                width: 24px; height: 24px; cursor: pointer; z-index: 100;">
                                 </div>
                                 {% for error in form.password.errors %}
                                 <div class="text-danger small">{{ error }}</div>
                                 {% endfor %}
                             
                                 <!-- Confirm Password -->
-                                <div class="input-group input-group-outline my-3 {% if form.confirm_password.errors %}is-invalid{% endif %}">
+                                <div class="input-group input-group-outline my-3 {% if form.confirm_password.errors %}is-invalid{% endif %}"
+                                    style="position: relative;">
                                     <label class="form-label" for="id_confirm_password">Confirmer le mot de passe</label>
-                                    <input type="password" name="confirm_password" id="id_confirm_password" class="form-control">
+                                    <input type="password" name="confirm_password" id="id_confirm_password" class="form-control"
+                                        style="padding-right: 40px;">
+                                    <img id="toggleConfirmPassword" src="{% static 'img/users/eye2.png' %}" style="position: absolute; right: 12px; top: 50%; transform: translateY(-50%);
+                                                width: 24px; height: 24px; cursor: pointer; z-index: 100;">
                                 </div>
                                 {% for error in form.confirm_password.errors %}
                                 <div class="text-danger small">{{ error }}</div>
@@ -206,6 +214,33 @@
         });
     });
 </script>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const togglePassword = document.getElementById("togglePassword");
+        const passwordInput = document.getElementById("id_password");
+
+        const toggleConfirmPassword = document.getElementById("toggleConfirmPassword");
+        const confirmPasswordInput = document.getElementById("id_confirm_password");
+
+        togglePassword.addEventListener("click", function () {
+            const type = passwordInput.type === "password" ? "text" : "password";
+            passwordInput.type = type;
+            this.src = type === "password"
+                ? "{% static 'img/users/eye2.png' %}"
+                : "{% static 'img/users/eye.png' %}";
+        });
+
+        toggleConfirmPassword.addEventListener("click", function () {
+            const type = confirmPasswordInput.type === "password" ? "text" : "password";
+            confirmPasswordInput.type = type;
+            this.src = type === "password"
+                ? "{% static 'img/users/eye2.png' %}"
+                : "{% static 'img/users/eye.png' %}";
+        });
+    });
+</script>
+    
 
 
 <!--   Core JS Files   -->

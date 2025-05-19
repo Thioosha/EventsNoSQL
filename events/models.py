@@ -9,30 +9,21 @@ CATEGORY_CHOICES = [
 ]
 
 class MongoEvent(Document):
-    title = StringField(required=True)
-    description = StringField()
-    location = StringField()
-    start_datetime = DateTimeField(required=True)
-    end_datetime = DateTimeField(required=True)
-
-    available_slots = IntField(required=True)
-    total_slots = IntField(required=True)
-
-    image_url = StringField(default="https://dummyimage.com/900x400/dee2e6/6c757d.jpg") 
-
-    created_by = ReferenceField(MongoUser, required=True)
-    participants = ListField(ReferenceField(MongoUser), default=list)
+    title = StringField(default="")
+    description = StringField(default="")
+    location = StringField(default="")
+    start_datetime = DateTimeField()
+    end_datetime = DateTimeField()
+    available_slots = IntField(default=0)
+    total_slots = IntField(default=0)
+    image_url = StringField(default="https://dummyimage.com/900x400/dee2e6/6c757d.jpg")
+    created_by = ReferenceField('MongoUser', required=False)
+    participants = ListField(ReferenceField('MongoUser'), default=list)
     price = FloatField(default=0.0)
-
-    category = StringField(choices=CATEGORY_CHOICES)
-
-    status = StringField(
-        choices=["active", "cancelled", "postponed", "archived"],
-        default="active"
-    )
-
-    created_at = DateTimeField(default=lambda: datetime.now(timezone.utc))
-
-    def __str__(self):
-        return f"{self.title} ({self.start_datetime.strftime('%d/%m/%Y')})"
+    category = StringField(default="Autre")
+    status = StringField(default="active")
+    created_at = DateTimeField()
+    
+    def _str_(self):
+        return f"{self.title} ({self.start_datetime.strftime('%d/%m/%Y') if self.start_datetime else 'No Date'})"
 
