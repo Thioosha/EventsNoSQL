@@ -34,7 +34,6 @@ def create_reservation(request, event_id):
             event = MongoEvent.objects.get(id=event_id)
 
             # Check if user already reserved this event
-<<<<<<< HEAD
             existing = MongoReservation.objects(event=event, user=user, status="confirmed").first()
             if existing:
                 return redirect(f"{reverse('user_event_detail', args=[str(event_id)])}?error=already_reserved")
@@ -56,18 +55,6 @@ def create_reservation(request, event_id):
             )
             reservation.save()
 
-=======
-            existing = MongoReservation.objects(event=event, user=user, status="pending").first()
-            if existing:
-                return redirect(f"{reverse('user_event_detail', args=[str(event_id)])}?error=already_reserved")
-
-            reservation = MongoReservation(
-                user=user,
-                event=event,
-                expires_at=datetime.now() + timedelta(seconds=25)
-            )
-            reservation.save()
->>>>>>> 4bd86e829c06fb5cac532f92e68d9a03db59b4a5
             return redirect('confirm_reservation', reservation_id=str(reservation.id))
 
         except Exception as e:
@@ -84,18 +71,11 @@ def confirm_reservation(request, reservation_id):
 
     # Check if TTL expired
     if reservation.expires_at and reservation.expires_at <= datetime.now() and reservation.status == "pending":
-<<<<<<< HEAD
         event_id = str(reservation.event.id)
-=======
-        # TTL expired = redirect back to event with error
-        event_id = str(reservation.event.id)
-
->>>>>>> 4bd86e829c06fb5cac532f92e68d9a03db59b4a5
         reservation.delete()
         messages.error(request, "Réservation expirée... Veuillez réessayer.")
         return redirect('user_event_detail', event_id=event_id)
 
-<<<<<<< HEAD
     if request.method == "POST":
         total_people = reservation.adults + reservation.children
         event = reservation.event
@@ -107,19 +87,10 @@ def confirm_reservation(request, reservation_id):
         reservation.status = "confirmed"
         reservation.confirmed_at = datetime.now()
         reservation.expires_at = None
-=======
-
-    # If the user clicked "Confirmer la réservation" POST
-    if request.method == "POST":
-        reservation.status = "confirmed"
-        reservation.confirmed_at = datetime.now()
-        reservation.expires_at = None  # remove TTL
->>>>>>> 4bd86e829c06fb5cac532f92e68d9a03db59b4a5
         reservation.payment_status = "paid"
         reservation.payment_method = "PayDunia"
         reservation.save()
 
-<<<<<<< HEAD
         user = reservation.user
         # Add reservation ID to user
         if str(reservation.id) not in [str(rid) for rid in user.reservations]:
@@ -134,22 +105,6 @@ def confirm_reservation(request, reservation_id):
 
         return redirect('validated_reservation')
 
-=======
-        # Add user to event participants
-        user = reservation.user
-        event = reservation.event
-        if user not in event.participants:
-            event.participants.append(user)
-            event.save()
-
-        # Decrease only when confirmed
-        event.available_slots -= 1
-        event.save()
-
-        return redirect('validated_reservation')  # route to validated.html
-
-    # Otherwise, GET request shows confirm.html
->>>>>>> 4bd86e829c06fb5cac532f92e68d9a03db59b4a5
     return render(request, 'reservations/confirm.html', {
         'reservation': reservation,
         'color_on_scroll': 30,

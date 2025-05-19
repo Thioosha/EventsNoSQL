@@ -4,15 +4,12 @@ from users.models import MongoUser
 
 # Create your views here
 
-<<<<<<< HEAD
 CATEGORY_CHOICES = [
     "Musique", "Art", "Conférence", "Sport", "Atelier", "Formation", "Technologie",
     "Rencontre", "Mode", "Santé", "Voyage", "Cinéma", "Théâtre", "Danse", "Gaming",
     "Littérature", "Religion", "Cuisine", "Networking", "Autre"
 ]
 
-=======
->>>>>>> 4bd86e829c06fb5cac532f92e68d9a03db59b4a5
 def user_events(request):
     user_id = request.session.get('user_id')
     if not user_id:
@@ -20,7 +17,6 @@ def user_events(request):
 
     user = MongoUser.objects.get(id=user_id)
 
-<<<<<<< HEAD
     events = MongoEvent.objects(status__nin=["cancelled", "archived"])
 
     # --- Filtrage ---
@@ -50,9 +46,6 @@ def user_events(request):
             pass
 
     events = events.order_by('start_datetime')
-=======
-    events = MongoEvent.objects(status__nin=["cancelled", "archived"]).order_by('start_datetime')
->>>>>>> 4bd86e829c06fb5cac532f92e68d9a03db59b4a5
 
     main_event = events.first()
     carousel_events = events[1:6] if events.count() > 1 else []
@@ -73,7 +66,7 @@ def user_events(request):
         }
     })
 
-<<<<<<< HEAD
+
 
 # def user_events(request):
 #     user_id = request.session.get('user_id')
@@ -96,8 +89,6 @@ def user_events(request):
 #         'color_on_scroll': 30
 #     })
 
-=======
->>>>>>> 4bd86e829c06fb5cac532f92e68d9a03db59b4a5
 from django.shortcuts import render, get_object_or_404
 from .models import MongoEvent
 
@@ -127,11 +118,8 @@ def user_event_detail(request, event_id):
         messages.error(request, "La réservation a expiré. Veuillez réessayer.")
     elif error == 'already_reserved':
         messages.warning(request, "Vous avez déjà une réservation pour cet événement ⚠️")
-<<<<<<< HEAD
     elif error == 'not_enough_slots':
         messages.error(request, "Nombre de places insuffisant pour cette réservation ⚠️")
-=======
->>>>>>> 4bd86e829c06fb5cac532f92e68d9a03db59b4a5
 
     return render(request, 'events/user_event_detail.html', {
         'event': event,
