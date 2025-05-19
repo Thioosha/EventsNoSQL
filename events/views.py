@@ -91,8 +91,6 @@ def upload_image_to_imgbb(image_file):
     else:
         return None
     
-from .models import MongoEvent
-
 def create_event(request):
     user_id = request.session.get('user_id')
     if not user_id:
@@ -103,14 +101,37 @@ def create_event(request):
     if user.account_type != 'organizer':
         return redirect('user_events')
 
-    events = MongoEvent.objects(created_by=user)
+    if request.method == 'POST':
+        form = MongoEventForm(request.POST, request.FILES)
+        if form.is_valid():
+            image = request.FILES.get("image")
+            image_url = upload_image_to_imgbb(image) if image else None
+
+            data = form.cleaned_data
+            event = MongoEvent(
+                title=data['title'],
+                description=data.get('description'),
+                location=data['location'],
+                start_datetime=data['start_datetime'],
+                end_datetime=data['end_datetime'],
+                available_slots=data['available_slots'],
+                image_url=image_url,
+                created_by=user,
+                price=data['price'],
+                category=data['category'],
+                status="active",
+                created_at=datetime.now(timezone.utc),
+            )
+            event.total_slots = data['total_slots']
+            event.save()
+            return redirect('dashboard')
+    else:
+        form = MongoEventForm()
 
     return render(request, 'events/creer_event.html', {
-        'events': events,
-        'form': None,
-        'color_on_scroll': 30,
-    })
-
+    'form': form,
+    'color_on_scroll': 30,
+})
 
 
 
