@@ -11,9 +11,6 @@ def user_events(request):
 
     user = MongoUser.objects.get(id=user_id)
 
-    if user.account_type != 'participant':
-        return redirect('creer_event')
-
     events = MongoEvent.objects(status__nin=["cancelled", "archived"]).order_by('start_datetime')
 
     main_event = events.first()
@@ -131,7 +128,7 @@ def create_event(request):
 
     return render(request, 'events/creer_event.html', {
     'form': form,
-    'color_on_scroll': 30,  # change this to any value you want for this page
+    'color_on_scroll': 30,
 })
 
 

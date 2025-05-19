@@ -149,10 +149,14 @@
                                     </div>
                                 
                                     <!-- Password -->
-                                    <div class="input-group input-group-outline my-3">
+                                    <div class="input-group input-group-outline my-3" style="position: relative;">
                                         <label class="form-label" for="id_password">Mot de passe</label>
-                                        <input type="password" name="password" id="id_password" class="form-control">
+                                        <input type="password" name="password" id="id_password" class="form-control" style="padding-right: 40px;">
+                                    
+                                        <img id="togglePassword" src="{% static 'img/users/eye2.png' %}" style="position: absolute; right: 12px; top: 50%; transform: translateY(-50%);
+                                                                                        width: 24px; height: 24px; cursor: pointer; z-index: 100;">
                                     </div>
+                                    
                                 
                                     <!-- Submit -->
                                     <div class="text-center">
@@ -187,6 +191,20 @@
             });
         });
     </script>
+
+<script>
+    const toggle = document.getElementById('togglePassword');
+    const passwordInput = document.getElementById('id_password');
+
+    toggle.addEventListener('click', () => {
+        const isHidden = passwordInput.type === 'password';
+        passwordInput.type = isHidden ? 'text' : 'password';
+        toggle.src = isHidden
+            ? "{% static 'img/users/eye.png' %}"  // 👁 open
+            : "{% static 'img/users/eye2.png' %}"; // 🙈 closed
+    });
+</script>
+
     
     
     <!--   Core JS Files   -->

@@ -51,7 +51,6 @@ def create_reservation(request, event_id):
             return redirect(f"{reverse('user_event_detail', args=[str(event_id)])}?error=expired")
 
 
-
 def confirm_reservation(request, reservation_id):
     try:
         reservation = MongoReservation.objects.get(id=reservation_id)

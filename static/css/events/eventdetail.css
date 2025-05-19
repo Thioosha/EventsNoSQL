@@ -18,7 +18,7 @@
 }
 
 .detailbox{
-    margin-top: 6rem;
+    margin-top: 4rem;
 }
 
 .detailbox {
@@ -112,7 +112,7 @@ body {
 }
 
 .formbold-event-details ul {
-    border-top: 1px solid #edeef2;
+    border-top: 1px solid #d5d7dc;
     padding: 25px;
     margin: 0;
     list-style: none;
@@ -132,7 +132,7 @@ body {
 }
 
 .formbold-policy {
-    font-size: 14px;
+    font-size: 14px !important;
     line-height: 24px;
     color: #536387;
     width: 70%;
@@ -146,7 +146,7 @@ body {
 .formbold-btn {
     text-align: center;
     width: 100%;
-    font-size: 16px;
+    font-size: 20px;
     border-radius: 5px;
     padding: 14px 25px;
     border: none;
@@ -163,11 +163,54 @@ body {
 
 .formbold-form-wrapper {
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-    /* soft elegant shadow */
     border-radius: 12px;
-    /* just a lil curve, mmhmm */
     padding: 24px;
-    /* so it breathes, like damn */
     background-color: white;
-    /* so it stands out */
+}
+
+.formbold-form-title {
+    color: #07074d;
+    font-weight: 600;
+    font-size: 28px;
+    line-height: 35px;
+    width: 60%;
+    margin-bottom: 25px;
+    margin-top: 0;
+}
+
+.formbold-input-flex {
+    display: flex;
+    gap: 20px;
+    margin-bottom: 15px;
+}
+
+.formbold-input-flex>div {
+    width: 50%;
+}
+
+.formbold-form-input {
+    text-align: center;
+    width: 100%;
+    padding: 13px 22px;
+    border-radius: 5px;
+    border: 1px solid #dde3ec;
+    background: #ffffff;
+    font-weight: 500;
+    font-size: 16px;
+    color: #536387;
+    outline: none;
+    resize: none;
+}
+
+.formbold-form-input:focus {
+    border-color: #6a64f1;
+    box-shadow: 0px 3px 8px rgba(0, 0, 0, 0.05);
+}
+
+.formbold-form-label {
+    color: #536387;
+    font-size: 14px;
+    line-height: 24px;
+    display: block;
+    margin-bottom: 10px;
 }

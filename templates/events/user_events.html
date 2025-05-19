@@ -20,17 +20,19 @@
         {% if main_event %}
         <div class="row gx-4 gx-lg-5 align-items-center my-5">
             <div class="col-lg-7">
-                <img class="img-fluid rounded mb-4 mb-lg-0" src="{{ main_event.image_url|default:'https://dummyimage.com/900x400/dee2e6/6c757d.jpg' }}"
-                    alt="Main Event Image" />
-                    
+                <div style="width: 100%; height: 350px; overflow: hidden; border-radius: 0.5rem;">
+                    <img class="img-fluid"
+                        src="{{ main_event.image_url|default:'https://dummyimage.com/900x400/dee2e6/6c757d.jpg' }}"
+                        alt="Main Event Image" style="width: 100%; height: 100%; object-fit: cover;">
+                </div>
             </div>
             <div class="col-lg-5">
-                <h1 class="font-weight-light maintitle mb-3 ">{{ main_event.title }}</h1>
+                <h1 class="font-weight-light maintitle mb-3">{{ main_event.title }}</h1>
                 <p class="descriptionmain">{{ main_event.description|truncatewords:50 }}</p>
                 <a class="btn btn-lg seeEvent" href="{% url 'user_event_detail' main_event.id %}">Voir l'événement</a>
-    
             </div>
         </div>
+        
         {% endif %}
     </div>
 </div>
@@ -89,8 +91,11 @@
             {% for event in remaining_events %}
             <div class="col-md-4 mb-5">
                 <div class="card h-100">
-                    <img src="{{ event.image_url|default:'https://dummyimage.com/900x400/dee2e6/6c757d.jpg' }}"
-                        class="card-img-top" alt="{{ event.title }}">
+                    <div class="card-img-box" style="height: 200px; overflow: hidden;">
+                        <img src="{{ event.image_url|default:'https://dummyimage.com/900x400/dee2e6/6c757d.jpg' }}"
+                            class="card-img-top object-fit-cover" alt="{{ event.title }}"
+                            style="width: 100%; height: 100%; object-fit: cover;">
+                    </div>
                     <div class="card-body">
                         <div class="category mb-2">{{ event.category }}</div>
                         <h2 class="card-title fs-5">{{ event.title }}</h2>
@@ -102,10 +107,10 @@
                         </p>
                     </div>
                     <div class="card-footer bg-transparent border-top-0">
-                        <a class="btn seeEvent btn-sm w-100" href="{% url 'user_event_detail' event.id %}">Voir
-                            Détails</a>
+                        <a class="btn seeEvent btn-sm w-100" href="{% url 'user_event_detail' event.id %}">Voir Détails</a>
                     </div>
                 </div>
+                
             </div>
             {% empty %}
             <div class="col-12 text-center">

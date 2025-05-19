@@ -41,6 +41,10 @@ The above copyright notice and this permission notice shall be included in all c
                 {% if user %}
                 {% if user.account_type == 'organizer' %}
                 <li class="nav-item">
+                    <a href="{% url 'user_events' %}" class="nav-link"><i class="nc-icon nc-book-bookmark"></i>
+                        Événements</a>
+                </li>
+                <li class="nav-item">
                     <a href="{% url 'creer_event' %}" class="nav-link"><i class="nc-icon nc-book-bookmark"></i>
                         Créer un Événement</a>
                 </li>
