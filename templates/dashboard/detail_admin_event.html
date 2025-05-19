@@ -1,0 +1,139 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block extra_head %}
+<link rel="stylesheet" href="{% static 'css/dashboard/detail_admin_event.css' %}">
+<link href="https://fonts.googleapis.com/css?family=Inter:300,400,500,600,700,900" rel="stylesheet">
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+{% endblock %}
+
+{% block title %}Détails de l'événement{% endblock %}
+
+{% block content %}
+<div class="event-detail-container">
+    <!-- Bouton retour -->
+    <div class="back-button-container">
+        <a href="{% url 'dashboard' %}" class="btn-back">
+            <i class="material-icons">arrow_back</i>
+            <span>Retour au tableau de bord</span>
+        </a>
+    </div>
+
+    <!-- En-tête avec image et titre -->
+    <div class="event-header">
+        <div class="event-image">
+            <img src="{{ event.image_url }}" alt="{{ event.title }}">
+        </div>
+        <div class="event-title-section">
+            <h1>{{ event.title }}</h1>
+            <div class="event-status">
+                <span class="status-badge {{ event.status }}">{{ event.status|title }}</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Informations principales -->
+    <div class="event-main-info">
+        <div class="info-card">
+            <div class="info-section">
+                <h2>Détails de l'événement</h2>
+                <div class="info-grid">
+                    <div class="info-item">
+                        <i class="material-icons">event</i>
+                        <div class="info-content">
+                            <h3>Date et heure</h3>
+                            <p>{{ event.start_datetime|date:"d F Y" }}</p>
+                            <p>{{ event.start_datetime|time:"H:i" }} - {{ event.end_datetime|time:"H:i" }}</p>
+                        </div>
+                    </div>
+                    <div class="info-item">
+                        <i class="material-icons">location_on</i>
+                        <div class="info-content">
+                            <h3>Lieu</h3>
+                            <p>{{ event.location }}</p>
+                        </div>
+                    </div>
+                    <div class="info-item">
+                        <i class="material-icons">category</i>
+                        <div class="info-content">
+                            <h3>Catégorie</h3>
+                            <p>{{ event.category }}</p>
+                        </div>
+                    </div>
+                    <div class="info-item">
+                        <i class="material-icons">group</i>
+                        <div class="info-content">
+                            <h3>Places disponibles</h3>
+                            <p>{{ event.available_slots }} places</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="info-section">
+                <h2>Description</h2>
+                <p class="event-description">{{ event.description }}</p>
+            </div>
+
+            <div class="info-section">
+                <h2>Informations de paiement</h2>
+                <div class="payment-info">
+                    <div class="info-item">
+                        <i class="material-icons">payments</i>
+                        <div class="info-content">
+                            <h3>Prix</h3>
+                            <p>{% if event.price > 0 %}{{ event.price }} FCFA{% else %}Gratuit{% endif %}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Liste des participants -->
+    <div class="participants-section">
+        <div class="participants-header">
+            <h2>Liste des participants</h2>
+            <div class="participants-stats">
+                <span class="stat-item">
+                    <i class="material-icons">group</i>
+                    Total: {{ reservations|length }}
+                </span>
+                
+            </div>
+        </div>
+
+        <div class="participants-list">
+            {% if reservations %}
+                <table class="participants-table">
+                    <thead>
+                        <tr>
+                            <th>Participants</th>
+                            <th>Email</th>
+                            <th>Date de réservation</th>
+                            
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for reservation in reservations %}
+                        <tr>
+                            <td>{{ reservation.user.full_name }}</td>
+                            <td>{{ reservation.user.email }}</td>
+                            <td>{{ reservation.created_at|date:"d/m/Y H:i" }}</td>
+                           
+                           
+                           
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            {% else %}
+                <div class="empty-state">
+                    <i class="material-icons">group_off</i>
+                    <p>Aucun participant pour le moment</p>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %} 

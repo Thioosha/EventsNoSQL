@@ -1,0 +1,335 @@
+/* Top Title */
+.top-title {
+    padding: 7rem 1rem 1rem 4rem;
+    background: linear-gradient(45deg, #41359d, #6f42c1);
+    color: white;
+    font-weight: bold;
+    margin-top: -1rem;
+    margin-bottom: 20px;
+    box-shadow: 0 4px 20px 0px rgba(0, 0, 0, 0.14), 0 7px 10px -5px rgba(156, 39, 176, 0.4);
+}
+
+.event-detail-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2rem;
+    font-family: "Inter", sans-serif;
+}
+
+/* Bouton retour */
+.back-button-container {
+    margin-top: 4rem;
+    margin-bottom: 2rem;
+}
+
+.btn-back {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.875rem 1.75rem;
+    background: linear-gradient(45deg, #41359d, #6f42c1);
+    color: white;
+    border-radius: 0.75rem;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 1.1rem;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 6px rgba(111, 66, 193, 0.2);
+    border: 2px solid transparent;
+}
+
+.btn-back:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(111, 66, 193, 0.3);
+    background: linear-gradient(45deg, #6f42c1, #41359d);
+}
+
+.btn-back:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 4px rgba(111, 66, 193, 0.2);
+}
+
+.btn-back .material-icons {
+    font-size: 1.5rem;
+}
+
+/* Bouton détails */
+.btn-details {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.875rem 1.75rem;
+    background: linear-gradient(45deg, #41359d, #6f42c1);
+    color: white;
+    border-radius: 0.75rem;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 1.1rem;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 6px rgba(111, 66, 193, 0.2);
+    border: 2px solid transparent;
+}
+
+.btn-details:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(111, 66, 193, 0.3);
+    background: linear-gradient(45deg, #6f42c1, #41359d);
+}
+
+.btn-details:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 4px rgba(111, 66, 193, 0.2);
+}
+
+.btn-details .material-icons {
+    font-size: 1.5rem;
+}
+
+/* En-tête de l'événement */
+.event-header {
+    margin-bottom: 2rem;
+}
+
+.event-image {
+    width: 100%;
+    height: 400px;
+    border-radius: 1rem;
+    overflow: hidden;
+    margin-bottom: 1rem;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+}
+
+.event-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+}
+
+.event-title-section {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+.event-title-section h1 {
+    color: #41359d;
+    font-size: 2rem;
+    font-weight: 700;
+    margin: 0;
+}
+
+/* Informations principales */
+.event-main-info {
+    margin-bottom: 2rem;
+}
+
+.info-card {
+    background: white;
+    border-radius: 1rem;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    padding: 2rem;
+}
+
+.info-section {
+    margin-bottom: 2rem;
+}
+
+.info-section:last-child {
+    margin-bottom: 0;
+}
+
+.info-section h2 {
+    color: #41359d;
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin-bottom: 1.5rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 2px solid #f3e5f5;
+}
+
+.info-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1.5rem;
+}
+
+.info-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 1rem;
+}
+
+.info-item .material-icons {
+    font-size: 24px;
+    color: #6f42c1;
+    background: #f3e5f5;
+    padding: 0.5rem;
+    border-radius: 0.5rem;
+}
+
+.info-content h3 {
+    color: #41359d;
+    font-size: 1rem;
+    font-weight: 600;
+    margin: 0 0 0.5rem 0;
+}
+
+.info-content p {
+    color: #67748e;
+    margin: 0;
+    line-height: 1.5;
+}
+
+.event-description {
+    color: #67748e;
+    line-height: 1.6;
+    white-space: pre-line;
+}
+
+/* Section des participants */
+.participants-section {
+    background: white;
+    border-radius: 1rem;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    padding: 2rem;
+}
+
+.participants-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+}
+
+.participants-header h2 {
+    color: #41359d;
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin: 0;
+}
+
+.participants-stats {
+    display: flex;
+    gap: 1.5rem;
+}
+
+.stat-item {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: #67748e;
+}
+
+.stat-item .material-icons {
+    color: #6f42c1;
+}
+
+/* Table des participants */
+.participants-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.participants-table th,
+.participants-table td {
+    padding: 1rem;
+    text-align: left;
+    border-bottom: 1px solid #e9ecef;
+}
+
+.participants-table th {
+    color: #41359d;
+    font-weight: 600;
+    background: #f8f9fa;
+}
+
+.participants-table td {
+    color: #67748e;
+}
+
+/* Badges de statut */
+.status-badge,
+.payment-badge {
+    padding: 0.5rem 1rem;
+    border-radius: 0.5rem;
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.status-badge.confirmed {
+    background: #e8f5e9;
+    color: #2e7d32;
+}
+
+.status-badge.pending {
+    background: #fff3e0;
+    color: #ef6c00;
+}
+
+.status-badge.cancelled {
+    background: #ffebee;
+    color: #c62828;
+}
+
+.payment-badge.paid {
+    background: #e8f5e9;
+    color: #2e7d32;
+}
+
+.payment-badge.unpaid {
+    background: #ffebee;
+    color: #c62828;
+}
+
+/* État vide */
+.empty-state {
+    text-align: center;
+    padding: 3rem;
+    color: #67748e;
+}
+
+.empty-state .material-icons {
+    font-size: 48px;
+    color: #6f42c1;
+    margin-bottom: 1rem;
+}
+
+.empty-state p {
+    margin: 0;
+    font-size: 1.1rem;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .event-detail-container {
+        padding: 1rem;
+    }
+
+    .event-image {
+        height: 300px;
+    }
+
+    .event-title-section {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1rem;
+    }
+
+    .participants-header {
+        flex-direction: column;
+        gap: 1rem;
+    }
+
+    .participants-stats {
+        flex-wrap: wrap;
+    }
+
+    .participants-table {
+        display: block;
+        overflow-x: auto;
+    }
+} 

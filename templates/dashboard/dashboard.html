@@ -33,26 +33,29 @@
         {% if section == 'events' %}
             <div class="section-header">
                 <h3>Mes Événements</h3>
-               
             </div>
 
             <h4>À venir</h4>
             <div class="events-grid">
                 {% for event in upcoming_events %}
                     <div class="event-card">
-                        <h4>{{ event.title }}</h4>
-                        <p><strong>Description:</strong> {{ event.description }}</p>
-                        <p><strong>Lieu:</strong> {{ event.location }}</p>
-                        <p><strong>Date:</strong> {{ event.start_datetime|date:"d/m/Y H:i" }}</p>
-                        <p><strong>Durée:</strong> {{ event.end_datetime|date:"H:i" }}</p>
-                        <div class="card-footer">
-                            <span class="status-badge upcoming">À venir</span>
-                            <div class="card-actions">
-                                <a href="#" class="btn btn-outline">
-                                    <i class="material-icons">edit</i>
-                                    Modifier
+                        <div class="event-image">
+                            <img src="{{ event.image_url }}" alt="{{ event.title }}">
+                        </div>
+                        <div class="event-info">
+                            <h3>{{ event.title }}</h3>
+                            <div class="event-details d-flex flex-column">
+                                <p class="d-inline-flex align-items-center"><i class="material-icons">event</i> <span>{{ event.start_datetime|date:"d/m/Y" }}</span></p>
+                                <p class="d-inline-flex align-items-center"><i class="material-icons">location_on</i> <span>{{ event.location }}</span></p>
+                                <p class="d-inline-flex align-items-center"><i class="material-icons">category</i> <span>{{ event.category }}</span></p>
+                            </div>
+                            <div class="event-footer align-items-end d-flex justify-content-end">
+                                <a href="{% url 'event_detail' event.id %}" class="btn-details d-inline-flex align-items-center gap-1 text-decoration-none text-reset">
+                                    <span style="color: white;">Voir plus de détails</span>
+                                    <i class="material-icons" style="color: white;">arrow_forward</i>
                                 </a>
                             </div>
+                            
                         </div>
                     </div>
                 {% empty %}
@@ -64,18 +67,34 @@
             <div class="events-grid">
                 {% for event in past_events %}
                     <div class="event-card past">
-                        <h4>{{ event.title }}</h4>
-                        <p><strong>Description:</strong> {{ event.description }}</p>
-                        <p><strong>Lieu:</strong> {{ event.location }}</p>
-                        <p><strong>Date:</strong> {{ event.start_datetime|date:"d/m/Y H:i" }}</p>
-                        <p><strong>Durée:</strong> {{ event.end_datetime|date:"H:i" }}</p>
-                        <div class="card-footer">
-                            <span class="status-badge completed">Terminé</span>
-                            <div class="card-actions">
-                                <a href="#" class="btn btn-outline">
-                                    <i class="material-icons">visibility</i>
-                                    Voir détails
-                                </a>
+                        {% if event.image_url %}
+                            <div class="event-image">
+                                <img src="{{ event.image_url }}" alt="{{ event.title }}">
+                            </div>
+                        {% endif %}
+                        <div class="event-content">
+                            <h4>{{ event.title }}</h4>
+                            <p class="event-description">{{ event.description }}</p>
+                            <div class="event-details">
+                                <p><i class="material-icons">location_on</i><span>{{ event.location }}</span></p>
+                                <p><i class="material-icons">event</i><span>{{ event.start_datetime|date:"d/m/Y H:i" }}</span></p>
+                                <p><i class="material-icons">schedule</i><span>{{ event.end_datetime|date:"H:i" }}</span></p>
+                                <p><i class="material-icons">group</i><span>{{ event.participants|length }}/{{ event.total_slots }} participants</span></p>
+                                {% if event.price > 0 %}
+                                    <p><i class="material-icons">payments</i><span>{{ event.price|floatformat:0 }} FCFA</span></p>
+                                {% else %}
+                                    <p><i class="material-icons">payments</i><span>Gratuit</span></p>
+                                {% endif %}
+                                <p><i class="material-icons">category</i><span>{{ event.category }}</span></p>
+                            </div>
+                            <div class="card-footer">
+                                <span class="status-badge completed">Terminé</span>
+                                <div class="card-actions text-white">
+                                    <a href="#" class="btn btn-outline text-white">
+                                        <i class="material-icons">visibility</i>
+                                        Voir détails
+                                    </a>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -93,27 +112,35 @@
             <div class="reservations-grid">
                 {% for reservation in upcoming_reservations %}
                     <div class="reservation-card">
-                        <h4>{{ reservation.event_data.title }}</h4>
-                        <p><strong>Description:</strong> {{ reservation.event_data.description }}</p>
-                        <p><strong>Lieu:</strong> {{ reservation.event_data.location }}</p>
-                        <p><strong>Date:</strong> {{ reservation.event_data.start_datetime|date:"d/m/Y H:i" }}</p>
-                        <p><strong>Durée:</strong> {{ reservation.event_data.end_datetime|date:"H:i" }}</p>
-                        <div class="card-footer">
-                            <span class="status-badge upcoming">
-                                {% if reservation.status == 'confirmed' %}
-                                    Confirmé
+                        {% if reservation.event.image_url %}
+                            <div class="event-image">
+                                <img src="{{ reservation.event.image_url }}" alt="{{ reservation.event.title }}">
+                            </div>
+                        {% endif %}
+                        <div class="event-content">
+                            <h4>{{ reservation.event.title }}</h4>
+                            <p class="event-description">{{ reservation.event.description }}</p>
+                            <div class="event-details">
+                                <p class="d-inline-flex align-items-center gap-2"><i class="material-icons">location_on</i><span>{{ reservation.event.location }}</span></p>
+                                <p class="d-inline-flex align-items-center gap-2"><i class="material-icons">event</i><span>{{ reservation.event.start_datetime|date:"d/m/Y H:i" }}</span></p>
+                                <p class="d-inline-flex align-items-center gap-2"><i class="material-icons">schedule</i><span>{{ reservation.event.end_datetime|date:"H:i" }}</span></p>
+                                {% if reservation.event.price > 0 %}
+                                    <p class="d-inline-flex align-items-center gap-2"><i class="material-icons">payments</i><span>{{ reservation.event.price|floatformat:0 }} FCFA</span></p>
                                 {% else %}
-                                    En attente
+                                    <p><i class="material-icons">payments</i><span>Gratuit</span></p>
                                 {% endif %}
-                                
-                            </span>
-                            <span class="status-badge {% if reservation.payment_status == 'paid' %}completed{% else %}cancelled{% endif %}">
-                                {% if reservation.payment_status == 'paid' %}
-                                    Payé
-                                {% else %}
-                                    Non payé
-                                {% endif %}
-                            </span>
+                                <p class="d-inline-flex align-items-center gap-2"><i class="material-icons">category</i><span>{{ reservation.event.category }}</span></p>
+                            </div>
+                            <div class="card-footer">
+                                <span class="status-badge {{ reservation.status }}">{{ reservation.status|title }}</span>
+                                <span class="status-badge {% if reservation.payment_status == 'paid' %}completed{% else %}cancelled{% endif %}">
+                                    {% if reservation.payment_status == 'paid' %}
+                                        Payé
+                                    {% else %}
+                                        Non payé
+                                    {% endif %}
+                                </span>
+                            </div>
                         </div>
                     </div>
                 {% empty %}
@@ -125,16 +152,31 @@
             <div class="reservations-grid">
                 {% for reservation in past_reservations %}
                     <div class="reservation-card past">
-                        <h4>{{ reservation.event_data.title }}</h4>
-                        <p><strong>Description:</strong> {{ reservation.event_data.description }}</p>
-                        <p><strong>Lieu:</strong> {{ reservation.event_data.location }}</p>
-                        <p><strong>Date:</strong> {{ reservation.event_data.start_datetime|date:"d/m/Y H:i" }}</p>
-                        <p><strong>Durée:</strong> {{ reservation.event_data.end_datetime|date:"H:i" }}</p>
-                        <div class="card-footer">
-                            <span class="status-badge completed">{{ reservation.status }}</span>
-                            <span class="status-badge {% if reservation.payment_status == 'paid' %}completed{% else %}cancelled{% endif %}">
-                                {{ reservation.payment_status }}
-                            </span>
+                        {% if reservation.event.image_url %}
+                            <div class="event-image">
+                                <img src="{{ reservation.event.image_url }}" alt="{{ reservation.event.title }}">
+                            </div>
+                        {% endif %}
+                        <div class="event-content">
+                            <h4>{{ reservation.event.title }}</h4>
+                            <p class="event-description">{{ reservation.event.description }}</p>
+                            <div class="event-details">
+                                <p class="d-flex align-items-center gap-2"><i class="material-icons">location_on</i><span>{{ reservation.event.location }}</span></p>
+                                <p class="d-flex align-items-center gap-2"><i class="material-icons">event</i><span>{{ reservation.event.start_datetime|date:"d/m/Y H:i" }}</span></p>
+                                <p class="d-flex align-items-center gap-2"><i class="material-icons">schedule</i><span>{{ reservation.event.end_datetime|date:"H:i" }}</span></p>
+                                {% if reservation.event.price > 0 %}
+                                    <p class="d-flex align-items-center gap-2"><i class="material-icons">payments</i><span>{{ reservation.event.price|floatformat:0 }} FCFA</span></p>
+                                {% else %}
+                                    <p class="d-flex align-items-center gap-2"><i class="material-icons">payments</i><span>Gratuit</span></p>
+                                {% endif %}
+                                <p class="d-flex align-items-center gap-2"><i class="material-icons">category</i><span>{{ reservation.event.category }}</span></p>
+                            </div>
+                            <div class="card-footer">
+                                <span class="status-badge completed">{{ reservation.status|title }}</span>
+                                <span class="status-badge {% if reservation.payment_status == 'paid' %}completed{% else %}cancelled{% endif %}">
+                                    {{ reservation.payment_status|title }}
+                                </span>
+                            </div>
                         </div>
                     </div>
                 {% empty %}

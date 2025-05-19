@@ -321,8 +321,8 @@ def dashboard_view(request):
     }
 
     if current_user.account_type == "organizer":
-        # Récupérer les événements de l'organisateur
-        my_events = MongoEvent.objects(created_by=current_user)
+        # Récupérer les événements créés par l'organisateur
+        my_events = MongoEvent.objects(created_by=ObjectId(user_id)).order_by('-start_datetime')
         
         # Séparer les événements en passés et à venir
         context["upcoming_events"] = [
@@ -337,11 +337,12 @@ def dashboard_view(request):
         print(f"Événements à venir: {len(context['upcoming_events'])}")
         print(f"Événements passés: {len(context['past_events'])}")
         
-        # Récupérer les réservations pour les événements de l'organisateur
-        organizer_reservations = MongoReservation.objects(
-            event__in=my_events,
-            status="confirmed"
-        ).select_related()
+        # Récupérer les réservations où l'organisateur est participant
+        organizer_reservations = list(MongoReservation.objects(
+            user=ObjectId(user_id)  # Chercher les réservations où l'utilisateur est participant
+        ).order_by('-created_at'))
+        
+        print(f"Nombre total de réservations trouvées: {len(organizer_reservations)}")
         
         # Séparer les réservations en passées et à venir
         context["upcoming_reservations"] = [
@@ -352,20 +353,35 @@ def dashboard_view(request):
             r for r in organizer_reservations
             if r.event.start_datetime <= now
         ]
+
+        # Calculer les statistiques des réservations
+        total_reservations = len(organizer_reservations)
+        confirmed_reservations = len([r for r in organizer_reservations if r.status == "confirmed"])
+        paid_reservations = len([r for r in organizer_reservations if r.payment_status == "paid"])
+        total_adults = sum(r.adults for r in organizer_reservations)
+        total_children = sum(r.children for r in organizer_reservations)
+        
+        context["reservation_stats"] = {
+            "total": total_reservations,
+            "confirmed": confirmed_reservations,
+            "paid": paid_reservations,
+            "total_adults": total_adults,
+            "total_children": total_children
+        }
         
         print(f"Réservations à venir: {len(context['upcoming_reservations'])}")
         print(f"Réservations passées: {len(context['past_reservations'])}")
+        print(f"Statistiques des réservations: {context['reservation_stats']}")
         
         return render(request, "dashboard/dashboard.html", {**context, 'color_on_scroll': 30})
 
     elif current_user.account_type == "participant":
-        # Récupérer les réservations de l'utilisateur
-        user_reservations = MongoReservation.objects(
-            user=current_user,
-            status="confirmed"
-        ).select_related()
+        # Récupérer toutes les réservations de l'utilisateur avec un seul appel à la base de données
+        user_reservations = list(MongoReservation.objects(
+            user=ObjectId(user_id)
+        ).order_by('-created_at'))
         
-        print(f"Nombre de réservations trouvées: {len(user_reservations)}")
+        print(f"Nombre total de réservations trouvées: {len(user_reservations)}")
         
         # Séparer les réservations en passées et à venir
         context["upcoming_reservations"] = [
@@ -376,9 +392,25 @@ def dashboard_view(request):
             r for r in user_reservations
             if r.event.start_datetime <= now
         ]
+
+        # Calculer les statistiques des réservations
+        total_reservations = len(user_reservations)
+        confirmed_reservations = len([r for r in user_reservations if r.status == "confirmed"])
+        paid_reservations = len([r for r in user_reservations if r.payment_status == "paid"])
+        total_adults = sum(r.adults for r in user_reservations)
+        total_children = sum(r.children for r in user_reservations)
+        
+        context["reservation_stats"] = {
+            "total": total_reservations,
+            "confirmed": confirmed_reservations,
+            "paid": paid_reservations,
+            "total_adults": total_adults,
+            "total_children": total_children
+        }
         
         print(f"Réservations à venir: {len(context['upcoming_reservations'])}")
         print(f"Réservations passées: {len(context['past_reservations'])}")
+        print(f"Statistiques des réservations: {context['reservation_stats']}")
         
         return render(request, "dashboard/dashboard_participant.html", {**context, 'color_on_scroll': 30})
 
@@ -416,3 +448,32 @@ def notify_users(event, type):
 
     for user in users:
         MongoNotification(user=user, message=message, type=type, event=event).save()
+
+def event_detail_view(request, event_id):
+    try:
+        # Récupérer l'événement
+        event = MongoEvent.objects.get(id=event_id)
+        
+        # Récupérer toutes les réservations pour cet événement
+        reservations = MongoReservation.objects.filter(event=event).order_by('-created_at')
+        
+        # Calculer les statistiques
+        total_adults = sum(reservation.adults for reservation in reservations)
+        total_children = sum(reservation.children for reservation in reservations)
+        
+        context = {
+            'event': event,
+            'reservations': reservations,
+            'total_adults': total_adults,
+            'total_children': total_children,
+        }
+        
+        return render(request, 'dashboard/detail_admin_event.html', context)
+        
+    except MongoEvent.DoesNotExist:
+        messages.error(request, "L'événement n'existe pas.")
+        return redirect('dashboard')
+    except Exception as e:
+        logger.error(f"Erreur lors de l'affichage des détails de l'événement: {str(e)}")
+        messages.error(request, "Une erreur est survenue lors de l'affichage des détails de l'événement.")
+        return redirect('dashboard')
