@@ -1,0 +1,146 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block extra_head %}
+<link rel="stylesheet" href="{% static 'css/events/creer_event.css' %}">
+{% endblock %}
+
+{% block content %}
+<h1 class="top-title"><i class="nc-icon nc-refresh-69"></i>Modifier l’événement</h1>
+
+<div class="container">
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+
+        <div class="formbold-main-wrapper">
+            <div class="formbold-form-wrapper">
+
+                <div class="formbold-input-flex">
+                    <div>
+                        <input type="text" name="title" id="id_title" placeholder="Titre de l’événement"
+                            class="formbold-form-input" value="{{ form.title.value|default_if_none:'' }}">
+                        <label for="id_title" class="formbold-form-label">Titre</label>
+                        {% for error in form.title.errors %}
+                        <div class="text-danger small">{{ error }}</div>
+                        {% endfor %}
+                    </div>
+                    <div>
+                        <input type="text" name="location" id="id_location" placeholder="Lieu"
+                            class="formbold-form-input" value="{{ form.location.value|default_if_none:'' }}">
+                        <label for="id_location" class="formbold-form-label">Lieu</label>
+                        {% for error in form.location.errors %}
+                        <div class="text-danger small">{{ error }}</div>
+                        {% endfor %}
+                    </div>
+                </div>
+
+                <div class="formbold-input-flex">
+                    <div style="flex: 1 1 100%;">
+                        <select name="category" id="id_category" class="formbold-form-input">
+                            {% for choice in form.category.field.choices %}
+                            <option value="{{ choice.0 }}" {% if choice.0 == form.category.value %}selected{% endif %}>{{ choice.1 }}</option>
+                            {% endfor %}
+                        </select>
+                        <label for="id_category" class="formbold-form-label">Catégorie</label>
+                        {% for error in form.category.errors %}
+                        <div class="text-danger small">{{ error }}</div>
+                        {% endfor %}
+                    </div>
+                </div>
+                <div>
+                    {% if event.image_url %}
+                    <label>Image actuelle :</label><br>
+                    <img src="{{ event.image_url }}" alt="Image actuelle"
+                    style="max-width: 200px; border-radius: 5px; margin-bottom: 10px;">
+                    {% endif %}
+                </div>
+                <div class="formbold-input-flex">
+                    <div style="flex: 1 1 100%;">
+
+                        <input type="file" name="image" id="id_image" accept="image/*" class="formbold-form-input" />
+                        <label for="id_image" class="formbold-form-label mt-3">Changer l'image</label>
+
+                        {% if form.image.errors %}
+                        {% for error in form.image.errors %}
+                        <div class="text-danger small">{{ error }}</div>
+                        {% endfor %}
+                        {% endif %}
+                    </div>
+                </div>
+
+
+                <div class="formbold-input-flex">
+                    <div style="flex: 1 1 100%;">
+                        <textarea rows="4" name="description" id="id_description" placeholder="Description"
+                            class="formbold-form-input">{{ form.description.value|default_if_none:'' }}</textarea>
+                        <label for="id_description" class="formbold-form-label mt-3">Description</label>
+                        {% for error in form.description.errors %}
+                        <div class="text-danger small">{{ error }}</div>
+                        {% endfor %}
+                    </div>
+                </div>
+
+                <div class="formbold-input-flex">
+                    <div>
+                        <input type="datetime-local" name="start_datetime" id="id_start_datetime"
+                            class="formbold-form-input" value="{{ form.start_datetime.value|default_if_none:'' }}">
+                        <label for="id_start_datetime" class="formbold-form-label">Début</label>
+                        {% for error in form.start_datetime.errors %}
+                        <div class="text-danger small">{{ error }}</div>
+                        {% endfor %}
+                    </div>
+                    <div>
+                        <input type="datetime-local" name="end_datetime" id="id_end_datetime"
+                            class="formbold-form-input" value="{{ form.end_datetime.value|default_if_none:'' }}">
+                        <label for="id_end_datetime" class="formbold-form-label">Fin</label>
+                        {% for error in form.end_datetime.errors %}
+                        <div class="text-danger small">{{ error }}</div>
+                        {% endfor %}
+                    </div>
+                </div>
+
+                <div class="formbold-input-flex">
+                    <div>
+                        <input type="number" name="total_slots" id="id_total_slots" class="formbold-form-input"
+                            value="{{ form.total_slots.value|default_if_none:'' }}">
+                        <label for="id_total_slots" class="formbold-form-label">Places Totales</label>
+                        {% for error in form.total_slots.errors %}
+                        <div class="text-danger small">{{ error }}</div>
+                        {% endfor %}
+                    </div>
+                    <div>
+                        <input type="number" name="available_slots" id="id_available_slots" class="formbold-form-input"
+                            value="{{ form.available_slots.value|default_if_none:'' }}">
+                        <label for="id_available_slots" class="formbold-form-label">Places Disponibles</label>
+                        {% for error in form.available_slots.errors %}
+                        <div class="text-danger small">{{ error }}</div>
+                        {% endfor %}
+                    </div>
+                </div>
+
+                <div class="formbold-input-flex">
+                    <div style="flex: 1 1 100%;">
+                        <input type="number" step="0.01" name="price" id="id_price" class="formbold-form-input"
+                            value="{{ form.price.value|default_if_none:'' }}">
+                        <label for="id_price" class="formbold-form-label">Prix</label>
+                        {% for error in form.price.errors %}
+                        <div class="text-danger small">{{ error }}</div>
+                        {% endfor %}
+                    </div>
+                </div>
+
+                <!-- Le bouton dynamique -->
+                <button type="submit" class="formbold-btn">
+                    Modifier l’événement
+                </button>
+
+            </div>
+        </div>
+    </form>
+</div>
+
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'js/exple.js' %}"></script>
+{% endblock %}

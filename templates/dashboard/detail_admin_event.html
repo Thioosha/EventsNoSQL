@@ -11,13 +11,19 @@
 
 {% block content %}
 <div class="event-detail-container">
-    <!-- Bouton retour -->
-    <div class="back-button-container">
+    <!-- Boutons retour et modifier -->
+    <div class="back-button-container" style="display: flex; gap: 1rem; align-items: center;">
         <a href="{% url 'dashboard' %}" class="btn-back">
             <i class="material-icons">arrow_back</i>
             <span>Retour au tableau de bord</span>
         </a>
+
+        <a href="{% url 'modifier_event' event.id %}" class="btn-back">
+            <i class="material-icons">edit</i>
+            <span>Modifier</span>
+        </a>
     </div>
+
 
     <!-- En-tête avec image et titre -->
     <div class="event-header">

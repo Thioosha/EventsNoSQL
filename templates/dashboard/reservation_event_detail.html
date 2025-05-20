@@ -9,7 +9,7 @@
 
 {% block content %}
 
-<h1 class="top-title"><a href="{% url 'user_events'%}">← Retour</a></h1>
+<h1 class="top-title"><a href="{% url 'dashboard' %}">← Retour</a></h1>
 <!-- Contenu page ici -->
 <div class="formbold-main-wrapper">
     <!-- Author: FormBold Team -->
@@ -31,7 +31,7 @@
                 <div class="formbold-event-details">
                     <h5>Event Details</h5>
     
-                    <ul>
+                    <ul class="mb-2">
                         <li>
                             <i class="fa-solid fa-person fa-lg" style="margin-right: 5px;"></i>
                             Host : {{ event.created_by.full_name }}
@@ -85,21 +85,9 @@
                             Places restantes : {{ event.available_slots }}
                         </li>
                     </ul>
-                    <form method="POST" action="{% url 'creer_reservation' event.id %}">
+                    <form method="POST" action="{% url 'annuler' event.id %}">
                         {% csrf_token %}
-                        <div class="formbold-input-flex mx-4">
-                            <div>
-                                <label for="adults" class="formbold-form-label">
-                                    Adultes* :
-                                </label>
-                                <input type="number" name="adults" min="1" value="1" required class="formbold-form-input" />
-                            </div>
-                            <div>
-                                <label for="children" class="formbold-form-label"> Enfants : </label>
-                                <input type="number" name="children" min="0" value="0" class="formbold-form-input" />
-                            </div>              
-                        </div>
-                        <!-- MESSAGES BLOCK (add this at top!) -->
+
                         {% if messages %}
                         <div class="alert-container" style="margin: 20px;">
                             {% for message in messages %}
@@ -112,16 +100,14 @@
                             {% endfor %}
                         </div>
                         {% endif %}
-
-                        <div class="mx-4 mb-2">
-                            <button type="submit" class="formbold-btn">Réserver</button>
+                        
+                        <div class="mx-4 mb-2 mt-5">
+                            <button type="submit" class="formbold-btn">Annuler ma reservation</button>
                             <p class="formbold-policy">
-                                En validant votre réservation, vous acceptez notre
+                                En annulant votre réservation, vous acceptez notre
                                 <a href="#">Politique de confidentialité.</a>
                             </p>
                         </div>
-
-                       
                     </form>
                 </div>
             </div>      
