@@ -2,99 +2,97 @@
 {% load static %}
 
 {% block extra_head %}
-<link rel="stylesheet" href="{% static 'css/dashboard/dashboard_participant.css' %}">
+<link rel="stylesheet" href="{% static 'css/dashboard/dashboard.css' %}">
 <link href="https://fonts.googleapis.com/css?family=Inter:300,400,500,600,700,900" rel="stylesheet">
 <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 {% endblock %}
 
 {% block content %}
-<h1 class="top-title">Mes Réservations</h1>
+<h1 class="top-title">Dashboard Participant</h1>
 
 <div class="dashboard-container">
-    <h3>À venir</h3>
-    <div class="reservations-grid">
-        {% for reservation in upcoming_reservations %}
-            <div class="reservation-card">
-                {% if reservation.event.image_url %}
-                    <div class="event-image">
-                        <img src="{{ reservation.event.image_url }}" alt="{{ reservation.event.title }}">
-                    </div>
-                {% endif %}
-                <div class="event-content">
-                    <h4>{{ reservation.event.title }}</h4>
-                    <p class="event-description">{{ reservation.event.description }}</p>
-                    <div class="event-details">
-                        <p><i class="material-icons">location_on</i><span>{{ reservation.event.location }}</span></p>
-                        <p><i class="material-icons">event</i><span>{{ reservation.event.start_datetime|date:"d/m/Y H:i" }}</span></p>
-                        <p><i class="material-icons">schedule</i><span>{{ reservation.event.end_datetime|date:"H:i" }}</span></p>
-                        {% if reservation.event.price > 0 %}
-                            <p><i class="material-icons">payments</i><span>{{ reservation.event.price|floatformat:0 }} FCFA</span></p>
-                        {% else %}
-                            <p><i class="material-icons">payments</i><span>Gratuit</span></p>
-                        {% endif %}
-                        <p><i class="material-icons">category</i><span>{{ reservation.event.category }}</span></p>
-                    </div>
-                    <div class="card-footer">
-                        <span class="status-badge {{ reservation.status }}">{{ reservation.status|title }}</span>
-                        <span class="status-badge {% if reservation.payment_status == 'paid' %}completed{% else %}cancelled{% endif %}">
-                            {% if reservation.payment_status == 'paid' %}
-                                Payé
-                            {% else %}
-                                Non payé
-                            {% endif %}
-                        </span>
-                        {% if reservation.payment_method %}
-                            <span class="payment-method">
-                                <i class="material-icons">credit_card</i> {{ reservation.payment_method|title }}
-                            </span>
-                        {% endif %}
-                    </div>
-                </div>
-            </div>
-        {% empty %}
-            <p class="empty-state">Aucune réservation à venir.</p>
-        {% endfor %}
+    <div class="sidebar">
+        <h3>Navigation</h3>
+        <ul class="sidebar-nav">
+            <li>
+                <a href="?section=reservations" class="{% if section == 'reservations' %}active{% endif %}">
+                    <i class="material-icons">book_online</i>
+                    Mes Réservations
+                </a>
+            </li>
+            <li>
+                <a href="?section=notifications" class="{% if section == 'notifications' %}active{% endif %}">
+                    <i class="material-icons">notifications</i>
+                    Mes Notifications
+                </a>
+            </li>
+        </ul>
     </div>
 
-    <h3>Passées</h3>
-    <div class="reservations-grid mb-4">
-        {% for reservation in past_reservations %}
-            <div class="reservation-card past">
-                {% if reservation.event.image_url %}
-                    <div class="event-image">
-                        <img src="{{ reservation.event.image_url }}" alt="{{ reservation.event.title }}">
-                    </div>
-                {% endif %}
-                <div class="event-content">
-                    <h4>{{ reservation.event.title }}</h4>
-                    <p class="event-description">{{ reservation.event.description }}</p>
-                    <div class="event-details">
-                        <p><i class="material-icons">location_on</i><span>{{ reservation.event.location }}</span></p>
-                        <p><i class="material-icons">event</i><span>{{ reservation.event.start_datetime|date:"d/m/Y H:i" }}</span></p>
-                        <p><i class="material-icons">schedule</i><span>{{ reservation.event.end_datetime|date:"H:i" }}</span></p>
-                        {% if reservation.event.price > 0 %}
-                            <p><i class="material-icons">payments</i><span>{{ reservation.event.price|floatformat:0 }} FCFA</span></p>
-                        {% else %}
-                            <p><i class="material-icons">payments</i><span>Gratuit</span></p>
-                        {% endif %}
-                        <p><i class="material-icons">category</i><span>{{ reservation.event.category }}</span></p>
-                    </div>
-                    <div class="card-footer">
-                        <span class="status-badge completed">{{ reservation.status|title }}</span>
-                        <span class="status-badge {% if reservation.payment_status == 'paid' %}completed{% else %}cancelled{% endif %}">
-                            {{ reservation.payment_status|title }}
-                        </span>
-                        {% if reservation.payment_method %}
-                            <span class="payment-method">
-                                <i class="material-icons">credit_card</i> {{ reservation.payment_method|title }}
-                            </span>
-                        {% endif %}
-                    </div>
-                </div>
+    <div class="main-content">
+        {% if section == 'reservations' %}
+            <div class="section-header">
+                <h3>Mes Réservations</h3>
             </div>
-        {% empty %}
-            <p class="empty-state">Aucune réservation passée.</p>
-        {% endfor %}
+
+            <h4>À venir</h4>
+            <div class="row">
+                {% for reservation in upcoming_reservations %}
+                    <div class="col-md-4 mb-5">
+                        <div class="card h-100 shadow rounded-4 border-0" style="background: #fff;">
+                            <div class="card-img-box rounded-top-4" style="height: 200px; overflow: hidden;">
+                                <img src="{{ reservation.event.image_url }}" class="card-img-top object-fit-cover" alt="{{ reservation.event.title }}" style="width: 100%; height: 100%; object-fit: cover;">
+                            </div>
+                            <div class="card-body px-4 py-3">
+                                <div class="category mb-2 fw-bold" style="color: #6c4ed4;">{{ reservation.event.category }}</div>
+                                <h2 class="card-title fs-5 mb-3" style="color: #444;">{{ reservation.event.title }}</h2>
+                                <p class="card-text small mb-0">
+                                    <span class="fw-bold" style="color: #444;">Date:</span> <span style="color: #888;">{{ reservation.event.start_datetime|date:"d M Y H:i" }}</span><br>
+                                    <span class="fw-bold" style="color: #444;">Lieu:</span> <span style="color: #888;">{{ reservation.event.location }}</span><br>
+                                    <span class="fw-bold" style="color: #444;">Places:</span> <span style="color: #888;">{{ reservation.event.participants|length }} dispo / {{ reservation.event.total_slots }}</span>
+                                </p>
+                            </div>
+                            <div class="card-footer bg-transparent border-0 px-4 pb-2 pt-0">
+                                <a class="btn w-100 fw-bold text-uppercase text-center" style="background: #6c4ed4; color: #fff; border-radius: 10px; text-align: center;" href="{% url 'reservation_event_detail' reservation.event.id %}">Voir détails</a>
+                            </div>
+                        </div>
+                    </div>
+                {% empty %}
+                    <p class="empty-state">Aucune réservation à venir.</p>
+                {% endfor %}
+            </div>
+
+            <h4>Passées</h4>
+            <div class="row">
+                {% for reservation in past_reservations %}
+                    <div class="col-md-4 mb-5">
+                        <div class="card h-100 shadow rounded-4 border-0" style="background: #fff;">
+                            <div class="card-img-box rounded-top-4" style="height: 200px; overflow: hidden;">
+                                <img src="{{ reservation.event.image_url }}" class="card-img-top object-fit-cover" alt="{{ reservation.event.title }}" style="width: 100%; height: 100%; object-fit: cover;">
+                            </div>
+                            <div class="card-body px-4 py-3">
+                                <div class="category mb-2 fw-bold" style="color: #6c4ed4;">{{ reservation.event.category }}</div>
+                                <h2 class="card-title fs-5 mb-3" style="color: #444;">{{ reservation.event.title }}</h2>
+                                <p class="card-text small mb-0">
+                                    <span class="fw-bold" style="color: #444;">Date:</span> <span style="color: #888;">{{ reservation.event.start_datetime|date:"d M Y H:i" }}</span><br>
+                                    <span class="fw-bold" style="color: #444;">Lieu:</span> <span style="color: #888;">{{ reservation.event.location }}</span><br>
+                                    <span class="fw-bold" style="color: #444;">Places:</span> <span style="color: #888;">{{ reservation.event.participants|length }} dispo / {{ reservation.event.total_slots }}</span>
+                                </p>
+                            </div>
+                            <div class="card-footer bg-transparent border-0 px-2 pb-4 pt-0">
+                                <a class="btn w-100 fw-bold text-uppercase text-center" style="background: #6c4ed4; color: #fff; border-radius: 10px;" href="{% url 'reservation_event_detail' reservation.event.id %}">Voir détails</a>
+                            </div>
+                        </div>
+                    </div>
+                {% empty %}
+                    <p class="empty-state">Aucune réservation passée.</p>
+                {% endfor %}
+            </div>
+        {% elif section == 'notifications' %}
+            <div class="section-header">
+                <h3>Mes Notifications</h3>
+            </div>
+        {% endif %}
     </div>
 </div>
 {% endblock %}
@@ -102,3 +100,5 @@
 {% block extra_js %}
 <script src="{% static 'js/exple.js' %}"></script>
 {% endblock %}
+
+

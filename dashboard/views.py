@@ -1,3 +1,13 @@
+from django.shortcuts import redirect, get_object_or_404
+from django.contrib import messages
+from bson import ObjectId
+from .models import MongoEvent  # adapte si le nom est différent
+from django.shortcuts import get_object_or_404, render, redirect
+from django.contrib import messages
+from bson import ObjectId
+from .models import MongoEvent
+from events.forms import MongoEventForm
+from django.utils import timezone as dj_timezone  # Pour `now()`, `is_naive()`, etc.
 from datetime import datetime, timezone
 from django.http import Http404
 from django.shortcuts import get_object_or_404, render,redirect
@@ -20,7 +30,11 @@ def dashboard_view(request):
 
     current_user = MongoUser.objects(id=ObjectId(user_id)).first()
     now = datetime.utcnow()
-    section = request.GET.get("section", "events")
+
+    if current_user.account_type == "organizer": 
+        section = request.GET.get("section", "events")
+    else:
+        section = request.GET.get("section", "reservations")
 
     print(f"User ID: {user_id}")
     print(f"Account Type: {current_user.account_type}")
@@ -99,9 +113,7 @@ def dashboard_view(request):
             user=ObjectId(user_id)
         ).order_by('-created_at'))
         
-        print(f"Nombre total de réservations trouvées: {len(user_reservations)}")
-        print(user_reservations)
-        print(user_reservations[0])
+
         # Séparer les réservations en passées et à venir
         context["upcoming_reservations"] = [
             r for r in user_reservations
@@ -202,7 +214,6 @@ def annuler_reservation(request, event_id):
         raise Http404("Événement introuvable")
 
 
-    from django.utils import timezone as dj_timezone  # Pour `now()`, `is_naive()`, etc.
 
     event_end = event.end_datetime
     if dj_timezone.is_naive(event_end):
@@ -231,11 +242,6 @@ def annuler_reservation(request, event_id):
     return redirect('dashboard')
 
 
-from django.shortcuts import get_object_or_404, render, redirect
-from django.contrib import messages
-from bson import ObjectId
-from .models import MongoEvent
-from events.forms import MongoEventForm
 
 def modifier_event(request, event_id):
     try:
@@ -286,6 +292,18 @@ def modifier_event(request, event_id):
         form = MongoEventForm(initial=initial_data)
 
     return render(request, "dashboard/edit_event.html", {"form": form, "event": event})
+
+
+
+def supprimer_event(request, event_id):
+    try:
+        event = MongoEvent.objects.get(id=ObjectId(event_id))
+        event.delete()
+        messages.success(request, "L’événement a été supprimé avec succès.")
+    except Exception as e:
+        return redirect("dashboard")  # redirige vers la page d'accueil ou de gestion
+    return redirect("dashboard")  # redirige vers la page d'accueil ou de gestion
+
 
 
 def notifications_view(request):

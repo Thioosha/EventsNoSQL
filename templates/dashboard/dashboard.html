@@ -26,6 +26,12 @@
                     Mes Réservations
                 </a>
             </li>
+            <li>
+                <a href="?section=notifications" class="{% if section == 'notifications' %}active{% endif %}">
+                    <i class="material-icons">notifications</i>
+                    Mes Notifications
+                </a>
+            </li>
         </ul>
     </div>
 
@@ -126,7 +132,7 @@
                                 </p>
                             </div>
                             <div class="card-footer bg-transparent border-0 px-4 pb-2 pt-0">
-                                <a class="btn w-100 fw-bold text-uppercase text-center" style="background: #6c4ed4; color: #fff; border-radius: 10px;" href="{% url 'reservation_event_detail' reservation.event.id %}">Voir détails</a>
+                                <a class="btn w-100 fw-bold text-uppercase text-center" style="background: #6c4ed4; color: #fff; border-radius: 10px; text-align: center;" href="{% url 'reservation_event_detail' reservation.event.id %}">Voir détails</a>
                             </div>
                         </div>
                     </div>
@@ -160,6 +166,10 @@
                 {% empty %}
                     <p class="empty-state">Aucune réservation passée.</p>
                 {% endfor %}
+            </div>
+        {% elif section == 'notifications' %}
+            <div class="section-header">
+                <h3>Mes Réservations</h3>
             </div>
         {% endif %}
     </div>
