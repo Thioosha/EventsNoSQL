@@ -167,7 +167,7 @@ def event_detail_view(request, event_id):
             'total_children': total_children,
         }
         
-        return render(request, 'dashboard/detail_admin_event.html', context)
+        return render(request, 'dashboard/detail_admin_event.html', {**context, 'color_on_scroll': 30})
         
     except MongoEvent.DoesNotExist:
         return redirect('dashboard')
@@ -291,7 +291,7 @@ def modifier_event(request, event_id):
         }
         form = MongoEventForm(initial=initial_data)
 
-    return render(request, "dashboard/edit_event.html", {"form": form, "event": event})
+    return render(request, "dashboard/edit_event.html", {"form": form, "event": event, 'color_on_scroll': 30})
 
 
 
@@ -313,7 +313,7 @@ def notifications_view(request):
 
     current_user = MongoUser.objects(id=ObjectId(user_id)).first()
     notifications = MongoNotification.objects(user=current_user).order_by('-created_at')
-    return render(request, "notifications.html", {"notifications": notifications})
+    return render(request, "notifications.html", {"notifications": notifications, 'color_on_scroll': 30})
 
 
 def mark_notification_read(request, notification_id):

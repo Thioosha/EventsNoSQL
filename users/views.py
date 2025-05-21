@@ -45,7 +45,6 @@ def register_view(request):
                     full_name=form.cleaned_data['full_name'],
                     account_type=account_type,
                     reservations=[],
-                    created_events=[],
                     notifications=[],
                 )
                 user.save()
@@ -104,4 +103,101 @@ def logout_view(request):
 from django.contrib.auth.decorators import login_required  # optional
 
 def user_settings_view(request):
-    return render(request, 'users/settings.html')
+    return render(request, 'users/settings.html', {
+        'color_on_scroll': 30,
+    })
+
+
+
+
+from django.shortcuts import render, redirect
+from django.contrib import messages
+from django.contrib.auth.hashers import check_password
+from .models import MongoUser
+import requests, base64
+
+IMGBB_API_KEY = "71106fa24c9850b035d087a4513b07d2"
+
+def upload_image_to_imgbb(image_file):
+    image_data = base64.b64encode(image_file.read()).decode("utf-8")
+    url = "https://api.imgbb.com/1/upload"
+    payload = {
+        "key": IMGBB_API_KEY,
+        "image": image_data,
+    }
+    response = requests.post(url, data=payload)
+    if response.status_code == 200:
+        return response.json()["data"]["url"]
+    else:
+        return None
+
+
+def update_profile_view(request):
+    user_id = request.session.get('user_id')
+    if not user_id:
+        return redirect('register')
+
+    user = MongoUser.objects.get(id=user_id)
+
+    if request.method == 'POST':
+        full_name = request.POST.get('full_name')
+        email = request.POST.get('email')
+        profile_pic = request.FILES.get('pfp')
+
+        if profile_pic:
+            image_url = upload_image_to_imgbb(profile_pic)
+            if image_url:
+                user.pfp = image_url
+            else:
+                messages.error(request, "Erreur lors de l'upload de l'image.")
+
+        user.full_name = full_name
+        user.email = email
+        user.save()
+
+        messages.success(request, "Profil mis à jour avec succès!")
+        return redirect('settings')
+
+    return redirect('settings')
+
+from django.contrib.auth.hashers import check_password, make_password
+
+def update_password_view(request):
+    user_id = request.session.get('user_id')
+    if not user_id:
+        return redirect('register')
+
+    user = MongoUser.objects.get(id=user_id)
+    context = {'user': user}
+
+    if request.method == 'POST':
+        current = request.POST.get('current_password')
+        new = request.POST.get('new_password')
+        confirm = request.POST.get('confirm_password')
+
+        context['current'] = current
+        context['new'] = new
+        context['confirm'] = confirm
+
+        errors = {}
+
+        if not check_password(current, user.password):
+            errors['current_error'] = "Mot de passe actuel incorrect!"
+
+        if new != confirm:
+            errors['confirm_error'] = "Les mots de passe ne correspondent pas."
+
+        if new and len(new) < 6:
+            errors['new_error'] = "Le nouveau mot de passe est trop court."
+
+        if errors:
+            context.update(errors)
+            return render(request, 'users/settings.html', context)
+
+        user.password = make_password(new)
+        user.save()
+        messages.success(request, "Mot de passe changé avec succès 🔐")
+        return redirect('settings')
+
+    return redirect('settings')
+

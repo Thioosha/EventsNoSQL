@@ -9,18 +9,9 @@
 
 
 {% block content %}
-<h1 class="top-title">⚙️ Paramètres de l'utilisateur</h1>
+<h1 class="top-title">⚙️ Paramètres du compte</h1>
 
-<div class="container mt-5">
-    <div class="card p-4 shadow-lg">
-        <h5 class="text-dark">Nom d'utilisateur: <span class="text-primary fw-bold">{{ user.username }}</span></h5>
-        <h5 class="text-dark">Nom complet: <span class="text-info fw-bold">{{ user.full_name }}</span></h5>
-        <h5 class="text-dark">Email: <span class="text-danger fw-bold">{{ user.email }}</span></h5>
-        <h5 class="text-dark">Type de compte: <span class="text-success fw-bold">{{ user.account_type }}</span></h5>
-    </div>
-</div>
-
-<div class="container py-5">
+<!-- <div class="container py-5">
     <h2 class="mb-4">User Settings</h2>
     <form>
         <div class="row mb-4">
@@ -34,10 +25,6 @@
                     <label for="email" class="form-label">Email address</label>
                     <input type="email" class="form-control" id="email" value="john.doe@example.com">
                 </div>
-                <div class="mb-3">
-                    <label for="phone" class="form-label">Phone Number</label>
-                    <input type="tel" class="form-control" id="phone" value="+1 (555) 123-4567">
-                </div>
             </div>
             <div class="col-md-6">
                 <h4>Profile Picture</h4>
@@ -47,46 +34,15 @@
                 </div>
             </div>
         </div>
-
-        <hr>
-
-        <div class="row mb-4">
-            <div class="col-md-6">
-                <h4>Email Preferences</h4>
-                <div class="mb-3 form-check">
-                    <input type="checkbox" class="form-check-input" id="newsletterCheck" checked>
-                    <label class="form-check-label" for="newsletterCheck">Receive newsletter</label>
-                </div>
-                <div class="mb-3 form-check">
-                    <input type="checkbox" class="form-check-input" id="promotionsCheck">
-                    <label class="form-check-label" for="promotionsCheck">Receive promotional emails</label>
-                </div>
-            </div>
-            <div class="col-md-6">
-                <h4>Account Settings</h4>
-                <div class="mb-3">
-                    <label for="language" class="form-label">Preferred Language</label>
-                    <select class="form-select" id="language">
-                        <option value="en">English</option>
-                        <option value="es">Español</option>
-                        <option value="fr">Français</option>
-                        <option value="de">Deutsch</option>
-                    </select>
-                </div>
-                <div class="mb-3">
-                    <label for="timezone" class="form-label">Time Zone</label>
-                    <select class="form-select" id="timezone">
-                        <option value="UTC-8">Pacific Time (PT)</option>
-                        <option value="UTC-5">Eastern Time (ET)</option>
-                        <option value="UTC+0">Coordinated Universal Time (UTC)</option>
-                        <option value="UTC+1">Central European Time (CET)</option>
-                    </select>
-                </div>
-            </div>
+        <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+            <button type="button" class="btn btn-secondary me-md-2">Cancel</button>
+            <button type="submit" class="btn btn-primary">Save Changes</button>
         </div>
+    </form>
 
         <hr>
 
+    <form>
         <div class="row mb-4">
             <div class="col-md-6">
                 <h4>Change Password</h4>
@@ -103,18 +59,6 @@
                     <input type="password" class="form-control" id="confirmPassword">
                 </div>
             </div>
-            <div class="col-md-6">
-                <h4>Privacy Settings</h4>
-                <div class="mb-3 form-check">
-                    <input type="checkbox" class="form-check-input" id="profileVisibilityCheck" checked>
-                    <label class="form-check-label" for="profileVisibilityCheck">Make profile visible to others</label>
-                </div>
-                <div class="mb-3 form-check">
-                    <input type="checkbox" class="form-check-input" id="activityTrackingCheck" checked>
-                    <label class="form-check-label" for="activityTrackingCheck">Allow activity tracking for personalized
-                        experience</label>
-                </div>
-            </div>
         </div>
 
         <div class="d-grid gap-2 d-md-flex justify-content-md-end">
@@ -122,7 +66,117 @@
             <button type="submit" class="btn btn-primary">Save Changes</button>
         </div>
     </form>
+</div> -->
+<div class="container py-5 shadow-lg my-3 px-5" style="border-radius: 15px;">
+    <!-- User form starts here -->
+            <form action="{% url 'changer_profil' %}" method="POST" id="userForm" enctype="multipart/form-data">
+                {% csrf_token %}
+        <div class="row">
+            <!-- PFP -->
+            <div class="col-md-5 text-center">
+                <img src="{{ user.pfp }}" alt="Photo de profil" class="img-thumbnail mb-2"
+                    style="width: 300px; height: 300px; object-fit: cover;">
+                <input class="form-control mt-2" type="file" id="profilePicture" name="pfp" disabled>
+                <div class="p-4 shadow-lg text-start">
+                    <h5 class="text-dark">
+                        <span class="fw-bold"><i class="fi fi-rr-corporate-alt me-3" style="color: #8359d2;"></i>
+                            {% if user.account_type == 'organizer' %}
+                            Compte Organisateur
+                            {% elif user.account_type == 'participant' %}
+                            Compte participant
+                            {% endif %}
+                        </span>
+                    </h5> 
+                    <h5 class="text-dark"><span class="fw-bold"><i class="fi fi-rr-at me-4"  style="color: #8359d2;" ></i>{{ user.email }}</span></h5>
+                </div>
+            </div>
+
+
+            <!-- Infos -->
+            <div class="col-md-7 mt-5">
+                <h4 style="margin-top: 2.5rem;">Informations personnelles</h4>
+                <div class="mb-3">
+                    <label for="fullName" class="form-label">Nom complet</label>
+                    <input type="text" class="form-control" id="fullName" name="full_name" value="{{ user.full_name }}"
+                        disabled>
+                </div>
+                <div class="mb-3">
+                    <label for="username" class="form-label">Nom d'utilisateur</label>
+                    <input type="text" class="form-control" id="username" name="username" value="{{ user.username}}" disabled>
+                </div>
+                <div class="mb-3">
+                    <label for="email" class="form-label">Adresse email</label>
+                    <input type="email" class="form-control" id="email" name="email" value="{{ user.email }}" disabled>
+                </div>
+
+                <div class="d-grid gap-2 d-md-flex justify-content-md-end mb-4">
+                    <button type="button" id="editBtn" class="btn btn-click">Modifier</button>
+                    <button type="button" id="cancelBtn" class="btn btn-click btn-cancel d-none">Annuler</button>
+                    <button type="submit" id="saveBtn" class="btn btn-click d-none">Sauvegarder</button>
+                </div>
+                </form>
+
+                <!-- Password form -->
+                <form action="{% url 'changer_mdp' %}" method="POST" id="passwordForm" style="margin-top: 6rem;">
+                    {% csrf_token %}
+                    <div class="row mb-4">
+                        <div class="col-md-6 w-100">
+                            <h4>Modifier le mot de passe</h4>
+                            <!-- Current Password -->
+                            <div class="mb-3 position-relative">
+                                <label for="currentPassword" class="form-label">Mot de passe actuel</label>
+                                <input type="password" class="form-control" id="currentPassword" name="current_password" disabled
+                                    style="padding-right: 40px;">
+                                <img id="toggleCurrentPwd" src="{% static 'img/users/eye2.png' %}" style="position: absolute; right: 12px; top: 70%; transform: translateY(-50%);
+                                    width: 24px; height: 24px; cursor: pointer; z-index: 100;">
+                                {% if current_error %}
+                                <div class="text-danger mt-1" style="font-weight: 500;">{{ current_error }}</div>
+                                {% endif %}
+                            </div>
+                            
+                            <!-- New Password -->
+                            <div class="mb-3 position-relative">
+                                <label for="newPassword" class="form-label">Nouveau mot de passe</label>
+                                <input type="password" class="form-control" id="newPassword" name="new_password" disabled
+                                    style="padding-right: 40px;">
+                                    <img id="toggleNewPwd" src="{% static 'img/users/eye2.png' %}" style="position: absolute; right: 12px; top: 70%; transform: translateY(-50%);
+                                    width: 24px; height: 24px; cursor: pointer; z-index: 100;">
+
+                                {% if new_error %}
+                                    <div class="text-danger mt-1" style="font-weight: 500;">{{ new_error }}</div>
+                                {% endif %}
+                            </div>
+                            
+                            <!-- Confirm Password -->
+                            <div class="mb-3 position-relative">
+                                <label for="confirmPassword" class="form-label">Confirmer le mot de passe</label>
+                                <input type="password" class="form-control" id="confirmPassword" name="confirm_password" disabled
+                                    style="padding-right: 40px;">
+                                <img id="toggleConfirmPwd" src="{% static 'img/users/eye2.png' %}" style="position: absolute; right: 12px; top: 70%; transform: translateY(-50%);
+                                    width: 24px; height: 24px; cursor: pointer; z-index: 100;">
+
+                                {% if confirm_error %}
+                                    <div class="text-danger mt-1" style="font-weight: 500;">{{ confirm_error }}</div>
+                                {% endif %}
+                            </div>
+
+
+                            <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                                <button type="button" id="editPwdBtn" class="btn btn-click">Modifier</button>
+                                <button type="button" id="cancelPwdBtn" class="btn btn-click btn-cancel d-none">Annuler</button>
+                                <button type="submit" id="savePwdBtn" class="btn btn-click d-none">Sauvegarder</button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
 </div>
+
+
+
+
+
 {% endblock %}
 
 
@@ -131,5 +185,107 @@
 
 <!-- si vous avez un script.js file. Vous pouvez aussi mettre le script pur dans block content si vous préférez -->
 {% block extra_js %}
-<script src="{%static 'js/exple.js'%}"></script>
+<script>
+    const editBtn = document.getElementById('editBtn');
+    const cancelBtn = document.getElementById('cancelBtn');
+    const saveBtn = document.getElementById('saveBtn');
+    const formInputs = document.querySelectorAll('#userForm input');
+
+    const originalValues = {};
+    formInputs.forEach(input => {
+        originalValues[input.name] = input.value;
+    });
+
+    editBtn.addEventListener('click', () => {
+        formInputs.forEach(input => input.disabled = false);
+        editBtn.classList.add('d-none');
+        cancelBtn.classList.remove('d-none');
+        saveBtn.classList.remove('d-none');
+    });
+
+    cancelBtn.addEventListener('click', () => {
+        formInputs.forEach(input => {
+            input.value = originalValues[input.name]; // Reset to original value
+            input.disabled = true;
+        });
+
+        cancelBtn.classList.add('d-none');
+        saveBtn.classList.add('d-none');
+        editBtn.classList.remove('d-none');
+    });
+</script>
+
+
+<script>
+    const pwdInputs = document.querySelectorAll('#passwordForm input');
+    const editPwdBtn = document.getElementById('editPwdBtn');
+    const cancelPwdBtn = document.getElementById('cancelPwdBtn');
+    const savePwdBtn = document.getElementById('savePwdBtn');
+
+    editPwdBtn.addEventListener('click', () => {
+        pwdInputs.forEach(input => input.disabled = false);
+        editPwdBtn.classList.add('d-none');
+        cancelPwdBtn.classList.remove('d-none');
+        savePwdBtn.classList.remove('d-none');
+    });
+
+    cancelPwdBtn.addEventListener('click', () => {
+        pwdInputs.forEach(input => {
+            input.disabled = true;
+            input.value = '';
+        });
+        cancelPwdBtn.classList.add('d-none');
+        savePwdBtn.classList.add('d-none');
+        editPwdBtn.classList.remove('d-none');
+    });
+</script>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const fields = [
+            { inputId: "currentPassword", toggleId: "toggleCurrentPwd" },
+            { inputId: "newPassword", toggleId: "toggleNewPwd" },
+            { inputId: "confirmPassword", toggleId: "toggleConfirmPwd" }
+        ];
+
+        fields.forEach(field => {
+            const input = document.getElementById(field.inputId);
+            const toggle = document.getElementById(field.toggleId);
+
+            toggle.addEventListener("click", function () {
+                const type = input.type === "password" ? "text" : "password";
+                input.type = type;
+                this.src = type === "password"
+                    ? "{% static 'img/users/eye2.png' %}"
+                    : "{% static 'img/users/eye.png' %}";
+            });
+        });
+
+        // Buttons
+        const editBtn = document.getElementById("editPwdBtn");
+        const cancelBtn = document.getElementById("cancelPwdBtn");
+        const saveBtn = document.getElementById("savePwdBtn");
+
+        const inputs = fields.map(f => document.getElementById(f.inputId));
+
+        editBtn.addEventListener("click", function () {
+            inputs.forEach(input => input.disabled = false);
+            editBtn.classList.add("d-none");
+            cancelBtn.classList.remove("d-none");
+            saveBtn.classList.remove("d-none");
+        });
+
+        cancelBtn.addEventListener("click", function () {
+            inputs.forEach(input => {
+                input.disabled = true;
+                input.value = ""; // Clear fields
+            });
+            cancelBtn.classList.add("d-none");
+            saveBtn.classList.add("d-none");
+            editBtn.classList.remove("d-none");
+        });
+    });
+</script>
+
+
 {% endblock %}

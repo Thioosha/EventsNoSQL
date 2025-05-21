@@ -63,10 +63,12 @@ The above copyright notice and this permission notice shall be included in all c
 
 
                 <li class="nav-item">
-                    <a href="{% url 'settings'%}" class="nav-link" style="margin-top: 5px !important;">
-                        <i class="fa-solid fa-circle-user" style="font-size: 2.3rem;"></i>
+                    <a href="{% url 'settings' %}" class="nav-link" style="margin-top: 0px !important; opacity: 1;">
+                        <img src="{{ user.pfp }}" alt="Profile Picture"
+                            style="width: 50px; height: 50px; border-radius: 50%; object-fit: cover; border: 2px solid #6f42c1;">
                     </a>
                 </li>
+                
 
                 <li class="nav-item">
                     <a href="{% url 'logout' %}" class="btn login-btn btn-round login-btn">

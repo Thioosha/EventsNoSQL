@@ -66,29 +66,6 @@ def user_events(request):
         }
     })
 
-
-
-# def user_events(request):
-#     user_id = request.session.get('user_id')
-#     if not user_id:
-#         return redirect('register')
-
-#     user = MongoUser.objects.get(id=user_id)
-
-#     events = MongoEvent.objects(status__nin=["cancelled", "archived"]).order_by('start_datetime')
-
-#     main_event = events.first()
-#     carousel_events = events[1:6] if events.count() > 1 else []
-#     remaining_events = events[6:] if events.count() > 6 else []
-    
-
-#     return render(request, 'events/user_events.html', {
-#         'main_event': main_event,
-#         'carousel_events': carousel_events,
-#         'remaining_events': remaining_events,
-#         'color_on_scroll': 30
-#     })
-
 from django.shortcuts import render, get_object_or_404
 from .models import MongoEvent
 
