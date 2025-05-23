@@ -3,7 +3,7 @@
     background: linear-gradient(45deg, #41359d, #6f42c1);
     color: white;
     margin-top: -1rem;
-
+    box-shadow: 0 4px 20px 0px rgba(0, 0, 0, 0.14), 0 7px 10px -5px rgba(156, 39, 176, 0.4);
 }
 
 .img {
@@ -91,4 +91,32 @@ body {
     font-weight: bold;
     text-decoration: none;
     color: #fff;
+}
+
+.btn-confirm1 {
+    background-color: #fff;
+    border: none;
+    color: #41359d;
+    text-align: center;
+    text-decoration: none;
+    width: 100%;
+    font-size: 16px;
+    border-radius: 5px;
+    padding: 14px 25px;
+    border: none;
+    font-weight: 600;
+    cursor: pointer;
+    margin-top: 15px;
+}
+
+.btn-confirm1 a {
+    font-weight: bold;
+    text-decoration: none;
+    color: #41359d;
+    text-decoration: underline;
+    transition: all 0,2s;
+}
+
+.btn-confirm1 a:hover {
+    color: #796cda;
 }

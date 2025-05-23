@@ -10,21 +10,60 @@
 <h2 class="top-title">Confirmation de réservation</h2>
 
 <div class="container text-center box mb-4">
-    <img class="img" src="{% static 'img/reservations/card-confirm.gif' %}" alt="validation-reservation">
-
-    <h3 style="margin-top: -2rem;"><strong>Réservation validée ! ✅</strong></h3>
-    <p>Merci d’avoir confirmé votre réservation. On se voit à l’événement 💜🖤</p>
+    <h3 style="margin-top: 1rem;"><strong>Réservation validée ! ✅</strong></h3>
+    <div class="d-flex" style="align-items: center;">
+        <div>
+            <img class="img" src="{% static 'img/reservations/card-confirm.gif' %}" alt="validation-reservation">  
+        </div>
     
+        <div>
+            {% if ticket %}
+            <div class="mt-2">
+                <h5>🎟️ Ton ticket :</h5>
+                <img src="{{ ticket }}" alt="QR Code de réservation" style="width: 200px; height: 200px;">
+                <p class="mt-2">Présente ce QR code à l’entrée 💜</p>
+            </div>
+            {% endif %}
+        </div>
+    </div>
     
-    <button class="formbold-btn btn-confirm">
+    <button class="formbold-btn btn-confirm" id="downloadTicketBtn">
+        <a href="#" download="reservation_qr.png" target="_blank">
+            📥 Télécharger le ticket
+        </a>
+    </button>
+    <button class="btn-confirm1">
         <a href="{% url 'user_events' %}">Voir tous les événements</a>
     </button>
-
 </div>
-
-
 {% endblock %}
 
 
 {% block extra_js %}
+
+<script>
+    document.getElementById('downloadTicketBtn').addEventListener('click', async function () {
+        const imageUrl = "{{ ticket }}";
+
+        try {
+            const response = await fetch(imageUrl);
+            const blob = await response.blob();
+            const url = window.URL.createObjectURL(blob);
+
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'ticket_reservation.png';
+            document.body.appendChild(a);
+            a.click();
+            a.remove();
+
+            window.URL.revokeObjectURL(url);
+
+        } catch (error) {
+            alert("Oups, le téléchargement a échoué.");
+            console.error(error);
+        }
+    });
+</script>
+
 {% endblock %}

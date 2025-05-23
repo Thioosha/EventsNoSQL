@@ -180,7 +180,18 @@ def reservation_event_detail(request, event_id):
     except MongoEvent.DoesNotExist:
         raise Http404("Event not found 🚫")
 
-    # Check for reservation errors sent via GET
+    ticket_url = None
+    user_id = request.session.get('user_id')
+    if user_id:
+        try:
+            user = MongoUser.objects.get(id=user_id)
+            reservation = MongoReservation.objects.filter(user=user, event=event, status="confirmed").first()
+            if reservation and reservation.ticket:
+                ticket_url = reservation.ticket
+        except MongoUser.DoesNotExist:
+            pass
+
+    # Handle reservation-related errors from query string
     error = request.GET.get('error')
     if error == 'expired':
         messages.error(request, "La réservation a expiré. Veuillez réessayer.")
@@ -191,8 +202,10 @@ def reservation_event_detail(request, event_id):
 
     return render(request, 'dashboard/reservation_event_detail.html', {
         'event': event,
+        'ticket': ticket_url,
         'color_on_scroll': 30,
     })
+
 
 
 def annuler_reservation(request, event_id):

@@ -3,6 +3,7 @@
     background: linear-gradient(45deg, #41359d, #6f42c1);
     color: white;
     margin-top: -1rem;
+    box-shadow: 0 4px 20px 0px rgba(0, 0, 0, 0.14), 0 7px 10px -5px rgba(156, 39, 176, 0.4);
 
 }
 

@@ -8,5 +8,5 @@ class MongoUser(Document):
     reservations = ListField(default=list)
     notifications = ListField(default=list)
     account_type = StringField(choices=['organizer', 'participant'], required=True)
-    pfp = StringField(default="/static/img/users/pfp.png")  # Default local path
+    pfp = StringField(default="/static/img/users/pfp.png")
 
