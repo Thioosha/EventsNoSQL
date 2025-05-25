@@ -1,0 +1,87 @@
+{% extends "base.html" %}
+{% load static %}
+{% block extra_head %}
+<!-- Juste un exple. Il faudra changer le css/exple au nom de votre file css -->
+<link rel="stylesheet" href="{% static 'css/events/userevents.css' %}">
+{% endblock %}
+
+
+{% block content %}
+
+<h1 style="z-index:-100;" class="top-title">Les événements trouvés</h1>
+
+{% comment %} <h1>Résultats pour "{{ query }}"</h1> {% endcomment %}
+
+<!-- Filtres -->
+
+<form method="get" class="mb-4 p-3 bg-light rounded shadow-sm" style="z-index: -1000;">
+    <div class="row g-3">
+      <div class="col-md-3">
+        <label for="category" class="form-label">Catégorie</label>
+        <select class="form-select" name="category" id="category">
+          <option value="">Toutes</option>
+          {% for c in categories %}
+            <option value="{{ c }}" {% if filters.category == c %}selected{% endif %}>{{ c }}</option>
+          {% endfor %}
+        </select>
+      </div>
+      <div class="col-md-2">
+        <label for="price_min" class="form-label">Prix min</label>
+        <input type="number" step="0.01" name="price_min" id="price_min" class="form-control" value="{{ filters.price_min }}">
+      </div>
+      <div class="col-md-2">
+        <label for="price_max" class="form-label">Prix max</label>
+        <input type="number" step="0.01" name="price_max" id="price_max" class="form-control" value="{{ filters.price_max }}">
+      </div>
+      <div class="col-md-2">
+        <label for="start_date" class="form-label">Date début</label>
+        <input type="date" name="start_date" id="start_date" class="form-control" value="{{ filters.start_date }}">
+      </div>
+      <div class="col-md-2">
+        <label for="end_date" class="form-label">Date fin</label>
+        <input type="date" name="end_date" id="end_date" class="form-control" value="{{ filters.end_date }}">
+      </div>
+     
+     <div class="col-md-1 d-flex align-items-end" style="background-color: #f8f9fa;">
+        <button type="submit" class="btn btn-primary w-100" style="background-color: #41359D; border-color: #41359D;">Filtrer</button>
+      </div>
+      <div class="col-md-12 text-end mt-2">
+        <a href="{% url 'user_events' %}" class="btn btn-link">Réinitialiser les filtres</a>
+      </div>
+      
+    </div>
+  </form>
+  
+
+
+{% comment %} <form method="get" class="mb-3">
+    <input type="hidden" name="q" value="{{ query }}">
+    <label>Filtrer par catégorie :</label>
+    <select name="category" onchange="this.form.submit()">
+        <option value="">Toutes</option>
+        {% for c in categories %}
+            <option value="{{ c }}" {% if filters.category == c %}selected{% endif %}>{{ c }}</option>
+        {% endfor %}
+    </select>
+</form> {% endcomment %}
+
+{% if events %}
+    <div class="row">
+        {% for event in events %}
+            <div class="col-md-4 mb-3">
+                <div class="card h-100">
+                    <img src="{{ event.image_url }}" class="card-img-top" alt="{{ event.title }}">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ event.title }}</h5>
+                        <p class="card-text">{{ event.description|truncatewords:20 }}</p>
+                        <a href="{% url 'user_event_detail' event.id %}" class="btn btn-primary">Voir détails</a>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+{% else %}
+    <p>Aucun résultat trouvé 🧐</p>
+{% endif %}
+
+{% endblock %}

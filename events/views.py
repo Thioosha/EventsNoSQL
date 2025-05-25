@@ -113,6 +113,9 @@ from .forms import MongoEventForm
 from .models import MongoEvent
 from users.models import MongoUser
 from datetime import datetime, timezone
+from mongoengine.queryset.visitor import Q
+
+
 
 import requests
 import base64
@@ -175,5 +178,57 @@ def create_event(request):
 })
 
 
+def search_events(request):
+    query = request.GET.get('q', '').strip()
+    filters = {}
+
+    if query:
+        events = MongoEvent.objects.filter(
+            Q(title__regex=f'(?i){query}') | 
+            Q(description__regex=f'(?i){query}') | 
+            Q(location__regex=f'(?i){query}')
+        )
+    else:
+        events = MongoEvent.objects.none()
+
+    category = request.GET.get('category')
+    if category:
+        events = events.filter(category=category)
+        filters['category'] = category
+
+    categories = MongoEvent.objects.distinct('category')
+
+    return render(request, 'events/search_results.html', {
+        'query': query,
+        'events': events,
+        'filters': filters,
+        'categories': categories,
+    })
 
 
+# def search_events(request):
+#     query = request.GET.get('q')
+#     events =  MongoEvent.objects.none()
+#     # Exemple : recherche dans le titre de l'événement
+#     # query = request.GET.get("q", "")
+#     # events = MongoEvent.objects(title__icontains=query)
+
+#     filters = {}
+
+#     if query:
+#         events = MongoEvent.objects.filter(
+#             Q(title__icontains=query) | Q(description__icontains=query) | Q(location__icontains=query)
+#         )
+
+#     # Filtres supplémentaires
+#     category = request.GET.get('category')
+#     if category:
+#         events = events.filter(category=category)
+#         filters['category'] = category
+
+#     return render(request, 'events/search_results.html', {
+#         'query': query,
+#         'events': events,
+#         'filters': filters,
+#         'categories': MongoEvent.objects.values_list('category', flat=True).distinct(),
+#     })
