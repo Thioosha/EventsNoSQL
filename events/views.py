@@ -177,33 +177,34 @@ def create_event(request):
     'color_on_scroll': 30,
 })
 
+#la bonne fonction
+# def search_events(request):
+#     query = request.GET.get('q', '').strip()
+#     filters = {}
 
-def search_events(request):
-    query = request.GET.get('q', '').strip()
-    filters = {}
+#     if query:
+#         events = MongoEvent.objects.filter(
+#             Q(title__regex=f'(?i){query}') | 
+#             Q(description__regex=f'(?i){query}') | 
+#             Q(location__regex=f'(?i){query}') | 
+#             Q(category__regex=f'(?i){query}')  # Ajout du filtrage par catégorie
+#         )
+#     else:
+#         events = MongoEvent.objects.none()
 
-    if query:
-        events = MongoEvent.objects.filter(
-            Q(title__regex=f'(?i){query}') | 
-            Q(description__regex=f'(?i){query}') | 
-            Q(location__regex=f'(?i){query}')
-        )
-    else:
-        events = MongoEvent.objects.none()
+#     category = request.GET.get('category')
+#     if category:
+#         events = events.filter(category=category)
+#         filters['category'] = category
 
-    category = request.GET.get('category')
-    if category:
-        events = events.filter(category=category)
-        filters['category'] = category
+#     categories = MongoEvent.objects.distinct('category')
 
-    categories = MongoEvent.objects.distinct('category')
-
-    return render(request, 'events/search_results.html', {
-        'query': query,
-        'events': events,
-        'filters': filters,
-        'categories': categories,
-    })
+#     return render(request, 'events/search_results.html', {
+#         'query': query,
+#         'events': events,
+#         'filters': filters,
+#         'categories': categories,
+#     })
 
 
 # def search_events(request):
@@ -232,3 +233,69 @@ def search_events(request):
 #         'filters': filters,
 #         'categories': MongoEvent.objects.values_list('category', flat=True).distinct(),
 #     })
+
+
+
+
+#essai avec le filtrage
+def search_events(request): 
+    query = request.GET.get('q', '').strip()
+    filters = {}
+
+    # 1. Recherche initiale
+    if query:
+        events = MongoEvent.objects.filter(
+            Q(title__regex=f'(?i){query}') | 
+            Q(description__regex=f'(?i){query}') | 
+            Q(location__regex=f'(?i){query}') | 
+            Q(category__regex=f'(?i){query}')  # Ajout du filtrage par catégorie
+        )
+    else:
+        events = MongoEvent.objects.none()
+
+    # 2. Filtrage sur les résultats de recherche uniquement
+    category = request.GET.get('category')
+    if category:
+        events = events.filter(category=category)
+        filters['category'] = category
+
+    price_min = request.GET.get('price_min')
+    if price_min:
+        events = events.filter(price__gte=float(price_min))
+        filters['price_min'] = price_min
+
+    price_max = request.GET.get('price_max')
+    if price_max:
+        events = events.filter(price__lte=float(price_max))
+        filters['price_max'] = price_max
+
+    start_date = request.GET.get('start_date')
+    if start_date:
+        try:
+            start_dt = datetime.strptime(start_date, '%Y-%m-%d')
+            events = events.filter(date__gte=start_dt)
+            filters['start_date'] = start_date
+        except ValueError:
+            pass
+
+    end_date = request.GET.get('end_date')
+    if end_date:
+        try:
+            end_dt = datetime.strptime(end_date, '%Y-%m-%d')
+            events = events.filter(date__lte=end_dt)
+            filters['end_date'] = end_date
+        except ValueError:
+            pass
+
+    # 3. Récupérer les catégories disponibles pour les filtres
+    categories = MongoEvent.objects.distinct('category')
+
+    return render(request, 'events/search_results.html', {
+        'query': query,
+        'events': events,
+        'filters': filters,
+        'categories': categories,
+    })
+
+
+

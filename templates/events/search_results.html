@@ -1,87 +1,389 @@
 {% extends "base.html" %}
 {% load static %}
+
 {% block extra_head %}
-<!-- Juste un exple. Il faudra changer le css/exple au nom de votre file css -->
 <link rel="stylesheet" href="{% static 'css/events/userevents.css' %}">
+<style>
+/* Styles supplémentaires pour l'amélioration */
+.hero-section {
+    background: linear-gradient(135deg, #41359D 0%, #6c5ce7 100%);
+    color: white;
+    padding: 3rem 0;
+    margin-bottom: 2rem;
+}
+
+.filter-card {
+    border: none;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    border-radius: 12px;
+    margin-bottom: 2rem;
+}
+
+.event-card {
+    border: none;
+    border-radius: 16px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+    transition: all 0.3s ease;
+    overflow: hidden;
+}
+
+.event-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 30px rgba(0,0,0,0.15);
+}
+
+.event-image {
+    height: 220px;
+    position: relative;
+    overflow: hidden;
+}
+
+.event-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+}
+
+.event-card:hover .event-image img {
+    transform: scale(1.05);
+}
+
+.category-badge {
+    position: absolute;
+    top: 12px;
+    left: 12px;
+    background: rgba(255,255,255,0.95);
+    color: #41359D;
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    backdrop-filter: blur(10px);
+}
+
+.event-info {
+    padding: 1.5rem;
+}
+
+.event-title {
+    font-weight: 700;
+    color: #2d3748;
+    margin-bottom: 1rem;
+    line-height: 1.3;
+}
+
+.event-meta {
+    color: #718096;
+    font-size: 0.9rem;
+    margin-bottom: 1rem;
+}
+
+.event-meta strong {
+    color: #4a5568;
+}
+
+.btn-details {
+    background: linear-gradient(135deg, #41359D, #6c5ce7);
+    border: none;
+    border-radius: 8px;
+    padding: 10px 20px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+.btn-details:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(65,53,157,0.4);
+}
+
+.filter-section {
+    background: #f8fafc;
+    border-radius: 12px;
+    padding: 2rem;
+    margin-bottom: 2rem;
+}
+
+.no-events {
+    text-align: center;
+    padding: 4rem 2rem;
+    color: #718096;
+}
+
+.no-events-icon {
+    font-size: 4rem;
+    margin-bottom: 1rem;
+}
+
+.availability-indicator {
+    display: inline-flex;
+    align-items: center;
+    padding: 4px 8px;
+    border-radius: 12px;
+    font-size: 0.8rem;
+    font-weight: 600;
+}
+
+.availability-high {
+    background: #f0fff4;
+    color: #38a169;
+}
+
+.availability-medium {
+    background: #fffbf0;
+    color: #d69e2e;
+}
+
+.availability-low {
+    background: #fff5f5;
+    color: #e53e3e;
+}
+
+@media (max-width: 768px) {
+    .hero-section {
+        padding: 2rem 0;
+    }
+    
+    .filter-section {
+        padding: 1rem;
+    }
+    
+    .event-card {
+        margin-bottom: 1.5rem;
+    }
+}
+</style>
 {% endblock %}
 
-
 {% block content %}
-
-<h1 style="z-index:-100;" class="top-title">Les événements trouvés</h1>
-
-{% comment %} <h1>Résultats pour "{{ query }}"</h1> {% endcomment %}
-
-<!-- Filtres -->
-
-<form method="get" class="mb-4 p-3 bg-light rounded shadow-sm" style="z-index: -1000;">
-    <div class="row g-3">
-      <div class="col-md-3">
-        <label for="category" class="form-label">Catégorie</label>
-        <select class="form-select" name="category" id="category">
-          <option value="">Toutes</option>
-          {% for c in categories %}
-            <option value="{{ c }}" {% if filters.category == c %}selected{% endif %}>{{ c }}</option>
-          {% endfor %}
-        </select>
-      </div>
-      <div class="col-md-2">
-        <label for="price_min" class="form-label">Prix min</label>
-        <input type="number" step="0.01" name="price_min" id="price_min" class="form-control" value="{{ filters.price_min }}">
-      </div>
-      <div class="col-md-2">
-        <label for="price_max" class="form-label">Prix max</label>
-        <input type="number" step="0.01" name="price_max" id="price_max" class="form-control" value="{{ filters.price_max }}">
-      </div>
-      <div class="col-md-2">
-        <label for="start_date" class="form-label">Date début</label>
-        <input type="date" name="start_date" id="start_date" class="form-control" value="{{ filters.start_date }}">
-      </div>
-      <div class="col-md-2">
-        <label for="end_date" class="form-label">Date fin</label>
-        <input type="date" name="end_date" id="end_date" class="form-control" value="{{ filters.end_date }}">
-      </div>
-     
-     <div class="col-md-1 d-flex align-items-end" style="background-color: #f8f9fa;">
-        <button type="submit" class="btn btn-primary w-100" style="background-color: #41359D; border-color: #41359D;">Filtrer</button>
-      </div>
-      <div class="col-md-12 text-end mt-2">
-        <a href="{% url 'user_events' %}" class="btn btn-link">Réinitialiser les filtres</a>
-      </div>
-      
+<!-- Section Hero -->
+<div class="hero-section top-title">
+    <div class="container">
+        <div class="text-center">
+            <h1 class="display-4 fw-bold mb-3">Découvrez nos événements</h1>
+            <p class="lead">Trouvez l'événement parfait pour vous parmi notre sélection</p>
+        </div>
     </div>
-  </form>
-  
+</div>
 
+<!-- Section des filtres -->
+<div class="container">
+    <div class="filter-card card">
+        <div class="card-body">
+            <h5 class="card-title mb-4">
+                <i class="bi bi-funnel me-2"></i>Filtrer les événements
+            </h5>
+            
+            <form method="get" id="filterForm">
+                <div class="row g-3">
+                    <!-- Recherche principale -->
+                    <div class="col-lg-3 col-md-6">
+                        <label for="q" class="form-label fw-semibold">Rechercher</label>
+                        <div class="input-group">
+                            <span class="input-group-text">
+                                <i class="bi bi-search"></i>
+                            </span>
+                            <input type="text" name="q" id="q" class="form-control" 
+                                   placeholder="Nom, description..." value="{{ query }}">
+                        </div>
+                    </div>
 
-{% comment %} <form method="get" class="mb-3">
-    <input type="hidden" name="q" value="{{ query }}">
-    <label>Filtrer par catégorie :</label>
-    <select name="category" onchange="this.form.submit()">
-        <option value="">Toutes</option>
-        {% for c in categories %}
-            <option value="{{ c }}" {% if filters.category == c %}selected{% endif %}>{{ c }}</option>
-        {% endfor %}
-    </select>
-</form> {% endcomment %}
+                    <!-- Catégorie -->
+                    <div class="col-lg-2 col-md-6">
+                        <label for="category" class="form-label fw-semibold">Catégorie</label>
+                        <select class="form-select" name="category" id="category">
+                            <option value="">Toutes</option>
+                            {% for c in categories %}
+                                <option value="{{ c }}" {% if filters.category == c %}selected{% endif %}>
+                                    {{ c }}
+                                </option>
+                            {% endfor %}
+                        </select>
+                    </div>
 
-{% if events %}
-    <div class="row">
-        {% for event in events %}
-            <div class="col-md-4 mb-3">
-                <div class="card h-100">
-                    <img src="{{ event.image_url }}" class="card-img-top" alt="{{ event.title }}">
-                    <div class="card-body">
-                        <h5 class="card-title">{{ event.title }}</h5>
-                        <p class="card-text">{{ event.description|truncatewords:20 }}</p>
-                        <a href="{% url 'user_event_detail' event.id %}" class="btn btn-primary">Voir détails</a>
+                    <!-- Prix -->
+                    <div class="col-lg-2 col-md-6">
+                        <label for="price_min" class="form-label fw-semibold">Prix min (€)</label>
+                        <input type="number" step="0.01" name="price_min" id="price_min" 
+                               class="form-control" placeholder="0" value="{{ filters.price_min }}">
+                    </div>
+
+                    <div class="col-lg-2 col-md-6">
+                        <label for="price_max" class="form-label fw-semibold">Prix max (€)</label>
+                        <input type="number" step="0.01" name="price_max" id="price_max" 
+                               class="form-control" placeholder="1000" value="{{ filters.price_max }}">
+                    </div>
+
+                    <!-- Dates -->
+                    <div class="col-lg-2 col-md-6">
+                        <label for="start_date" class="form-label fw-semibold">Du</label>
+                        <input type="date" name="start_date" id="start_date" 
+                               class="form-control" value="{{ filters.start_date }}">
+                    </div>
+
+                    <div class="col-lg-1 col-md-6">
+                        <label for="end_date" class="form-label fw-semibold">Au</label>
+                        <input type="date" name="end_date" id="end_date" 
+                               class="form-control" value="{{ filters.end_date }}">
                     </div>
                 </div>
-            </div>
-        {% endfor %}
+
+                <!-- Boutons d'action -->
+                <div class="row mt-4">
+                    <div class="col-12">
+                        <div class="d-flex gap-2 justify-content-end flex-wrap">
+                            {% comment %} <a href="{% url 'user_events' %}" class="btn text-end mt-2 btn-link">
+                                <i class="bi bi-arrow-clockwise me-1 " style="color: #41359D"></i>Réinitialiser
+                            </a> {% endcomment %}
+                            <button type="submit" class="btn btn-primary" style="background-color: #41359D; border-color: #41359D;">
+                                <i class="bi bi-search me-1"></i>Filtrer
+                            </button>
+                            <div class="col-md-12 text-end mt-2">
+                                <a href="{% url 'search_events' %}" class="btn btn-link">Réinitialiser les filtres</a>
+                            </div>
+                            
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
     </div>
-{% else %}
-    <p>Aucun résultat trouvé 🧐</p>
-{% endif %}
+
+    <!-- Résultats -->
+    {% if events %}
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h3 class="h5 mb-0">{{ events|length }} événement{{ events|length|pluralize }} trouvé{{ events|length|pluralize }}</h3>
+            <div class="dropdown">
+                <button class="btn btn-outline-secondary dropdown-toggle btn-sm" type="button" 
+                        data-bs-toggle="dropdown" aria-expanded="false">
+                    <i class="bi bi-sort-down me-1"></i>Trier par
+                </button>
+                <ul class="dropdown-menu">
+                    <li><a class="dropdown-item" href="#">Date (plus récent)</a></li>
+                    <li><a class="dropdown-item" href="#">Date (plus ancien)</a></li>
+                    <li><a class="dropdown-item" href="#">Prix (croissant)</a></li>
+                    <li><a class="dropdown-item" href="#">Prix (décroissant)</a></li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Grille d'événements -->
+        <div class="row g-4 mb-5">
+            {% for event in events %}
+                <div class="col-lg-4 col-md-6">
+                    <div class="card event-card h-100">
+                        <!-- Image de l'événement -->
+                        <div class="event-image">
+                            <img src="{{ event.image_url|default:'https://dummyimage.com/400x220/dee2e6/6c757d.jpg' }}"
+                                 alt="{{ event.title }}">
+                            <div class="category-badge">{{ event.category }}</div>
+                        </div>
+
+                        <!-- Contenu de la carte -->
+                        <div class="event-info">
+                            <h4 class="event-title h5">{{ event.title }}</h4>
+                            
+                            <div class="event-meta">
+                                <div class="mb-2">
+                                    <strong><i class="bi bi-person me-1"></i>Organisateur:</strong> 
+                                    {{ event.created_by.full_name }}
+                                </div>
+                                <div class="mb-2">
+                                    <strong><i class="bi bi-calendar me-1"></i>Date:</strong> 
+                                    {{ event.start_datetime|date:"l d F Y à H:i" }}
+                                </div>
+                                <div class="mb-2">
+                                    <strong><i class="bi bi-geo-alt me-1"></i>Lieu:</strong> 
+                                    {{ event.location }}
+                                </div>
+                                
+                                <!-- Indicateur de disponibilité -->
+                                {% with availability_ratio=event.available_slots|floatformat:0|add:0 %}
+                                    {% if availability_ratio > 5 %}
+                                        <div class="availability-indicator availability-high">
+                                            <i class="bi bi-check-circle me-1"></i>
+                                            {{ event.available_slots }} places disponibles
+                                        </div>
+                                    {% elif availability_ratio > 2 %}
+                                        <div class="availability-indicator availability-medium">
+                                            <i class="bi bi-exclamation-triangle me-1"></i>
+                                            {{ event.available_slots }} places restantes
+                                        </div>
+                                    {% else %}
+                                        <div class="availability-indicator availability-low">
+                                            <i class="bi bi-exclamation-circle me-1"></i>
+                                            Plus que {{ event.available_slots }} places
+                                        </div>
+                                    {% endif %}
+                                {% endwith %}
+                            </div>
+                        </div>
+
+                        <!-- Pied de carte -->
+                        <div class="card-footer bg-transparent border-0 p-3 pt-0">
+                            <a href="{% url 'user_event_detail' event.id %}" 
+                               class="btn btn-details btn-primary w-100">
+                                <i class="bi bi-eye me-1"></i>Voir les détails
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+
+    {% else %}
+        <!-- Message aucun événement -->
+        <div class="no-events">
+            <div class="no-events-icon">🎭</div>
+            <h4 class="mb-3">Aucun événement trouvé</h4>
+            <p class="mb-4">Essayez d'ajuster vos filtres ou de rechercher autre chose.</p>
+            <a href="{% url 'user_events' %}" class="btn btn-primary" style="background-color: #41359D;">
+                <i class="bi bi-arrow-clockwise me-1"></i>Voir tous les événements
+            </a>
+        </div>
+    {% endif %}
+</div>
+
+<!-- Script pour améliorer l'UX -->
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Auto-submit du formulaire avec un délai pour la recherche
+    const searchInput = document.getElementById('q');
+    let searchTimeout;
+    
+    if (searchInput) {
+        searchInput.addEventListener('input', function() {
+            clearTimeout(searchTimeout);
+            searchTimeout = setTimeout(() => {
+                // Optionnel: soumission automatique après 500ms
+                // document.getElementById('filterForm').submit();
+            }, 500);
+        });
+    }
+    
+    // Animation des cartes au scroll
+    const observerOptions = {
+        threshold: 0.1,
+        rootMargin: '0px 0px -50px 0px'
+    };
+    
+    const observer = new IntersectionObserver(function(entries) {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.style.opacity = '1';
+                entry.target.style.transform = 'translateY(0)';
+            }
+        });
+    }, observerOptions);
+    
+    // Observer toutes les cartes d'événements
+    document.querySelectorAll('.event-card').forEach(card => {
+        card.style.opacity = '0';
+        card.style.transform = 'translateY(20px)';
+        card.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+        observer.observe(card);
+    });
+});
+</script>
 
 {% endblock %}
