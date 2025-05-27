@@ -1,7 +1,7 @@
 from django.shortcuts import redirect, get_object_or_404
 from django.contrib import messages
 from bson import ObjectId
-from .models import MongoEvent  # adapte si le nom est différent
+from .models import MongoEvent, NotificationParticipant  # adapte si le nom est différent
 from django.shortcuts import get_object_or_404, render, redirect
 from django.contrib import messages
 from bson import ObjectId
@@ -31,20 +31,34 @@ def dashboard_view(request):
     current_user = MongoUser.objects(id=ObjectId(user_id)).first()
     now = datetime.utcnow()
 
+    # Récupérer les notifications de l'utilisateur
+    notifications = MongoNotification.objects(
+        participants__user_id=ObjectId(user_id)
+    ).order_by('-created_at')
+    
+    # Préparer les notifications avec leur statut de lecture
+    user_notifications = []
+    for notification in notifications:
+        participant = next((p for p in notification.participants if str(p.user_id.id) == user_id), None)
+        if participant:
+            user_notifications.append({
+                'notification': notification,
+                'is_read': participant.read,
+                'read_at': participant.read_at
+            })
+
     if current_user.account_type == "organizer": 
         section = request.GET.get("section", "events")
     else:
         section = request.GET.get("section", "reservations")
 
-    print(f"User ID: {user_id}")
-    print(f"Account Type: {current_user.account_type}")
-    print(f"Section: {section}")
-
     context = {
         "account_type": current_user.account_type,
+        "notifications": user_notifications,
         "section": section,
         "now": now
     }
+
 
     if current_user.account_type == "organizer":
         # Récupérer les événements créés par l'organisateur
@@ -66,16 +80,10 @@ def dashboard_view(request):
         # Récupérer les réservations où l'organisateur est participant
         organizer_reservations = list(MongoReservation.objects(
             user=ObjectId(user_id)  # Chercher les réservations où l'utilisateur est participant
-        ).order_by('-created_at'))
+        ).order_by('-created_at')) 
         
-        print(f"Nombre total de réservations trouvées: {len(organizer_reservations)}")
-        print(organizer_reservations)
-        print(organizer_reservations[0])
         for r in organizer_reservations:
-            print("==== Reservation ====")
-            print(r.to_mongo().to_dict())
             if hasattr(r, 'event'):
-                print("Event:", r.event)
                 if hasattr(r.event, 'organizer'):
                     print("Host:", r.event.organizer)
                 elif hasattr(r.event, 'created_by'):
@@ -226,6 +234,43 @@ def annuler_reservation(request, event_id):
     except MongoEvent.DoesNotExist:
         raise Http404("Événement introuvable")
 
+    # Vérifier si l'événement est passé
+    event_end = event.end_datetime
+    if dj_timezone.is_naive(event_end):
+        event_end = dj_timezone.make_aware(event_end, timezone.utc)
+
+    if event_end < dj_timezone.now():
+        messages.error(request, "Vous ne pouvez pas annuler une réservation pour un événement passé.")
+        return redirect(request.META.get("HTTP_REFERER", "dashboard"))
+
+    # Trouver et supprimer la réservation
+    reservation = MongoReservation.objects.filter(user=user, event=event).first()
+    if reservation:
+        # Créer une notification pour l'organisateur
+        if event.created_by:
+            organizer_notification = MongoNotification(
+                event=event,
+                type="cancelled",
+                message=f"Le participant {user.full_name} a annulé sa réservation pour l'événement '{event.title}'",
+                participants=[NotificationParticipant(user_id=event.created_by)]
+            )
+            organizer_notification.save()
+
+        # Créer une notification pour l'utilisateur qui annule
+        notify_users(event, "cancelled")  # Crée une notification pour tous les participants
+        
+        reservation.delete()
+    else:
+        return redirect('dashboard')
+
+    # Mettre à jour les participants
+    user_object_id = ObjectId(user.id)
+    if user_object_id in event.participants:
+        event.participants.remove(user_object_id)
+        event.available_slots += 1
+        event.save()
+
+    return redirect('dashboard')
 
 
     event_end = event.end_datetime
@@ -266,23 +311,44 @@ def modifier_event(request, event_id):
     if request.method == "POST":
         form = MongoEventForm(request.POST, request.FILES)
         if form.is_valid():
+            # Sauvegarder les anciennes données pour la notification
+            old_data = {
+                'title': event.title,
+                'start_datetime': event.start_datetime,
+                'end_datetime': event.end_datetime,
+                'location': event.location,
+                'total_slots': event.total_slots,
+                'price': event.price,
+                'category': event.category
+            }
+            
             # Mise à jour des champs
             event.title = form.cleaned_data['title']
             event.description = form.cleaned_data['description']
             event.location = form.cleaned_data['location']
             event.start_datetime = form.cleaned_data['start_datetime']
             event.end_datetime = form.cleaned_data['end_datetime']
-            
-            # Pour l'image, tu peux gérer ça si tu acceptes upload, sinon laisse comme ça
-            
             event.image = form.cleaned_data['image']
-            
             event.total_slots = form.cleaned_data['total_slots']
             event.available_slots = form.cleaned_data['available_slots']
             event.price = form.cleaned_data['price']
             event.category = form.cleaned_data['category']
 
             event.save()  # Sauvegarde dans MongoDB
+
+            # Vérifier si des changements importants ont été faits
+            changes = {
+                'title': old_data['title'] != event.title,
+                'dates': old_data['start_datetime'] != event.start_datetime or old_data['end_datetime'] != event.end_datetime,
+                'location': old_data['location'] != event.location,
+                'slots': old_data['total_slots'] != event.total_slots,
+                'price': old_data['price'] != event.price,
+                'category': old_data['category'] != event.category
+            }
+
+            # Si au moins un changement important a été fait
+            if any(changes.values()):
+                notify_users(event, "postponed")
 
             messages.success(request, "L’événement a été modifié avec succès.")
             return redirect("dashboard")
@@ -300,23 +366,23 @@ def modifier_event(request, event_id):
             'available_slots': event.available_slots,
             'price': event.price,
             'category': event.category,
-            # Image n'est pas prérempli dans un champ file input
         }
         form = MongoEventForm(initial=initial_data)
 
     return render(request, "dashboard/edit_event.html", {"form": form, "event": event, 'color_on_scroll': 30})
 
-
-
 def supprimer_event(request, event_id):
     try:
         event = MongoEvent.objects.get(id=ObjectId(event_id))
+        
+        # Créer une notification pour tous les participants avant la suppression
+        notify_users(event, "deleted")
+        
         event.delete()
         messages.success(request, "L’événement a été supprimé avec succès.")
     except Exception as e:
         return redirect("dashboard")  # redirige vers la page d'accueil ou de gestion
     return redirect("dashboard")  # redirige vers la page d'accueil ou de gestion
-
 
 
 def notifications_view(request):
@@ -329,26 +395,50 @@ def notifications_view(request):
     return render(request, "notifications.html", {"notifications": notifications, 'color_on_scroll': 30})
 
 
-def mark_notification_read(request, notification_id):
-    from dashboard.models import Notification  # deferred import
-    notif = MongoNotification.objects(id=notification_id).first()
-    if notif:
-        notif.is_read = True
-        notif.save()
-    return redirect('notifications')
-
 
 def notify_users(event, type):
-    users = MongoReservation.objects(event=event, status="confirmed").distinct('user')
+    # Récupérer tous les participants confirmés
+    reservations = MongoReservation.objects.filter(event=event, status="confirmed")
+    if not reservations:
+        return
+    
+    # Créer le message
     message = {
         "cancelled": f"L'événement '{event.title}' a été annulé.",
-        "postponed": f"L'événement '{event.title}' a été reporté.",
-        "deleted": f"L'événement '{event.title}' a été supprimé.",
+        "postponed": f"L'événement '{event.title}' a été modifié.",
+        "deleted": f"L'événement '{event.title}' a été supprimé."
     }[type]
 
-    for user in users:
-        MongoNotification(user=user, message=message, type=type, event=event).save()
+    # Créer la notification
+    notification = MongoNotification(
+        event=event,
+        type=type,
+        message=message,
+        participants=[]
+    )
 
+    # Ajouter tous les participants
+    for reservation in reservations:
+        participant = NotificationParticipant(
+            user_id=reservation.user,
+            read=False,
+            read_at=None
+        )
+        notification.participants.append(participant)
 
+    notification.save()
 
-
+def mark_notification_read(request, notification_id):
+    user_id = request.session.get('user_id')
+    if not user_id:
+        return redirect('login')
+        
+    notification = MongoNotification.objects(id=notification_id).first()
+    if notification:
+        participant = next((p for p in notification.participants if str(p.user_id.id) == user_id), None)
+        if participant:
+            participant.read = True
+            participant.read_at = datetime.utcnow()
+            notification.save()
+            messages.success(request, "Notification marquée comme lue")
+    return redirect('dashboard')

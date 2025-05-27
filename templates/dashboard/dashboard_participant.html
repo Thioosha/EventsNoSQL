@@ -3,6 +3,7 @@
 
 {% block extra_head %}
 <link rel="stylesheet" href="{% static 'css/dashboard/dashboard.css' %}">
+<link rel="stylesheet" href="{% static 'css/dashboard/notifications.css' %}">
 <link href="https://fonts.googleapis.com/css?family=Inter:300,400,500,600,700,900" rel="stylesheet">
 <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 {% endblock %}
@@ -30,7 +31,7 @@
     </div>
 
     <div class="main-content">
-        {% if section == 'reservations' %}
+       {% if section == 'reservations' %}
             <div class="section-header">
                 <h3>Mes Réservations</h3>
             </div>
@@ -89,16 +90,56 @@
                 {% endfor %}
             </div>
         {% elif section == 'notifications' %}
-            <div class="section-header">
-                <h3>Mes Notifications</h3>
+        <div class="section-header">
+            <h3>Mes Notifications</h3>
+        </div>
+
+        <!-- Liste des notifications -->
+        <div class="notifications-list">
+            <!-- Notification non lue -->
+            {% for notification_data in notifications %}
+            <div class="notification {% if not notification_data.is_read %}unread{% endif %}">
+                <div class="notification-content">
+                    <p class="notification-message">
+                        <i class="fas fa-user-plus text-primary me-2"></i>
+                        {{ notification_data.notification.message }}
+                    </p>
+                    <small class="notification-date">
+                        <i class="far fa-clock"></i>
+                        {{ notification_data.notification.created_at|date:"d/m/Y H:i" }}
+                    </small>
+                    {% if notification_data.is_read %}
+                    <span class="read-at">
+                        <i class="fas fa-check-circle"></i>
+                        Lu le {{ notification_data.read_at|date:"d/m/Y H:i" }}
+                    </span>
+                    {% endif %}
+                </div>
+                <div class="notification-actions">
+                    {% if not notification_data.is_read %}
+                    <form method="POST" style="display: inline;"
+                        action="{% url 'mark_notification_read' notification_data.notification.id %}">
+                        {% csrf_token %}
+                        <button type="submit" class="mark-read-btn">
+                            <i class="fas fa-check"></i>
+                            Marquer comme lu
+                        </button>
+                    </form>
+                    {% endif %}
+                </div>
             </div>
+            {% empty %}
+            <!-- État vide (exemple) -->
+            <div class="empty-state">
+                <i class="fas fa-bell-slash"></i>
+                <p>Aucune notification pour le moment</p>
+            </div>
+            {% endfor %}
+        </div>
         {% endif %}
     </div>
-</div>
-{% endblock %}
+    {% endblock %}
 
-{% block extra_js %}
-<script src="{% static 'js/exple.js' %}"></script>
-{% endblock %}
-
-
+    {% block extra_js %}
+    <script src="{% static 'js/exple.js' %}"></script>
+    {% endblock %}
