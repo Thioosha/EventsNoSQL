@@ -22,7 +22,7 @@
                 </a>
             </li>
             <li>
-                <a href="?section=notifications" class="{% if section == 'notifications' %}active{% endif %}">
+                <a href="?section=notifications" class="{% if section == 'notifications' %}active{% endif %} notification-badge {% if unread_notifications_count > 0 %}has-notifications{% endif %}">
                     <i class="material-icons">notifications</i>
                     Mes Notifications
                 </a>
@@ -46,11 +46,11 @@
                             </div>
                             <div class="card-body px-4 py-3">
                                 <div class="category mb-2 fw-bold" style="color: #6c4ed4;">{{ reservation.event.category }}</div>
-                                <h2 class="card-title fs-5 mb-3" style="color: #444;">{{ reservation.event.title }}</h2>
+                                <h2 class="card-title fs-5 mb-3" style="color: #1c1b1b;">{{ reservation.event.title }}</h2>
                                 <p class="card-text small mb-0">
-                                    <span class="fw-bold" style="color: #444;">Date:</span> <span style="color: #888;">{{ reservation.event.start_datetime|date:"d M Y H:i" }}</span><br>
-                                    <span class="fw-bold" style="color: #444;">Lieu:</span> <span style="color: #888;">{{ reservation.event.location }}</span><br>
-                                    <span class="fw-bold" style="color: #444;">Places:</span> <span style="color: #888;">{{ reservation.event.participants|length }} dispo / {{ reservation.event.total_slots }}</span>
+                                    <span class="fw-bold" style="color: #1c1b1b;">Date:</span> <span style="color: #888;">{{ reservation.event.start_datetime|date:"d M Y H:i" }}</span><br>
+                                    <span class="fw-bold" style="color: #1c1b1b;">Lieu:</span> <span style="color: #888;">{{ reservation.event.location }}</span><br>
+                                    <span class="fw-bold" style="color: #1c1b1b;">Places:</span> <span style="color: #888;">{{ reservation.event.participants|length }} dispo / {{ reservation.event.total_slots }}</span>
                                 </p>
                             </div>
                             <div class="card-footer bg-transparent border-0 px-4 pb-2 pt-0">
@@ -93,24 +93,22 @@
         <div class="section-header">
             <h3>Mes Notifications</h3>
         </div>
-
         <!-- Liste des notifications -->
         <div class="notifications-list">
-            <!-- Notification non lue -->
             {% for notification_data in notifications %}
             <div class="notification {% if not notification_data.is_read %}unread{% endif %}">
                 <div class="notification-content">
                     <p class="notification-message">
-                        <i class="fas fa-user-plus text-primary me-2"></i>
+                        <i class="material-icons">notifications</i>
                         {{ notification_data.notification.message }}
                     </p>
                     <small class="notification-date">
-                        <i class="far fa-clock"></i>
+                        <i class="material-icons">schedule</i>
                         {{ notification_data.notification.created_at|date:"d/m/Y H:i" }}
                     </small>
                     {% if notification_data.is_read %}
                     <span class="read-at">
-                        <i class="fas fa-check-circle"></i>
+                        <i class="material-icons">check_circle</i>
                         Lu le {{ notification_data.read_at|date:"d/m/Y H:i" }}
                     </span>
                     {% endif %}
@@ -121,7 +119,7 @@
                         action="{% url 'mark_notification_read' notification_data.notification.id %}">
                         {% csrf_token %}
                         <button type="submit" class="mark-read-btn">
-                            <i class="fas fa-check"></i>
+                            <i class="material-icons">done_all</i>
                             Marquer comme lu
                         </button>
                     </form>
@@ -129,9 +127,8 @@
                 </div>
             </div>
             {% empty %}
-            <!-- État vide (exemple) -->
             <div class="empty-state">
-                <i class="fas fa-bell-slash"></i>
+                <i class="material-icons">notifications_off</i>
                 <p>Aucune notification pour le moment</p>
             </div>
             {% endfor %}

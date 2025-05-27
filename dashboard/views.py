@@ -38,15 +38,18 @@ def dashboard_view(request):
     
     # Préparer les notifications avec leur statut de lecture
     user_notifications = []
+    unread_count = 0
     for notification in notifications:
         participant = next((p for p in notification.participants if str(p.user_id.id) == user_id), None)
         if participant:
+            if not participant.read:
+                unread_count += 1
             user_notifications.append({
                 'notification': notification,
                 'is_read': participant.read,
                 'read_at': participant.read_at
             })
-
+    print(unread_count)
     if current_user.account_type == "organizer": 
         section = request.GET.get("section", "events")
     else:
@@ -55,6 +58,7 @@ def dashboard_view(request):
     context = {
         "account_type": current_user.account_type,
         "notifications": user_notifications,
+        "unread_notifications_count": unread_count,
         "section": section,
         "now": now
     }
@@ -350,7 +354,7 @@ def modifier_event(request, event_id):
             if any(changes.values()):
                 notify_users(event, "postponed")
 
-            messages.success(request, "L’événement a été modifié avec succès.")
+            messages.success(request, "L'événement a été modifié avec succès.")
             return redirect("dashboard")
         else:
             messages.error(request, "Veuillez corriger les erreurs dans le formulaire.")
@@ -379,7 +383,7 @@ def supprimer_event(request, event_id):
         notify_users(event, "deleted")
         
         event.delete()
-        messages.success(request, "L’événement a été supprimé avec succès.")
+        messages.success(request, "L'événement a été supprimé avec succès.")
     except Exception as e:
         return redirect("dashboard")  # redirige vers la page d'accueil ou de gestion
     return redirect("dashboard")  # redirige vers la page d'accueil ou de gestion

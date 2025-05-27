@@ -87,20 +87,6 @@
                     </ul>
                     <form method="POST" action="{% url 'annuler' event.id %}">
                         {% csrf_token %}
-
-                        {% if messages %}
-                        <div class="alert-container" style="margin: 20px;">
-                            {% for message in messages %}
-                            <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert"
-                                style="padding: 15px; border-radius: 5px; background-color: {% if message.tags == 'error' %}#f8d7da{% elif message.tags == 'warning' %}#fff3cd{% else %}#d1e7dd{% endif %}; color: #000;">
-                                {{ message }}
-                                <button type="button" onclick="this.parentElement.style.display='none';"
-                                    style="background:none; border:none; float:right; font-size: 1.1rem;">×</button>
-                            </div>
-                            {% endfor %}
-                        </div>
-                        {% endif %}
-                        
                         <div class="mx-4 mb-2">
                             {% if ticket %}
                             <div class="m">

@@ -89,6 +89,7 @@ a:link {
 
 .card-body{
     padding-bottom: 0 !important;
+    font-weight: 600 !important;
 }
 
 .card-footer{
