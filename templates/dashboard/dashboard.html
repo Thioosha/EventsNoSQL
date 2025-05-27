@@ -52,12 +52,13 @@
                 <div class="event-info">
                     <h3>{{ event.title }}</h3>
                     <div class="event-details d-flex flex-column">
-                        <p class="d-inline-flex align-items-center"><i class="material-icons">event</i> <span>{{
-                                event.start_datetime|date:"d/m/Y" }}</span></p>
-                        <p class="d-inline-flex align-items-center"><i class="material-icons">location_on</i> <span>{{
-                                event.location }}</span></p>
-                        <p class="d-inline-flex align-items-center"><i class="material-icons">category</i> <span>{{
-                                event.category }}</span></p>
+                        <p class="d-inline-flex align-items-center"><i class="material-icons">event</i> <span>
+                            {{ event.start_datetime|date:"d/m/Y" }}</span></p>
+                        <p class="d-inline-flex align-items-center"><i class="material-icons">location_on</i> <span>
+                            {{ event.location }}</span></p>
+                        <p class="d-inline-flex align-items-center"><i class="material-icons">category</i> <span>
+                            {{event.category }}</span>
+                        </p>
                     </div>
                     <div class="event-footer align-items-end d-flex justify-content-end">
                         <a href="{% url 'event_detail' event.id %}"
@@ -91,8 +92,8 @@
                         <p><i class="material-icons">event</i><span>{{ event.start_datetime|date:"d/m/Y H:i" }}</span>
                         </p>
                         <p><i class="material-icons">schedule</i><span>{{ event.end_datetime|date:"H:i" }}</span></p>
-                        <p><i class="material-icons">group</i><span>{{ event.participants|length }}/{{ event.total_slots
-                                }} participants</span></p>
+                        <p><i class="material-icons">group</i><span>
+                            {{ event.participants|length }}/{{ event.total_slots }} participants</span></p>
                         {% if event.price > 0 %}
                         <p><i class="material-icons">payments</i><span>{{ event.price|floatformat:0 }} FCFA</span></p>
                         {% else %}
