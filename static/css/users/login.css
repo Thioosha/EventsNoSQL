@@ -77,7 +77,7 @@
     border-top-right-radius: 20px;
     border-bottom-right-radius: 20px;
     z-index: 1;
-    filter: brightness(110%);
+    filter: brightness(120%);
 }
 
 .login-box {

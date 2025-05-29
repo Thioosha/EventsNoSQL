@@ -92,7 +92,7 @@ input[type="radio"] {
     height: 100%;
     border-top-right-radius: 20px;
     border-bottom-right-radius: 20px;
-    filter: brightness(80%);
+    filter: brightness(120%);
 }
 
 .glass-container {

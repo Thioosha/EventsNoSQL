@@ -238,6 +238,7 @@ def search_events(request):
         'events': events,
         'filters': filters,
         'categories': categories,
+        'color_on_scroll': 30,
     })
 
 
