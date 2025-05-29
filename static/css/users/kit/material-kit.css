@@ -2826,7 +2826,7 @@ progress {
   font-size: inherit;
   font-weight: 400;
   line-height: 1.5rem;
-  color: #737373;
+  color: #bababa;
 }
 
 .col-form-label-lg {
@@ -2844,7 +2844,7 @@ progress {
 .form-text {
   margin-top: 0.25rem;
   font-size: 0.875em;
-  color: #525252;
+  color: #ffffff;
 }
 
 .form-control {
@@ -2854,7 +2854,7 @@ progress {
   font-size: 0.875rem;
   font-weight: 400;
   line-height: 1.5rem;
-  color: #404040;
+  color: #ffffff;
   appearance: none;
   background-color: transparent;
   background-clip: padding-box;
@@ -2878,7 +2878,7 @@ progress {
 }
 
 .form-control:focus {
-  color: #404040;
+  color: #e1e1e1;
   background-color: transparent;
   border-color: transparent;
   outline: 0;
@@ -2897,7 +2897,7 @@ progress {
 }
 
 .form-control::placeholder {
-  color: #737373;
+  color: #d3d3d3;
   opacity: 1;
 }
 
@@ -2910,7 +2910,7 @@ progress {
   padding: 0.5rem 0;
   margin: -0.5rem 0;
   margin-inline-end: 0;
-  color: #404040;
+  color: #e2e2e2;
   background-color: transparent;
   pointer-events: none;
   border-color: inherit;
@@ -2937,7 +2937,7 @@ progress {
   padding: 0.5rem 0;
   margin-bottom: 0;
   line-height: 1.5rem;
-  color: #262626;
+  color: #bfbfbf;
   background-color: transparent;
   border: solid transparent;
   border-width: 1px 0;
@@ -23617,7 +23617,7 @@ body.dark-version {
 
 .input-group.input-group-outline .form-control {
   background: none;
-  border: 1px solid #d2d6da;
+  border: 1px solid #aaaaaa;
   border-radius: 0.375rem;
   border-top-left-radius: 0.375rem !important;
   border-bottom-left-radius: 0.375rem !important;
@@ -23677,9 +23677,9 @@ body.dark-version {
 
 .input-group.input-group-outline.is-focused .form-label+.form-control,
 .input-group.input-group-outline.is-filled .form-label+.form-control {
-  border-color: #e91e63 !important;
+  border-color: #b780e6 !important;
   border-top-color: transparent !important;
-  box-shadow: inset 1px 0 #e91e63, inset -1px 0 #e91e63, inset 0 -1px #e91e63;
+  box-shadow: inset 1px 0 #b780e6, inset -1px 0 #b780e6, inset 0 -1px #b780e6;
 }
 
 .input-group.input-group-outline.is-focused .form-label,
@@ -23687,7 +23687,7 @@ body.dark-version {
   width: 100%;
   height: 100%;
   font-size: 0.6875rem !important;
-  color: #e91e63;
+  color: #b780e6;
   display: flex;
   line-height: 1.25 !important;
 }
@@ -23703,8 +23703,8 @@ body.dark-version {
 .input-group.input-group-outline.is-focused .form-label:after,
 .input-group.input-group-outline.is-filled .form-label:before,
 .input-group.input-group-outline.is-filled .form-label:after {
-  border-top-color: #e91e63;
-  box-shadow: inset 0 1px #e91e63;
+  border-top-color: #b780e6;
+  box-shadow: inset 0 1px #b780e6;
 }
 
 .input-group.input-group-outline.is-valid .form-control {
@@ -23932,7 +23932,7 @@ label,
   font-size: 0.875rem;
   font-weight: 400;
   margin-bottom: 0.5rem;
-  color: #737373;
+  color: #aaaaaa;
   margin-left: 0.25rem;
 }
 

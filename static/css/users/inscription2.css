@@ -19,7 +19,7 @@ input[type="radio"] {
     font-size: 1.2rem;
     font-weight: 600;
     color: #ffffff;
-
+    
 }
 
 * {
@@ -33,7 +33,7 @@ input[type="radio"] {
 
 .glass-container {
     width: 90%;
-    height: 550px;
+    height: 600px;
     max-width: 1200px;
     margin: 60px auto;
 
@@ -84,7 +84,7 @@ input[type="radio"] {
     border-radius: 20px;
 }
 
-/* .log-bg-img {
+.log-bg-img {
     background-image: url('/static/img/users/boxlog.jpg');
     background-size: cover;
     background-position: center;
@@ -93,7 +93,7 @@ input[type="radio"] {
     border-top-right-radius: 20px;
     border-bottom-right-radius: 20px;
     filter: brightness(80%);
-} */
+}
 
 .glass-container {
     padding: 0;

@@ -34,7 +34,9 @@
 <!-- CSS Files -->
 <link id="pagestyle" href="{% static 'css/users/kit/material-kit.css' %}" rel="stylesheet" />
 
-<!-- <link rel="stylesheet" href="{% static 'css/users/inscription.css' %}"> -->
+<link rel="stylesheet" href="{% static 'css/users/inscription2.css' %}">
+<!-- Flaticons -->
+<link href="https://cdn.jsdelivr.net/npm/@flaticon/flaticon-uicons@3.3.1/css/all/all.min.css" rel="stylesheet">
 
 
 
@@ -85,119 +87,113 @@
     </nav>
     <!-- End Navbar -->
 
-    <div class="page-header align-items-start min-vh-100"
-        style="background-image: url('https://images.unsplash.com/photo-1497294815431-9365093b7331?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1950&q=80');"
-        loading="lazy">
+    <div class="page-header align-items-start min-vh-100" style="background-image: url('{% static "img/users/bglog4.jpg" %}'); background-size: cover; background-position: center; background-repeat: no-repeat;" loading="lazy">
         <span class="mask bg-gradient-dark opacity-6"></span>
-        <div class="container my-auto">
-            <div class="row">
-                <div class="col-lg-4 col-md-8 col-12 mx-auto">
-                    <div class="card z-index-0 fadeIn3 fadeInBottom">
-                        <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
-                            <div class="bg-gradient-dark shadow-dark border-radius-lg py-3 pe-1">
-                                <h4 class="text-white font-weight-bolder text-center mt-2 mb-0">Créer un compte</h4>
-                                <div class="row mt-3">
-                                    <div class="col-2 text-center ms-auto">
-                                        <a class="btn btn-link px-3" href="javascript:;">
-                                            <i class="fa fa-facebook text-white text-lg"></i>
-                                        </a>
-                                    </div>
-                                    <div class="col-2 text-center px-1">
-                                        <a class="btn btn-link px-3" href="javascript:;">
-                                            <i class="fa fa-github text-white text-lg"></i>
-                                        </a>
-                                    </div>
-                                    <div class="col-2 text-center me-auto">
-                                        <a class="btn btn-link px-3" href="javascript:;">
-                                            <i class="fa fa-google text-white text-lg"></i>
-                                        </a>
-                                    </div>
+        <div class="container mt-4">
+            <div class="glass-container rounded-4">
+                <div class="row logrow p-0 g-0">
+
+                    <div class="col-lg-6 col-md-12 col-12 p-4 d-flex align-items-center justify-content-center">
+                        <div class="login-box z-index-0 fadeIn3 fadeInBottom">
+
+                            <div class="p-0 position-relative mt-n4 mx-3 z-index-2">
+                                <div class="box-header bg-gradient-dark shadow-dark border-radius-lg py-3 px-4 align-items-center">
+                                    <h4 class="text-white font-weight-bolder text-center mt-3 ">Créer un compte <span
+                                            style="color: hsl(266, 100%, 82%)">XewMI</span><br /></h4>
+                                
                                 </div>
                             </div>
+                            <div class="log-box mt-4">
+                                <form method="post" class="text-start">
+                                    {% csrf_token %}
+                                
+                                    <!-- Username -->
+                                    <div class="input-group input-group-outline my-3 {% if form.username.errors %}is-invalid{% endif %}">
+                                        <label class="form-label" for="id_username">Nom d'utilisateur</label>
+                                        <input type="text" name="username" id="id_username" class="form-control"
+                                            value="{{ form.username.value|default_if_none:'' }}">
+                                    </div>
+                                    {% for error in form.username.errors %}
+                                    <div class="text-danger small">{{ error }}bbbbb</div>
+                                    {% endfor %}
+                                
+                                    <!-- Full Name -->
+                                    <div class="input-group input-group-outline my-3 {% if form.full_name.errors %}is-invalid{% endif %}">
+                                        <label class="form-label" for="id_full_name">Nom complet</label>
+                                        <input type="text" name="full_name" id="id_full_name" class="form-control"
+                                            value="{{ form.full_name.value|default_if_none:'' }}">
+                                    </div>
+                                    {% for error in form.full_name.errors %}
+                                    <div class="text-danger small">{{ error }}</div>
+                                    {% endfor %}
+                                
+                                    <!-- Email -->
+                                    <div class="input-group input-group-outline my-3 {% if form.email.errors %}is-invalid{% endif %}">
+                                        <label class="form-label" for="id_email">Email</label>
+                                        <input type="email" name="email" id="id_email" class="form-control"
+                                            value="{{ form.email.value|default_if_none:'' }}">
+                                    </div>
+                                    {% for error in form.email.errors %}
+                                    <div class="text-danger small">{{ error }}</div>
+                                    {% endfor %}
+                                
+                                    <!-- Password -->
+                                    <div class="input-group input-group-outline my-3 {% if form.password.errors %}is-invalid{% endif %}"
+                                        style="position: relative;">
+                                        <label class="form-label" for="id_password">Mot de passe</label>
+                                        <input type="password" name="password" id="id_password" class="form-control" style="padding-right: 40px;">
+                                        <img id="togglePassword" src="{% static 'img/users/eye2.png' %}" style="position: absolute; right: 12px; top: 50%; transform: translateY(-50%);
+                                                    width: 24px; height: 24px; cursor: pointer; z-index: 100;">
+                                    </div>
+                                    {% for error in form.password.errors %}
+                                    <div class="text-danger small">{{ error }}</div>
+                                    {% endfor %}
+                                
+                                    <!-- Confirm Password -->
+                                    <div class="input-group input-group-outline my-3 {% if form.confirm_password.errors %}is-invalid{% endif %}"
+                                        style="position: relative;">
+                                        <label class="form-label" for="id_confirm_password">Confirmer le mot de passe</label>
+                                        <input type="password" name="confirm_password" id="id_confirm_password" class="form-control"
+                                            style="padding-right: 40px;">
+                                        <img id="toggleConfirmPassword" src="{% static 'img/users/eye2.png' %}" style="position: absolute; right: 12px; top: 50%; transform: translateY(-50%);
+                                                    width: 24px; height: 24px; cursor: pointer; z-index: 100;">
+                                    </div>
+                                    {% for error in form.confirm_password.errors %}
+                                    <div class="text-danger small">{{ error }}</div>
+                                    {% endfor %}
+                                
+                                    <!-- Submit -->
+                                    <div class="text-center">
+                                        <button type="submit" class="btn btn-bg w-100 my-4 mb-2">S’inscrire</button>
+                                    </div>  
+                                    <div class="text-center">
+                                        <button type="submit" class="btn bg-white w-100 mt-1 mb-2">
+                                            <a href="{% url 'account_type' %}">
+                                                Retour        
+                                            </a>
+                                        </button>
+                                    </div>
+                                    <p class="mt-2 text-sm text-center">
+                                        Vous avez déjà un compte? <a href="{% url 'login' %}"
+                                            style="color: #6c5ce7; text-decoration: underline;">Connectez-vous!</a>
+                                    </p>
+                                </form>
+    
+                                
+                                
+                                
+                            </div>
+    
                         </div>
-                        <div class="card-body">
-                            <form method="post" class="text-start">
-                                {% csrf_token %}
-                            
-                                <!-- Username -->
-                                <div class="input-group input-group-outline my-3 {% if form.username.errors %}is-invalid{% endif %}">
-                                    <label class="form-label" for="id_username">Nom d'utilisateur</label>
-                                    <input type="text" name="username" id="id_username" class="form-control"
-                                        value="{{ form.username.value|default_if_none:'' }}">
-                                </div>
-                                {% for error in form.username.errors %}
-                                <div class="text-danger small">{{ error }}bbbbb</div>
-                                {% endfor %}
-                            
-                                <!-- Full Name -->
-                                <div class="input-group input-group-outline my-3 {% if form.full_name.errors %}is-invalid{% endif %}">
-                                    <label class="form-label" for="id_full_name">Nom complet</label>
-                                    <input type="text" name="full_name" id="id_full_name" class="form-control"
-                                        value="{{ form.full_name.value|default_if_none:'' }}">
-                                </div>
-                                {% for error in form.full_name.errors %}
-                                <div class="text-danger small">{{ error }}</div>
-                                {% endfor %}
-                            
-                                <!-- Email -->
-                                <div class="input-group input-group-outline my-3 {% if form.email.errors %}is-invalid{% endif %}">
-                                    <label class="form-label" for="id_email">Email</label>
-                                    <input type="email" name="email" id="id_email" class="form-control"
-                                        value="{{ form.email.value|default_if_none:'' }}">
-                                </div>
-                                {% for error in form.email.errors %}
-                                <div class="text-danger small">{{ error }}</div>
-                                {% endfor %}
-                            
-                                <!-- Password -->
-                                <div class="input-group input-group-outline my-3 {% if form.password.errors %}is-invalid{% endif %}"
-                                    style="position: relative;">
-                                    <label class="form-label" for="id_password">Mot de passe</label>
-                                    <input type="password" name="password" id="id_password" class="form-control" style="padding-right: 40px;">
-                                    <img id="togglePassword" src="{% static 'img/users/eye2.png' %}" style="position: absolute; right: 12px; top: 50%; transform: translateY(-50%);
-                                                width: 24px; height: 24px; cursor: pointer; z-index: 100;">
-                                </div>
-                                {% for error in form.password.errors %}
-                                <div class="text-danger small">{{ error }}</div>
-                                {% endfor %}
-                            
-                                <!-- Confirm Password -->
-                                <div class="input-group input-group-outline my-3 {% if form.confirm_password.errors %}is-invalid{% endif %}"
-                                    style="position: relative;">
-                                    <label class="form-label" for="id_confirm_password">Confirmer le mot de passe</label>
-                                    <input type="password" name="confirm_password" id="id_confirm_password" class="form-control"
-                                        style="padding-right: 40px;">
-                                    <img id="toggleConfirmPassword" src="{% static 'img/users/eye2.png' %}" style="position: absolute; right: 12px; top: 50%; transform: translateY(-50%);
-                                                width: 24px; height: 24px; cursor: pointer; z-index: 100;">
-                                </div>
-                                {% for error in form.confirm_password.errors %}
-                                <div class="text-danger small">{{ error }}</div>
-                                {% endfor %}
-                            
-                                <!-- Submit -->
-                                <div class="text-center">
-                                    <button type="submit" class="btn bg-gradient-dark w-100 my-4 mb-2">S’inscrire</button>
-                                </div>  
-                                <div class="text-center">
-                                    <button type="submit" class="btn bg-white w-100 mt-2 mb-2">
-                                        <a href="{% url 'account_type' %}">
-                                            Retour        
-                                        </a>
-                                    </button>
-                                </div>
-                                <p class="mt-2 text-sm text-center">
-                                    Vous avez déjà un compte? <a href="{% url 'login' %}"
-                                        style="color: #6c5ce7; text-decoration: underline;">Connectez-vous!</a>
-                                </p>
-                            </form>
-
-                            
-                            
-                            
-                        </div>
-
+                    </div>
+                    <div class="col-lg-6 p-0 h-100 position-relative log-bg-col">
+                        <video autoplay muted loop playsinline class="bg-video">
+                            <source src="{% static 'img/users/boxlog.mp4' %}" type="video/mp4">
+                            Your browser does not support the video tag.
+                        </video>
                     </div>
                 </div>
+                
             </div>
         </div>
     </div>

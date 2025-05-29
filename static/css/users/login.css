@@ -1,33 +1,9 @@
-input[type="radio"] {
-    width: 16px;
-    height: 16px;
-    accent-color: #6c5ce7;
-    cursor: pointer;
-}
-
-.form-check-label {
-    font-size: 1.1rem;
-    color: #d7d7d7;
-    cursor: pointer;
-}
-
-.form-check{
-    padding-left: 16px;
-}
-
-.form-label1 {
-    font-size: 1.2rem;
-    font-weight: 600;
-    color: #ffffff;
-
-}
-
-* {
+*{
     box-sizing: border-box;
     color: #aaaaaa;
 }
 
-.input-group {
+.input-group{
     color: #ffffff !important;
 }
 
@@ -36,8 +12,7 @@ input[type="radio"] {
     height: 550px;
     max-width: 1200px;
     margin: 60px auto;
-
-    padding-left: 1rem;
+    padding: 0;
     background: rgba(94, 94, 94, 0.412);
     backdrop-filter: blur(12px);
     -webkit-backdrop-filter: blur(12px);
@@ -46,19 +21,19 @@ input[type="radio"] {
     border: 1px solid rgba(255, 255, 255, 0.18);
 }
 
-.glass-container .logrow {
+.glass-container .logrow{
     height: 100% !important;
     width: 100%;
+    align-items: center;
     border-radius: 20px;
 }
 
-.card {
+.card{
     height: 100%;
 }
 
-.box-header {
+.box-header{
     height: 110px !important;
-    width: 100%;
     margin-bottom: 1rem;
 }
 
@@ -66,7 +41,7 @@ input[type="radio"] {
     box-shadow: 0 4px 20px 0 rgba(255, 255, 255, 0.309), 0 7px 10px -5px rgba(122, 94, 221, 0.564) !important;
 }
 
-.log-box .icons i {
+.log-box .icons i{
     color: rgb(255, 255, 255);
     font-size: 1.3rem;
     transition: all 0.2s;
@@ -84,27 +59,12 @@ input[type="radio"] {
     border-radius: 20px;
 }
 
-/* .log-bg-img {
-    background-image: url('/static/img/users/boxlog.jpg');
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-    height: 100%;
-    border-top-right-radius: 20px;
-    border-bottom-right-radius: 20px;
-    filter: brightness(80%);
-} */
-
-.glass-container {
-    padding: 0;
-}
-
 .log-bg-col {
     position: relative;
     overflow: hidden;
     height: 100%;
-    border-top-left-radius: 20px;
-    border-bottom-left-radius: 20px;
+    border-top-right-radius: 20px;
+    border-bottom-right-radius: 20px;
 }
 
 .bg-video {
@@ -139,4 +99,3 @@ input[type="radio"] {
     background-image: linear-gradient(195deg, #2b1a46 0%, #554ba1 100%);
     color: #ffffff;
 }
-
