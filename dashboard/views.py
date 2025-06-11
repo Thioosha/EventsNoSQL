@@ -1,25 +1,16 @@
-from django.shortcuts import redirect, get_object_or_404
 from django.contrib import messages
 from bson import ObjectId
-from .models import MongoEvent, NotificationParticipant  # adapte si le nom est différent
-from django.shortcuts import get_object_or_404, render, redirect
-from django.contrib import messages
-from bson import ObjectId
-from .models import MongoEvent
+from .models import MongoEvent, NotificationParticipant
+from django.shortcuts import render, redirect
 from events.forms import MongoEventForm
-from django.utils import timezone as dj_timezone  # Pour `now()`, `is_naive()`, etc.
+from django.utils import timezone as dj_timezone 
 from datetime import datetime, timezone
 from django.http import Http404
-from django.shortcuts import get_object_or_404, render,redirect
 
 from events.models import MongoEvent
 from users.models import MongoUser
-from reservations.models import MongoReservation  # deferred import to avoid circular reference
-from dashboard.models import MongoNotification  # deferred import to avoid circular reference
-
 from reservations.models import MongoReservation
-from bson import ObjectId
-from django.contrib import messages
+from dashboard.models import MongoNotification
 
 
 def dashboard_view(request):
@@ -83,7 +74,7 @@ def dashboard_view(request):
         
         # Récupérer les réservations où l'organisateur est participant
         organizer_reservations = list(MongoReservation.objects(
-            user=ObjectId(user_id)  # Chercher les réservations où l'utilisateur est participant
+            user=ObjectId(user_id)
         ).order_by('-created_at')) 
         
         for r in organizer_reservations:

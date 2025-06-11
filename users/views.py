@@ -1,9 +1,11 @@
-from django.contrib.sessions.backends.db import SessionStore
 from django.shortcuts import render, redirect
 from .forms import AccountTypeForm, RegisterForm
 from mongoengine.errors import NotUniqueError
 from .models import MongoUser
-from django.contrib.auth.hashers import make_password
+from django.contrib import messages
+
+from django.contrib.auth.hashers import check_password, make_password
+import requests, base64
 
 
 def home(request):
@@ -18,14 +20,12 @@ def home(request):
     return render(request, 'users/home.html', {'user': user})
 
 
-
-
 def account_type_view(request):
     if request.method == 'POST':
         form = AccountTypeForm(request.POST)
         if form.is_valid():
             account_type = form.cleaned_data['account_type']
-            request.session['account_type'] = account_type  # Store temporarily
+            request.session['account_type'] = account_type
             return redirect('register')
     else:
         form = AccountTypeForm()
@@ -73,10 +73,8 @@ def login_view(request):
         context['email'] = email
 
         try:
-            # Just get user by email
             user = MongoUser.objects.get(email=email)
 
-            # Now check the password hash
             if check_password(password, user.password):
                 request.session['user_id'] = str(user.id)
                 request.session['username'] = user.username
@@ -99,22 +97,12 @@ def logout_view(request):
         pass
     return redirect('login')
 
-
-from django.contrib.auth.decorators import login_required  # optional
-
 def user_settings_view(request):
     return render(request, 'users/settings.html', {
         'color_on_scroll': 30,
     })
 
 
-
-
-from django.shortcuts import render, redirect
-from django.contrib import messages
-from django.contrib.auth.hashers import check_password
-from .models import MongoUser
-import requests, base64
 
 IMGBB_API_KEY = "71106fa24c9850b035d087a4513b07d2"
 
@@ -160,7 +148,7 @@ def update_profile_view(request):
 
     return redirect('settings')
 
-from django.contrib.auth.hashers import check_password, make_password
+
 
 def update_password_view(request):
     user_id = request.session.get('user_id')

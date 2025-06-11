@@ -1,5 +1,15 @@
 from django.shortcuts import render, redirect
 from users.models import MongoUser
+from .forms import MongoEventForm
+from .models import MongoEvent
+from users.models import MongoUser
+from datetime import datetime, timezone
+from mongoengine.queryset.visitor import Q
+from django.http import Http404
+from datetime import datetime
+from django.contrib import messages
+import requests
+import base64
 
 
 # Create your views here
@@ -56,7 +66,7 @@ def user_events(request):
         'carousel_events': carousel_events,
         'remaining_events': remaining_events,
         'color_on_scroll': 30,
-        'categories': CATEGORY_CHOICES,  # pour la liste déroulante
+        'categories': CATEGORY_CHOICES,
         'filters': {
             'category': category,
             'price_min': price_min,
@@ -66,22 +76,7 @@ def user_events(request):
         }
     })
 
-from django.shortcuts import render, get_object_or_404
-from .models import MongoEvent
 
-from django.shortcuts import render
-from django.http import Http404
-from .models import MongoEvent
-
-from datetime import datetime, timedelta
-from django.shortcuts import render, redirect, get_object_or_404
-from django.http import Http404
-from mongoengine import ValidationError
-from events.models import MongoEvent
-from reservations.models import MongoReservation
-from users.models import MongoUser
-
-from django.contrib import messages
 
 def user_event_detail(request, event_id):
     try:
@@ -106,19 +101,6 @@ def user_event_detail(request, event_id):
 
 
 
-
-
-from django.shortcuts import render, redirect
-from .forms import MongoEventForm
-from .models import MongoEvent
-from users.models import MongoUser
-from datetime import datetime, timezone
-from mongoengine.queryset.visitor import Q
-
-
-
-import requests
-import base64
 
 IMGBB_API_KEY = "71106fa24c9850b035d087a4513b07d2"  #https://api.imgbb.com/
 
@@ -191,7 +173,7 @@ def search_events(request):
             Q(title__regex=f'(?i){query}') | 
             Q(description__regex=f'(?i){query}') | 
             Q(location__regex=f'(?i){query}') | 
-            Q(category__regex=f'(?i){query}')  # Ajout du filtrage par catégorie
+            Q(category__regex=f'(?i){query}')
         )
     else:
         events = MongoEvent.objects.none()

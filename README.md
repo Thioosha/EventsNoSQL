@@ -4,6 +4,18 @@ Mini-outil de **réservation d’événements** développé avec **Django** & **
 
 ---
 
+## 📸 Aperçu de l’Application
+
+Voici quelques captures d’écran de l’interface utilisateur :
+
+### 🔐 Page de Connexion  
+
+![Page de Connexion](static/img/ApercuSite/login.gif)
+
+### 📝 Page d’Inscription  
+
+![Page d’Inscription](static/img/ApercuSite/inscription.gif)
+
 ## ⚙️ Prérequis
 
 Avant tout, **assurez-vous d’avoir** :
