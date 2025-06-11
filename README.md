@@ -16,6 +16,34 @@ Voici quelques captures d’écran de l’interface utilisateur :
 
 ![Page d’Inscription](static/img/ApercuSite/inscription.gif)
 
+### 🎉 Formulaire de Création d’Événement  
+
+![Formulaire de Création d’Événement](static/img/ApercuSite/creer_event.gif)
+
+### 📅 Liste des Événements  
+
+![Liste des Événements](static/img/ApercuSite/all_events.gif)
+
+### 🛎️ Rechercher un Événement  
+
+![Rechercher un Événement](static/img/ApercuSite/rechercher.gif)
+
+### 🔍 Détails d’un Événement et Réservation
+
+![Détails d’un Événement](static/img/ApercuSite/event_detail.gif)
+
+### 👤 Dashboard Utilisateur  
+
+![Dashboard Utilisateur](static/img/ApercuSite/Dashboard.gif)
+
+### 🧑‍💼 Dashboard Organisateur  
+
+![Dashboard Organisateur](static/img/ApercuSite/Dashboard_organisateur.gif)
+
+### ⚙️ Paramètres Utilisateur  
+
+![Paramètres Utilisateur](static/img/ApercuSite/settings.gif)
+
 ## ⚙️ Prérequis
 
 Avant tout, **assurez-vous d’avoir** :
